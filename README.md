@@ -1,4 +1,4 @@
-# Archives Infrastructure
+# Pacific War Digital Collections & Archives Program Repository
 
 Institutional repository for the WWII Pacific War Memorial Hall Digital
 Collections & Archives Program.
@@ -41,7 +41,7 @@ archival objects themselves.
 1. Collection Inventory & Digitization
 2. Digital Collections Management & Archival Description
 3. External Archives Metadata Aggregation & Interoperability
-4. Digital Reading Room
+4. Digital Reading Room: Discovery & Access
 
 ## Repository Structure
 
@@ -101,10 +101,18 @@ meeting memory, or scattered Google Docs.
 
 ## Current Focus
 
-The first concrete artifacts in this repository are centered on the Digital
-Reading Room track:
+The repository now has initial scoping artifacts at both the umbrella-program
+and track-specific levels:
 
-- a project brief under `docs/program/`
-- an MVP requirement draft under `docs/requirements/`
+- a program brief for the overall `Digital Collections & Archives Program`
+- an updated scoping and requirements draft spanning all four tracks
+- a Track 4 reading-room brief and requirement draft
 - a record-schema draft under `collections/schemas/`
 - organization/repository setup guidance under `docs/program/`
+
+Key current documents:
+
+- `docs/program/pacific-war-digital-collections-and-archives-program.md`
+- `docs/requirements/pacific-war-digital-collections-and-archives-program.md`
+- `docs/program/track-4-digital-reading-room-brief.md`
+- `docs/requirements/track-4-digital-reading-room.md`

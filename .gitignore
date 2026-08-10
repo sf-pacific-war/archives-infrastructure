@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+
+# Local environment files
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+
+# Archives and temporary exports
+tmp/
+exports/

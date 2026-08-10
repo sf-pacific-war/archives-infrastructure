@@ -1,11 +1,11 @@
 # Requirements
 
-Store product, infrastructure, digitization, access, and operational requirements here.
+Store product, infrastructure, digitization, access, and operational
+requirements here.
 
-Suggested contents:
+Prefer track-oriented documents, for example:
 
-- functional requirements
-- non-functional requirements
-- access and permissions requirements
-- preservation and storage requirements
-- reporting and audit requirements
+- `track-1-collection-inventory-digitization.md`
+- `track-2-collections-management.md`
+- `track-3-metadata-aggregation.md`
+- `track-4-digital-reading-room.md`

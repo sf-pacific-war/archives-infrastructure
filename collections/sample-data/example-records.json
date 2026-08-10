@@ -1,0 +1,48 @@
+[
+  {
+    "id": "mhh-photo-0001",
+    "sourceInstitution": "WWII Pacific War Memorial Hall",
+    "sourceRecordId": "PHOTO-0001",
+    "title": "Group portrait at memorial fundraising event",
+    "originalTitle": null,
+    "summaryZh": "纪念馆筹建相关活动的合影记录。",
+    "descriptionZh": "示例记录，仅用于说明数字阅览室 MVP 所需的最小字段结构。",
+    "originalText": "Group portrait photograph from an early memorial fundraising event.",
+    "derivedContentNote": "Chinese summary and description are draft derived content.",
+    "dateDisplay": "circa 1946",
+    "dateStart": "1946-01-01",
+    "dateEnd": "1946-12-31",
+    "recordType": "photo",
+    "extent": "1 photographic print",
+    "language": [
+      "en"
+    ],
+    "accessStatus": "public",
+    "reviewStatus": "approved",
+    "rightsNote": "Cleared for demonstration as example metadata only.",
+    "isPublic": true,
+    "themes": [
+      "memorial hall history"
+    ],
+    "tags": [
+      "fundraising",
+      "photograph"
+    ],
+    "people": [
+      "Unknown"
+    ],
+    "places": [
+      "San Francisco, California"
+    ],
+    "thumbnailUrl": null,
+    "assetUrl": null,
+    "assetFormat": null,
+    "attributes": [
+      "example-record"
+    ],
+    "provenanceNote": "Created as sample data for repository documentation and app prototyping.",
+    "editorialNote": "Not a production record.",
+    "lastReviewedAt": "2026-08-10",
+    "lastReviewedBy": "Jessie Gao"
+  }
+]

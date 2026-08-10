@@ -2,9 +2,7 @@
 
 Store decision records here so major choices remain discoverable over time.
 
-Suggested contents:
+Prefer ADR-style filenames such as `ADR-001-metadata-model.md`.
 
-- architectural decision records
-- policy decisions
-- vendor and platform evaluations
-- reversibility and risk notes
+Meeting notes should capture discussion and context. This directory should
+capture the final decision, alternatives considered, and consequences.

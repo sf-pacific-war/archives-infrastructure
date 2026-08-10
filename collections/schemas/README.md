@@ -1,6 +1,7 @@
 # Schemas
 
-Store collection schemas, field definitions, entity models, and validation rules here.
+Store collection schemas, field definitions, entity models, and validation rules
+here.
 
 Suggested contents:
 
@@ -8,3 +9,4 @@ Suggested contents:
 - item-level schemas
 - authority-linked entity models
 - JSON Schema or tabular field definitions
+- draft markdown schema notes that later become machine-readable specs

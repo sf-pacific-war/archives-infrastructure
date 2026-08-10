@@ -1,52 +1,110 @@
 # Archives Infrastructure
 
-Institutional repository for the digital archives, metadata standards, research infrastructure, and technical planning of the WWII Pacific War Memorial Hall.
+Institutional repository for the WWII Pacific War Memorial Hall Digital
+Collections & Archives Program.
 
-## Purpose
+This repository is not only for code. It is the version-controlled workspace for
+program documentation, technical planning, metadata models, schema decisions,
+and the institutional history of how the digital archives program is being
+built.
+
+## What This Repository Is For
 
 This repository is intended to serve as the long-lived institutional home for:
 
-- program planning and requirements
-- architecture and implementation decisions
-- metadata and description standards
-- collection schemas and controlled vocabularies
-- external integrations and ingest workflows
-- research notes that inform infrastructure design
+- program planning and scope definition
+- requirements, architecture, and standards
+- decision history and meeting notes
+- collection schemas, vocabularies, authorities, and crosswalks
+- sample data and validation artifacts
+- scripts and lightweight technical utilities
+- app boundary definitions, interface notes, and prototype references
+
+## What This Repository Is Not For
+
+This repository should not be treated as the archival storage system itself.
+
+Do not use GitHub as the default home for:
+
+- TIFF masters
+- WAV oral-history masters
+- large MP4 preservation files
+- restricted donor materials
+- sensitive records
+- copyrighted source files without a clear publication basis
+
+GitHub stores how the project works. Preservation and access systems store the
+archival objects themselves.
+
+## Program Tracks
+
+1. Collection Inventory & Digitization
+2. Digital Collections Management & Archival Description
+3. External Archives Metadata Aggregation & Interoperability
+4. Digital Reading Room
 
 ## Repository Structure
 
 ```text
 docs/
-  program/         Program framing, strategy, and roadmap materials
-  requirements/    Product, platform, and operational requirements
-  architecture/    System architecture, diagrams, and technical design
-  standards/       Metadata, preservation, and interoperability standards
-  decisions/       Decision records and governance history
+  program/         Program framing, charter, scope, and roadmap materials
+  requirements/    Product, platform, and operational requirements by track
+  architecture/    System architecture, models, and technical design
+  standards/       Metadata, digitization, rights, and interoperability standards
+  decisions/       ADRs and governance history
   meetings/        Meeting notes and working-session documentation
-  research/        Background research, benchmarking, and references
+  research/        Benchmarking, source-system notes, and background research
 
 collections/
-  schemas/         Collection data models and field definitions
-  authorities/     Authority files and identity control
+  schemas/         Collection data models and schema drafts
+  authorities/     Authority control assets
   vocabularies/    Controlled vocabularies and taxonomies
-  crosswalks/      Field mappings between systems and standards
+  crosswalks/      Field mappings between local and external systems
+  sample-data/     Small non-sensitive example datasets
+
+apps/
+  collections-management/  App boundary and integration notes
+  digital-reading-room/    Public access application notes and references
 
 integrations/
   nara/            National Archives-related integration notes and scripts
 
 scripts/           Utility scripts for validation, transformation, and ingest
+tests/             Validation and fixture-oriented checks for repo-managed assets
+.github/           Repository workflow templates and collaboration defaults
 ```
+
+## How To Use This Repository
+
+A new volunteer or intern should be able to enter through:
+
+1. this README
+2. the relevant track document under `docs/requirements/`
+3. related standards, decisions, and research notes
+4. an assigned GitHub Issue or pull request
+
+The goal is to prevent project knowledge from living only in chat threads,
+meeting memory, or scattered Google Docs.
 
 ## Working Principles
 
-- Treat this repository as institutional memory rather than personal scratch space.
-- Prefer documenting decisions in writing before implementation becomes hard to reverse.
-- Keep standards, mappings, and schemas versioned alongside the code that depends on them.
-- Use plain-language README files so new volunteers, interns, and collaborators can onboard quickly.
+- Treat this repository as institutional memory rather than personal scratch
+  space.
+- Prefer written requirements and ADRs before implementation becomes hard to
+  reverse.
+- Keep schemas, mappings, and standards versioned alongside the scripts and
+  documentation that depend on them.
+- Separate meeting notes from decisions: meetings record discussion; ADRs record
+  the final choice.
+- Keep public-facing app ideas documented here even when the production app
+  later lives in another repository.
 
-## Suggested Next Milestones
+## Current Focus
 
-1. Add the current program requirement/design document into `docs/program/`.
-2. Draft an initial metadata and interoperability outline in `docs/standards/`.
-3. Define the first collection schema in `collections/schemas/`.
-4. Create the GitHub organization profile repository `.github` under `sf-pacific-war`.
+The first concrete artifacts in this repository are centered on the Digital
+Reading Room track:
+
+- a project brief under `docs/program/`
+- an MVP requirement draft under `docs/requirements/`
+- a record-schema draft under `collections/schemas/`
+- organization/repository setup guidance under `docs/program/`

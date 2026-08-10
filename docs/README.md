@@ -1,5 +1,8 @@
 # Documentation
 
-This directory contains institutional planning, technical design, policy, and research materials for the archives program.
+This directory contains the human-readable knowledge base for the archives
+program.
 
-Each subdirectory is organized by function so documentation can grow without becoming tied to a single application or volunteer.
+Use these folders to keep program intent, requirements, standards, meeting
+history, and decision logic in version control instead of scattering them across
+chat threads and ad hoc notes.

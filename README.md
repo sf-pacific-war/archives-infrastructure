@@ -3,10 +3,7 @@
 Institutional repository for the WWII Pacific War Memorial Hall Digital
 Collections & Archives Program.
 
-This repository is not only for code. It is the version-controlled workspace for
-program documentation, technical planning, metadata models, schema decisions,
-and the institutional history of how the digital archives program is being
-built.
+This repository is not for code (not an app product repo). It is the version-controlled workspace for program documentation, technical planning, metadata models, schema decisions, and the institutional history of how the digital archives program progresses.
 
 ## What This Repository Is For
 
@@ -23,9 +20,7 @@ This repository is intended to serve as the long-lived institutional home for:
 ## What This Repository Is Not For
 
 This repository should not be treated as the archival storage system itself.
-
 Do not use GitHub as the default home for:
-
 - TIFF masters
 - WAV oral-history masters
 - large MP4 preservation files
@@ -37,11 +32,6 @@ GitHub stores how the project works. Preservation and access systems store the
 archival objects themselves.
 
 ## Program Tracks
-
-1. Collection Inventory & Digitization
-2. Digital Collections Management & Archival Description
-3. External Archives Metadata Aggregation & Interoperability
-4. Digital Reading Room: Discovery & Access
 
 ## Repository Structure
 
@@ -110,9 +100,4 @@ and track-specific levels:
 - a record-schema draft under `collections/schemas/`
 - organization/repository setup guidance under `docs/program/`
 
-Key current documents:
-
-- `docs/program/pacific-war-digital-collections-and-archives-program.md`
-- `docs/requirements/pacific-war-digital-collections-and-archives-program.md`
-- `docs/program/track-4-digital-reading-room-brief.md`
-- `docs/requirements/track-4-digital-reading-room.md`
+`

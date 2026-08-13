@@ -1,36 +1,57 @@
-# Track 4: Digital Reading Room Requirements
+# Track 4: Digital Reading Room
 
-## Status
+## Purpose
 
-Drafted on August 10, 2026 from the July 2026 intern planning document and
-aligned to this repository's institutional-architecture goals.
+This document defines the track-level requirements for the digital reading
+room. Unlike the umbrella program document, this file is intended to carry the
+detail needed for planning and implementation.
 
-## Problem statement
+## Scope
 
-Archival materials relevant to the WWII Pacific War Memorial Hall are spread
-across at least three source lines:
+Create a digital reading room that brings together three archival source lines
+under one discovery interface:
 
 - memorial hall holdings
-- NARA records
+- NARA-derived records
 - university archive materials
 
-Potential readers do not currently have one place to discover what exists,
-understand provenance, read contextual metadata, and determine whether an item
-is available for public viewing.
+The first release should let users browse, filter, and search structured
+archive records while clearly distinguishing:
 
-## Product objective
+- the source institution
+- whether text is original or AI-assisted
+- whether the underlying asset is publicly viewable
 
-Deliver a first working digital reading room that allows users to:
+### In scope
 
-- browse records by source and theme
-- search by keyword, title, or person name
-- filter by source, format, era/date, and access status where appropriate
-- open a detail page with structured context for each record
-- distinguish original source text from AI-assisted derived text
+- a unified record model for the three source lines
+- a structured dataset that can be loaded from JSON, CSV export, or spreadsheet
+  export
+- list view, detail view, search, and filtering
+- public/private/review status on each record
+- support for links to external files instead of immediate full DAMS ingestion
+- bilingual-aware display where source text and Chinese derived text can
+  coexist
 
-## MVP success criteria
+### Out of scope for the first release
 
-The MVP is successful if a user can do the following from one interface:
+- full-text OCR indexing across all scans
+- complex role-based user accounts
+- bulk ingest automation from every source system
+- IIIF manifests, viewers, or preservation packaging
+- citation export, annotation, or collaborative research tools
+- automatic publication of unreviewed records
+
+## Primary users
+
+- internal staff preparing exhibitions, grant materials, and programming
+- student researchers in digital/oral history contexts
+- external researchers using public, approved records
+- editors or reviewers checking metadata quality and access rights
+
+## Success criteria
+
+The first release is successful if a user can:
 
 1. Find records from all three source lines without switching systems.
 2. Tell where a record came from and whether it is approved for public access.
@@ -107,85 +128,42 @@ must remain separately visible when available.
 
 ### 7. Data source model
 
-The MVP may read structured record data from a simple source such as:
+The first release may read structured record data from a simple source such as:
 
 - JSON
 - exported CSV
 - Google Sheets export
 
-The MVP does not require a complex database if a flat structured source is
-sufficient for the first release.
+The reading room does not require a complex database if a flat structured source
+is sufficient for the first release.
 
 ## Non-functional requirements
 
-### 1. Governance and safety
+### Governance and safety
 
 - Unknown rights status must default to non-public.
 - AI-derived text must never overwrite source text.
 - The schema must support audit-friendly review fields.
 
-### 2. Usability
+### Usability
 
 - The interface must work on both desktop and mobile browsers.
 - Search and browse should remain understandable for non-technical users.
 
-### 3. Maintainability
+### Maintainability
 
 - Record fields must map cleanly to a documented schema.
 - The application should be able to add new source collections without
   redesign.
 
-### 4. Performance
+### Performance
 
 - Typical record list and detail pages should load quickly on ordinary consumer
   connections.
 - The first release should prefer lightweight linked assets over heavy embedded
   viewers.
 
-## Data requirements
-
-The MVP requires a normalized archive record schema with:
-
-- mandatory core identity fields
-- provenance/source fields
-- rights and review fields
-- descriptive fields
-- display/support fields
-
-The initial schema draft is stored separately under `collections/schemas/`.
-
-## Recommended first-release dataset strategy
-
-Do not start by mixing all three sources at once.
-
-Recommended order:
-
-1. memorial hall holdings with the cleanest available metadata
-2. a small NARA sample set
-3. university partner material after rights and metadata conditions are clearer
-
-This sequencing reduces risk and helps validate the schema before scale.
-
-## Explicit exclusions for MVP
-
-The following are intentionally excluded unless requirements change:
-
-- automated OCR/transcription pipelines
-- user accounts and researcher workspaces
-- public comments or annotations
-- complex media streaming or preservation workflows
-- advanced linked-data interoperability
-
-## Acceptance checklist
-
-- Records from all intended source lines can appear in one interface.
-- Public records are clearly distinguished from non-public or pending items.
-- Search returns relevant records from structured fields.
-- Detail pages show both context and provenance.
-- AI-derived content is visibly labeled and separated from original text.
-- Mobile browsing is functional and readable.
-
-## Open decisions
+## Open questions
 
 - exact theme taxonomy
 - final access-status vocabulary
@@ -193,3 +171,12 @@ The following are intentionally excluded unless requirements change:
 - whether person/place entities should be modeled now or later
 - whether the first implementation will read JSON directly or use a generated
   export from a spreadsheet workflow
+
+## Dependencies
+
+This track depends on:
+
+- local record schema work under `collections/schemas/`
+- Track 1 inventory work
+- Track 2 description/governance work
+- Track 3 external metadata mapping where partner records are involved

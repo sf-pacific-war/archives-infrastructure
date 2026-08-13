@@ -9,3 +9,4 @@ Suggested contents:
 - file naming conventions
 - preservation packaging rules
 - interoperability notes for external standards bodies
+- branding and digital identity guidance for apps, reports, and prototypes

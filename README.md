@@ -1,7 +1,7 @@
-# Pacific War Digital Collections & Archives Program Repository
+# SF Pacific War Archives Infrastructure Project Repository
 
-Institutional repository for the WWII Pacific War Memorial Hall Digital
-Collections & Archives Program.
+Institutional repository for the WWII Pacific War Memorial Hall's SF Pacific
+War Archives Infrastructure Project.
 
 This repository is not for code (not an app product repo). It is the version-controlled workspace for program documentation, technical planning, metadata models, schema decisions, and the institutional history of how the digital archives program progresses.
 
@@ -37,8 +37,7 @@ archival objects themselves.
 
 ```text
 docs/
-  program/         Program framing, charter, scope, and roadmap materials
-  requirements/    Product, platform, and operational requirements by track
+  planning/        Program scope, track definitions, requirements, and setup notes
   architecture/    System architecture, models, and technical design
   standards/       Metadata, digitization, rights, and interoperability standards
   decisions/       ADRs and governance history
@@ -69,7 +68,7 @@ tests/             Validation and fixture-oriented checks for repo-managed asset
 A new volunteer or intern should be able to enter through:
 
 1. this README
-2. the relevant track document under `docs/requirements/`
+2. the relevant planning document under `docs/planning/`
 3. related standards, decisions, and research notes
 4. an assigned GitHub Issue or pull request
 
@@ -94,10 +93,15 @@ meeting memory, or scattered Google Docs.
 The repository now has initial scoping artifacts at both the umbrella-program
 and track-specific levels:
 
-- a program brief for the overall `Digital Collections & Archives Program`
-- an updated scoping and requirements draft spanning all four tracks
-- a Track 4 reading-room brief and requirement draft
+- an umbrella planning document for the overall program
+- a Track 4 planning document
+- a scope-boundaries note mapping this project against the earlier intern plan
 - a record-schema draft under `collections/schemas/`
-- organization/repository setup guidance under `docs/program/`
+- organization/repository setup guidance under `docs/planning/`
 
-`
+Key current documents:
+
+- `docs/planning/sf-pacific-war-archives-infrastructure-project.md`
+- `docs/planning/track-4-digital-reading-room.md`
+- `docs/planning/archives-infrastructure-scope-boundaries.md`
+- `docs/planning/github-organization-setup.md`

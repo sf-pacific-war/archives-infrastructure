@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SF Pacific War Archives Infrastructure Project Brand System</title>
+    <link rel="stylesheet" href="./brand-tokens.css">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .site-header {
+        background: rgba(244, 242, 237, 0.92);
+        border-bottom: 1px solid var(--border-muted);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .topbar {
+        align-items: center;
+        display: flex;
+        gap: 18px;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: 1220px;
+        padding: 10px 128px 10px 24px;
+        position: relative;
+      }
+
+      .brand,
+      .topbar-tools,
+      .lang-switch {
+        align-items: center;
+        display: flex;
+      }
+
+      .brand {
+        color: var(--color-navy-900);
+        gap: 10px;
+        min-width: 0;
+        text-decoration: none;
+      }
+
+      .brand img {
+        height: 38px;
+        object-fit: contain;
+        width: 38px;
+      }
+
+      .brand span {
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .topbar-tools {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .lang-switch {
+        background: rgba(33, 55, 77, 0.06);
+        border: 1px solid var(--border-muted);
+        border-radius: 999px;
+        gap: 3px;
+        padding: 3px;
+        position: absolute;
+        right: 24px;
+        top: 10px;
+      }
+
+      .lang-tab {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        border-radius: 999px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 900;
+        min-height: 30px;
+        padding: 5px 9px;
+      }
+
+      .lang-tab.is-active {
+        background: var(--color-navy-900);
+        color: var(--text-inverse);
+      }
+
+      .page {
+        margin: 0 auto;
+        max-width: 1220px;
+        padding: 44px 24px 80px;
+      }
+
+      .hero {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 34%),
+          var(--surface-hero);
+        border: 1px solid rgba(247, 242, 234, 0.12);
+        border-radius: 30px;
+        box-shadow: var(--shadow-card);
+        color: var(--text-inverse);
+        overflow: hidden;
+        padding: 24px;
+        position: relative;
+      }
+
+      .hero::before {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 70%),
+          radial-gradient(circle at center, rgba(181, 138, 66, 0.16), transparent 56%);
+        border: 1px solid rgba(255, 250, 244, 0.14);
+        border-radius: 999px 999px 28px 28px;
+        content: "";
+        height: 78%;
+        pointer-events: none;
+        position: absolute;
+        right: -3%;
+        top: 11%;
+        width: 34%;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.8fr);
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-family: var(--font-brand-serif);
+        font-size: clamp(2.25rem, 4.4vw, 4rem);
+        line-height: 0.94;
+        margin: 12px 0 14px;
+        max-width: 11ch;
+      }
+
+      .hero p {
+        color: rgba(247, 242, 234, 0.82);
+        font-size: 1rem;
+        line-height: 1.65;
+        margin: 0;
+        max-width: 58ch;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .badge-card {
+        background: rgba(255, 250, 244, 0.08);
+        border: 1px solid rgba(255, 250, 244, 0.12);
+        border-radius: 24px;
+        display: grid;
+        gap: 12px;
+        justify-items: start;
+        padding: 16px;
+      }
+
+      .badge-card img {
+        display: block;
+        height: 108px;
+        object-fit: contain;
+        width: 108px;
+      }
+
+      .badge-note {
+        color: rgba(247, 242, 234, 0.8);
+        font-size: 0.96rem;
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      .section {
+        margin-top: 28px;
+      }
+
+      .section-header {
+        align-items: end;
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .section-header h2 {
+        font-family: var(--font-brand-serif);
+        font-size: clamp(1.7rem, 2vw, 2.35rem);
+        line-height: 1.08;
+        margin: 8px 0 0;
+      }
+
+      .section-header p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin: 0;
+        max-width: 55ch;
+      }
+
+      .palette-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .swatch {
+        background: var(--surface-panel);
+        border: 1px solid var(--border-muted);
+        border-radius: 20px;
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+      }
+
+      .swatch-color {
+        height: 120px;
+      }
+
+      .swatch-copy {
+        padding: 16px 16px 18px;
+      }
+
+      .swatch-copy strong {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+
+      .swatch-copy span {
+        color: var(--text-secondary);
+        display: block;
+        font-size: 0.92rem;
+        line-height: 1.65;
+      }
+
+      .type-grid,
+      .mock-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .type-card,
+      .mock-card {
+        min-height: 100%;
+        padding: 24px;
+      }
+
+      .type-card h3,
+      .mock-card h3 {
+        font-size: 1rem;
+        margin: 0 0 14px;
+      }
+
+      .specimen-display {
+        font-family: var(--font-brand-serif);
+        font-size: clamp(2.2rem, 3vw, 3.4rem);
+        line-height: 0.98;
+        margin: 0 0 16px;
+        white-space: pre-line;
+      }
+
+      .specimen-meta {
+        color: var(--text-secondary);
+        font-size: 0.94rem;
+        line-height: 1.75;
+        margin: 0;
+      }
+
+      .specimen-body {
+        font-size: 1.02rem;
+        line-height: 1.86;
+        margin: 0;
+      }
+
+      .ui-shell {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.28));
+        border: 1px solid var(--border-muted);
+        border-radius: 22px;
+        overflow: hidden;
+      }
+
+      .ui-topbar {
+        align-items: center;
+        background: var(--color-navy-900);
+        color: var(--text-inverse);
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 18px;
+      }
+
+      .ui-title {
+        font-family: var(--font-brand-serif);
+        font-size: 1.1rem;
+      }
+
+      .ui-chip {
+        border: 1px solid rgba(247, 242, 234, 0.22);
+        border-radius: 999px;
+        color: rgba(247, 242, 234, 0.84);
+        font-size: 0.82rem;
+        padding: 0.42rem 0.8rem;
+      }
+
+      .ui-body {
+        display: grid;
+        gap: 16px;
+        padding: 18px;
+      }
+
+      .ui-search {
+        align-items: center;
+        background: rgba(255, 250, 244, 0.94);
+        border: 1px solid var(--border-muted);
+        border-radius: 18px;
+        color: var(--text-secondary);
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 16px;
+      }
+
+      .ui-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .record-card,
+      .meta-card {
+        background: rgba(255, 250, 244, 0.84);
+        border: 1px solid var(--border-muted);
+        border-radius: 18px;
+        min-height: 240px;
+        padding: 18px;
+      }
+
+      .record-card h4,
+      .meta-card h4 {
+        font-family: var(--font-brand-serif);
+        font-size: 1.45rem;
+        line-height: 1.16;
+        margin: 0 0 12px;
+      }
+
+      .record-card p,
+      .meta-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.72;
+        margin: 0 0 16px;
+      }
+
+      .meta-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .meta-row {
+        align-items: baseline;
+        border-bottom: 1px solid rgba(33, 55, 77, 0.08);
+        display: grid;
+        gap: 12px;
+        grid-template-columns: 110px 1fr;
+        padding-bottom: 8px;
+      }
+
+      .meta-row strong {
+        color: var(--color-navy-900);
+        font-size: 0.88rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .report-cover {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 26%),
+          linear-gradient(145deg, #20354a 0%, #2f4b67 55%, #1a2b38 100%);
+        color: var(--text-inverse);
+        display: grid;
+        gap: 22px;
+        min-height: 100%;
+        padding: 26px;
+        position: relative;
+      }
+
+      .report-cover::before {
+        border: 1px solid rgba(247, 242, 234, 0.16);
+        border-radius: 999px 999px 22px 22px;
+        content: "";
+        inset: 18px 18px auto auto;
+        height: 58%;
+        position: absolute;
+        right: 18px;
+        top: 18px;
+        width: 38%;
+      }
+
+      .report-cover h4 {
+        font-family: var(--font-brand-serif);
+        font-size: clamp(2rem, 3vw, 3rem);
+        line-height: 0.96;
+        margin: 0;
+        max-width: 9ch;
+      }
+
+      .report-cover p {
+        color: rgba(247, 242, 234, 0.82);
+        line-height: 1.75;
+        margin: 0;
+        max-width: 44ch;
+      }
+
+      .report-meta {
+        color: rgba(247, 242, 234, 0.72);
+        display: grid;
+        gap: 6px;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 980px) {
+        .topbar,
+        .topbar-tools {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .brand span {
+          display: none;
+        }
+
+        .hero-grid,
+        .palette-grid,
+        .type-grid,
+        .mock-grid,
+        .ui-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero::before {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="brand-theme" data-lang="en">
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="../../../index.html" aria-label="SF Pacific War Archives Infrastructure Project home">
+          <img src="./assets/memorial-hall-logo.png" alt="" />
+          <span>SF Pacific War Archives Infrastructure Project</span>
+        </a>
+        <div class="topbar-tools">
+          <div class="lang-switch" role="group" aria-label="Language">
+            <button class="lang-tab is-active" data-lang="en" type="button">EN</button>
+            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <div class="brand-eyebrow" data-i18n="heroEyebrow">Brand System</div>
+            <h1>SF Pacific War Archives Infrastructure Project</h1>
+            <p data-i18n="heroLead">
+              Commemorative, bilingual, and structured visual language for apps,
+              reports, and reading-room interfaces.
+            </p>
+            <div class="pill-row">
+              <span class="brand-pill" data-i18n="pillDignity">Memorial dignity</span>
+              <span class="brand-pill" data-i18n="pillFraming">Architectural framing</span>
+              <span class="brand-pill" data-i18n="pillLogo">Memorial Hall logo</span>
+              <span class="brand-pill" data-i18n="pillCalm">Modern archival calm</span>
+            </div>
+          </div>
+          <div class="badge-card">
+            <img
+              src="./assets/memorial-hall-logo.png"
+              alt="WWII Pacific War Memorial Hall logo"
+            >
+            <p class="badge-note" data-i18n="logoNote">
+              The WWII Pacific War Memorial Hall logo appears as the primary
+              title mark, navigation mark, and opening-page accent.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="brand-eyebrow" data-i18n="paletteKicker">Palette</div>
+            <h2 data-i18n="paletteTitle">Paper, navy, brass, and a restrained seal-red accent.</h2>
+          </div>
+          <p data-i18n="paletteLead">
+            Paper and navy carry most of the composition. Brass guides
+            attention. Red stays rare.
+          </p>
+        </div>
+        <div class="palette-grid">
+          <article class="swatch">
+            <div class="swatch-color" style="background:#f7f1e6"></div>
+            <div class="swatch-copy">
+              <strong>Paper</strong>
+              <span>`#F7F1E6` for main backgrounds and reading surfaces.</span>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-color" style="background:#21374d"></div>
+            <div class="swatch-copy">
+              <strong>Memorial Navy</strong>
+              <span>`#21374D` for headers, anchors, and structural contrast.</span>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-color" style="background:#b58a42"></div>
+            <div class="swatch-copy">
+              <strong>Antique Brass</strong>
+              <span>`#B58A42` for keylines, highlights, and quiet emphasis.</span>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-color" style="background:#8b3c35"></div>
+            <div class="swatch-copy">
+              <strong>Seal Red</strong>
+              <span>`#8B3C35` for rare editorial notes and exceptional states.</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="brand-eyebrow" data-i18n="typeKicker">Typography</div>
+            <h2 data-i18n="typeTitle">Serif for memory, sans for navigation, mono for records.</h2>
+          </div>
+          <p data-i18n="typeLead">
+            Chinese and English appear with equal visual weight across
+            headings, navigation, reading surfaces, and metadata.
+          </p>
+        </div>
+        <div class="type-grid">
+          <article class="brand-panel type-card">
+            <h3 class="brand-eyebrow" data-i18n="displayKicker">Display Serif</h3>
+            <p class="specimen-display" data-i18n="displaySpecimen">
+              Respect History<br>
+              Cherish Peace
+            </p>
+            <p class="specimen-meta" data-i18n="displayMeta">
+              Typeface pairing: Cormorant Garamond + Source Han Serif SC /
+              Noto Serif SC
+            </p>
+          </article>
+          <article class="brand-panel type-card">
+            <h3 class="brand-eyebrow" data-i18n="readingKicker">Bilingual Reading UI</h3>
+            <p class="specimen-body" data-i18n="readingBody">
+              Public discovery remains calm, legible, and institutionally
+              confident. Chinese typography should remain clear, measured, and
+              spacious rather than styled like a faux-antique poster.
+            </p>
+            <hr class="brand-rule">
+            <p class="specimen-meta">
+              Typeface pairing: IBM Plex Sans + Source Han Sans SC / Noto Sans
+              SC
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <div class="brand-eyebrow" data-i18n="appsKicker">Applications</div>
+            <h2 data-i18n="appsTitle">Brand translation across apps and reports.</h2>
+          </div>
+          <p data-i18n="appsLead">
+            The same brand needs to work across a digital reading room,
+            collection reports, and future governance dashboards without
+            becoming generic or over-decorated.
+          </p>
+        </div>
+        <div class="mock-grid">
+          <article class="brand-panel mock-card">
+            <h3 class="brand-eyebrow" data-i18n="mockUiKicker">Digital Reading Room UI</h3>
+            <div class="ui-shell">
+              <div class="ui-topbar">
+                <div class="ui-title" data-i18n="mockUiTitle">Digital Reading Room</div>
+                <div class="ui-chip" data-i18n="mockUiChip">Public records</div>
+              </div>
+              <div class="ui-body">
+                <div class="ui-search">
+                  <span data-i18n="mockSearch">Search records, places, units, and collections</span>
+                  <span class="brand-seal-dot" aria-hidden="true"></span>
+                </div>
+                <div class="ui-grid">
+                  <div class="record-card">
+                    <div class="brand-eyebrow" data-i18n="mockRecordKicker">Featured Record</div>
+                    <h4 data-i18n="mockRecordTitle">Photograph of Claire Chennault in Kunming, 1944</h4>
+                    <p data-i18n="mockRecordBody">
+                      Calm paper surfaces, deep-blue anchors, and restrained
+                      brass cues keep the archival object central.
+                    </p>
+                    <span class="brand-pill" style="background:#21374d;color:#f7f2ea;border-color:#21374d" data-i18n="mockRecordPill">Original text + bilingual summary</span>
+                  </div>
+                  <div class="meta-card">
+                    <div class="brand-eyebrow" data-i18n="mockMetaKicker">Metadata</div>
+                    <div class="meta-list">
+                      <div class="meta-row">
+                        <strong data-i18n="mockSourceLabel">Source</strong>
+                        <span data-i18n="mockSourceValue">NARA / Local catalog</span>
+                      </div>
+                      <div class="meta-row">
+                        <strong data-i18n="mockDateLabel">Date</strong>
+                        <span>1944</span>
+                      </div>
+                      <div class="meta-row">
+                        <strong data-i18n="mockStatusLabel">Status</strong>
+                        <span data-i18n="mockStatusValue">Public release approved</span>
+                      </div>
+                      <div class="meta-row">
+                        <strong data-i18n="mockLanguageLabel">Language</strong>
+                        <span data-i18n="mockLanguageValue">English / Chinese</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="brand-arch-frame mock-card report-cover">
+            <div class="brand-eyebrow" data-i18n="reportKicker">Report Cover</div>
+            <h4 data-i18n="reportTitle">Reading Room Pilot Readiness Assessment</h4>
+            <p data-i18n="reportBody">
+              Opening pages can use one ceremonial gesture: an arch frame, a
+              serif title, and the Memorial Hall logo. Follow with quiet,
+              orderly structure.
+            </p>
+            <div class="report-meta">
+              <span>SF Pacific War Archives Infrastructure Project</span>
+              <span data-i18n="reportMetaTitle">Reading Room Pilot Readiness Assessment</span>
+              <span data-i18n="reportMetaKind">Brand system preview</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script>
+      const translations = {
+        en: {
+          title: "SF Pacific War Archives Infrastructure Project Brand System",
+          heroEyebrow: "Brand System",
+          heroLead: "Commemorative, bilingual, and structured visual language for apps, reports, and reading-room interfaces.",
+          pillDignity: "Memorial dignity",
+          pillFraming: "Architectural framing",
+          pillLogo: "Memorial Hall logo",
+          pillCalm: "Modern archival calm",
+          logoNote: "The WWII Pacific War Memorial Hall logo appears as the primary title mark, navigation mark, and opening-page accent.",
+          paletteKicker: "Palette",
+          paletteTitle: "Paper, navy, brass, and a restrained seal-red accent.",
+          paletteLead: "Paper and navy carry most of the composition. Brass guides attention. Red stays rare.",
+          typeKicker: "Typography",
+          typeTitle: "Serif for memory, sans for navigation, mono for records.",
+          typeLead: "Chinese and English appear with equal visual weight across headings, navigation, reading surfaces, and metadata.",
+          displayKicker: "Display Serif",
+          displaySpecimen: "Respect History\nCherish Peace",
+          displayMeta: "Typeface pairing: Cormorant Garamond + Source Han Serif SC / Noto Serif SC",
+          readingKicker: "Bilingual Reading UI",
+          readingBody: "Public discovery remains calm, legible, and institutionally confident. Chinese typography should remain clear, measured, and spacious rather than styled like a faux-antique poster.",
+          appsKicker: "Applications",
+          appsTitle: "Brand translation across apps and reports.",
+          appsLead: "The same brand needs to work across a digital reading room, collection reports, and future governance dashboards without becoming generic or over-decorated.",
+          mockUiKicker: "Digital Reading Room UI",
+          mockUiTitle: "Digital Reading Room",
+          mockUiChip: "Public records",
+          mockSearch: "Search records, places, units, and collections",
+          mockRecordKicker: "Featured Record",
+          mockRecordTitle: "Photograph of Claire Chennault in Kunming, 1944",
+          mockRecordBody: "Calm paper surfaces, deep-blue anchors, and restrained brass cues keep the archival object central.",
+          mockRecordPill: "Original text + bilingual summary",
+          mockMetaKicker: "Metadata",
+          mockSourceLabel: "Source",
+          mockSourceValue: "NARA / Local catalog",
+          mockDateLabel: "Date",
+          mockStatusLabel: "Status",
+          mockStatusValue: "Public release approved",
+          mockLanguageLabel: "Language",
+          mockLanguageValue: "English / Chinese",
+          reportKicker: "Report Cover",
+          reportTitle: "Reading Room Pilot Readiness Assessment",
+          reportBody: "Opening pages can use one ceremonial gesture: an arch frame, a serif title, and the Memorial Hall logo. Follow with quiet, orderly structure.",
+          reportMetaTitle: "Reading Room Pilot Readiness Assessment",
+          reportMetaKind: "Brand system preview"
+        },
+        zh: {
+          title: "SF Pacific War Archives Infrastructure Project 品牌系统",
+          heroEyebrow: "品牌系统",
+          heroLead: "面向应用、报告和 digital reading room interfaces 的纪念性、双语、结构化视觉语言。",
+          pillDignity: "纪念性尊严",
+          pillFraming: "建筑式框架",
+          pillLogo: "纪念馆 logo",
+          pillCalm: "现代档案气质",
+          logoNote: "WWII Pacific War Memorial Hall logo 作为主要 title mark、navigation mark 与 opening-page accent 使用。",
+          paletteKicker: "色彩",
+          paletteTitle: "纸色、navy、brass，以及克制的 seal-red accent。",
+          paletteLead: "Paper 与 navy 承担主要构图。Brass 用于引导注意力。Red 保持少量、明确。",
+          typeKicker: "字体",
+          typeTitle: "Serif 承载记忆，sans 承载导航，mono 承载记录。",
+          typeLead: "中文和英文在 headings、navigation、reading surfaces 与 metadata 中应保持同等视觉重量。",
+          displayKicker: "Display Serif",
+          displaySpecimen: "铭记历史\n珍爱和平",
+          displayMeta: "字体搭配：Cormorant Garamond + Source Han Serif SC / Noto Serif SC",
+          readingKicker: "Bilingual Reading UI",
+          readingBody: "Public discovery 应保持平静、清晰、具有机构可信感。中文排版应当稳重、清晰、有留白，不要做成仿古海报。",
+          appsKicker: "应用",
+          appsTitle: "品牌如何转译到应用与报告。",
+          appsLead: "同一套品牌需要适用于 digital reading room、collection reports 和未来 governance dashboards，同时避免 generic 或过度装饰。",
+          mockUiKicker: "Digital Reading Room UI",
+          mockUiTitle: "数字阅览室",
+          mockUiChip: "公开记录",
+          mockSearch: "搜索 records、places、units 与 collections",
+          mockRecordKicker: "Featured Record",
+          mockRecordTitle: "1944 年昆明 Claire Chennault 照片",
+          mockRecordBody: "安静的纸色表面、深蓝锚点和克制的 brass 提示让 archival object 保持中心位置。",
+          mockRecordPill: "Original text + bilingual summary",
+          mockMetaKicker: "Metadata",
+          mockSourceLabel: "来源",
+          mockSourceValue: "NARA / 本地 catalog",
+          mockDateLabel: "日期",
+          mockStatusLabel: "状态",
+          mockStatusValue: "已批准公开发布",
+          mockLanguageLabel: "语言",
+          mockLanguageValue: "English / Chinese",
+          reportKicker: "报告封面",
+          reportTitle: "Reading Room Pilot Readiness Assessment",
+          reportBody: "Opening pages 可以使用一个仪式性 gesture：arch frame、serif title 与 Memorial Hall logo。随后保持安静、有序的结构。",
+          reportMetaTitle: "Reading Room Pilot Readiness Assessment",
+          reportMetaKind: "品牌系统预览"
+        }
+      };
+
+      const root = document.body;
+      const buttons = Array.from(document.querySelectorAll(".lang-tab"));
+
+      function setLanguage(lang) {
+        const dictionary = translations[lang];
+        root.dataset.lang = lang;
+        document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+        document.title = dictionary.title;
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          node.textContent = dictionary[node.dataset.i18n];
+        });
+        buttons.forEach((button) => {
+          const active = button.dataset.lang === lang;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.lang));
+      });
+
+      setLanguage("en");
+    </script>
+  </body>
+</html>

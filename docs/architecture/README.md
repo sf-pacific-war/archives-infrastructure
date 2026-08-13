@@ -9,3 +9,9 @@ Suggested contents:
 - integration architecture
 - application decomposition
 - environment assumptions
+
+## Current Architecture Artifacts
+
+- [Archival infrastructure architecture proposal](archival-infrastructure-architecture-proposal.html):
+  stakeholder-facing proposal for the preservation, collections, interoperability,
+  discovery, and AI-derived layers of the archives infrastructure program.

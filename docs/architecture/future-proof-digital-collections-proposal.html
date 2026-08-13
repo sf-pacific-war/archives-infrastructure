@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future-Ready Archival Infrastructure</title>
+    <style>
+      :root {
+        --ink: #16253d;
+        --ink-soft: #334766;
+        --paper: #f7f2e8;
+        --paper-2: #fffdf8;
+        --line: rgba(22, 37, 61, 0.14);
+        --accent: #b88746;
+        --accent-soft: rgba(184, 135, 70, 0.18);
+        --navy: #20395f;
+        --teal: #2d6f73;
+        --olive: #67764c;
+        --slate: #6a516d;
+        --coral: #a75b48;
+        --shadow: 0 20px 60px rgba(18, 31, 53, 0.12);
+        --max: 1180px;
+        --radius-lg: 28px;
+        --radius-md: 18px;
+        --radius-sm: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(184, 135, 70, 0.13), transparent 28%),
+          radial-gradient(circle at 88% 12%, rgba(45, 111, 115, 0.14), transparent 26%),
+          linear-gradient(180deg, #fbf7ef 0%, #f5efe3 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(22, 37, 61, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(22, 37, 61, 0.03) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.42), transparent 82%);
+      }
+
+      .i18n {
+        display: none;
+      }
+
+      body[data-lang="en"] .i18n[data-lang="en"],
+      body[data-lang="zh"] .i18n[data-lang="zh"] {
+        display: revert;
+      }
+
+      a {
+        color: var(--navy);
+      }
+
+      .lang-switch {
+        position: fixed;
+        top: 18px;
+        left: 18px;
+        z-index: 50;
+        display: inline-flex;
+        gap: 6px;
+        padding: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 999px;
+        background: rgba(248, 244, 236, 0.88);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 14px 36px rgba(22, 37, 61, 0.14);
+      }
+
+      .lang-switch button {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 16px;
+        background: transparent;
+        color: var(--ink-soft);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+      }
+
+      .lang-switch button.is-active {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .page {
+        width: min(calc(100% - 32px), var(--max));
+        margin: 0 auto;
+        padding: 92px 0 72px;
+      }
+
+      .hero,
+      .section {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 252, 246, 0.9);
+        box-shadow: var(--shadow);
+        animation: rise 0.7s ease both;
+      }
+
+      .hero::after,
+      .section::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        background:
+          linear-gradient(140deg, rgba(255, 255, 255, 0.26), transparent 34%),
+          linear-gradient(320deg, rgba(184, 135, 70, 0.08), transparent 36%);
+      }
+
+      .hero {
+        padding: 38px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--navy);
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 1px;
+        background: var(--accent);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        max-width: 12ch;
+        margin-bottom: 14px;
+        font-size: clamp(2.45rem, 4.8vw, 4.75rem);
+        line-height: 0.96;
+      }
+
+      .hero-subtitle {
+        max-width: 60rem;
+        margin-bottom: 26px;
+        color: var(--ink-soft);
+        font-size: clamp(1rem, 1.9vw, 1.22rem);
+        line-height: 1.65;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .hero-panel {
+        position: relative;
+        z-index: 1;
+        min-height: 100%;
+        padding: 22px 22px 20px;
+        border: 1px solid rgba(22, 37, 61, 0.09);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(249, 245, 236, 0.92));
+      }
+
+      .hero-panel h3 {
+        margin-bottom: 10px;
+        font-size: 1.12rem;
+      }
+
+      .hero-panel p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.98rem;
+        line-height: 1.7;
+      }
+
+      .section {
+        padding: 28px;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .section-heading p {
+        max-width: 44rem;
+        margin: 10px 0 0;
+        color: var(--ink-soft);
+        line-height: 1.6;
+      }
+
+      .kicker {
+        color: var(--navy);
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        font-size: clamp(1.9rem, 2.9vw, 3rem);
+        line-height: 1.02;
+      }
+
+      .grid-3,
+      .grid-4,
+      .grid-5,
+      .grid-2 {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .grid-5 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .card,
+      .signal,
+      .principle,
+      .layer,
+      .metric,
+      .reference-card {
+        position: relative;
+        z-index: 1;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .card h3,
+      .signal h3,
+      .principle h3,
+      .layer h3,
+      .metric h3,
+      .reference-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.06rem;
+      }
+
+      .card p,
+      .signal p,
+      .principle p,
+      .layer p,
+      .metric p,
+      .reference-card p {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.6;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--ink);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .chip.navy {
+        background: rgba(32, 57, 95, 0.12);
+      }
+
+      .chip.teal {
+        background: rgba(45, 111, 115, 0.13);
+      }
+
+      .chip.olive {
+        background: rgba(103, 118, 76, 0.13);
+      }
+
+      .chip.slate {
+        background: rgba(106, 81, 109, 0.13);
+      }
+
+      .chip.coral {
+        background: rgba(167, 91, 72, 0.13);
+      }
+
+      .list {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list li {
+        position: relative;
+        margin-bottom: 10px;
+        padding-left: 18px;
+        color: var(--ink-soft);
+        line-height: 1.55;
+      }
+
+      .list li::before {
+        content: "";
+        position: absolute;
+        top: 0.7em;
+        left: 0;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        transform: translateY(-50%);
+      }
+
+      .decision-banner {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
+      }
+
+      .decision-summary {
+        padding: 22px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--navy), #2f527d);
+        color: #fff;
+      }
+
+      .decision-summary h3 {
+        margin-bottom: 12px;
+        font-size: 1.25rem;
+      }
+
+      .decision-summary p,
+      .decision-summary li {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .decision-summary .list li::before {
+        background: #fff;
+      }
+
+      .decision-note {
+        padding: 22px;
+        border-radius: 22px;
+        border: 1px solid rgba(22, 37, 61, 0.12);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 240, 229, 0.92));
+      }
+
+      .signal {
+        min-height: 100%;
+      }
+
+      .signal strong {
+        color: var(--ink);
+      }
+
+      .layers {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .layer {
+        min-height: 100%;
+      }
+
+      .layer .chip {
+        margin-bottom: 14px;
+      }
+
+      .principles {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+
+      .principle {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(246, 240, 229, 0.88));
+      }
+
+      .model-shell {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px;
+        margin-top: 16px;
+      }
+
+      .model-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .entity-chain {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 18px 0 16px;
+      }
+
+      .entity {
+        flex: 1 1 140px;
+        min-width: 120px;
+        padding: 14px 12px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 239, 227, 0.92));
+      }
+
+      .entity h4 {
+        margin-bottom: 8px;
+        font-size: 0.98rem;
+      }
+
+      .entity p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.88rem;
+        line-height: 1.45;
+      }
+
+      .arrow {
+        flex: 0 0 auto;
+        color: var(--accent);
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .support-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .support-tag {
+        padding: 9px 12px;
+        border: 1px solid rgba(22, 37, 61, 0.1);
+        border-radius: 999px;
+        background: rgba(32, 57, 95, 0.08);
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 700;
+      }
+
+      .search-stack {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .search-step {
+        padding: 18px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .search-step h3 {
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+
+      .search-step p {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.55;
+      }
+
+      .callout {
+        margin-top: 18px;
+        padding: 18px 20px;
+        border-left: 4px solid var(--accent);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.76);
+        color: var(--ink-soft);
+        line-height: 1.65;
+      }
+
+      .phases {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .phase {
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .phase-label {
+        display: inline-flex;
+        margin-bottom: 12px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(184, 135, 70, 0.16);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .phase h3 {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .reference-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 16px;
+      }
+
+      .reference-card ul {
+        margin: 12px 0 0;
+        padding-left: 18px;
+        color: var(--ink-soft);
+      }
+
+      .reference-card li {
+        margin-bottom: 8px;
+        line-height: 1.5;
+      }
+
+      .reference-card small {
+        display: block;
+        margin-top: 14px;
+        color: rgba(51, 71, 102, 0.9);
+        line-height: 1.55;
+      }
+
+      footer {
+        padding: 8px 4px 0;
+        color: rgba(51, 71, 102, 0.88);
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1120px) {
+        .grid-4,
+        .metrics {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-5,
+        .layers,
+        .principles,
+        .search-stack {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .decision-banner,
+        .model-shell,
+        .reference-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 840px) {
+        .page {
+          width: min(calc(100% - 18px), var(--max));
+          padding: 84px 0 56px;
+        }
+
+        .hero,
+        .section {
+          padding: 22px;
+          border-radius: 24px;
+        }
+
+        .hero-grid,
+        .grid-3,
+        .grid-2,
+        .phases,
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-subtitle,
+        .section-heading p {
+          max-width: none;
+        }
+
+        h1 {
+          max-width: none;
+        }
+
+        .lang-switch {
+          top: 12px;
+          left: 12px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .grid-5,
+        .layers,
+        .principles,
+        .grid-4,
+        .search-stack {
+          grid-template-columns: 1fr;
+        }
+
+        .entity-chain {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .arrow {
+          align-self: center;
+          transform: rotate(90deg);
+        }
+
+        .section-heading {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body data-lang="en">
+    <div class="lang-switch" aria-label="Language switcher">
+      <button type="button" class="is-active" data-switch="en">EN</button>
+      <button type="button" data-switch="zh">中文</button>
+    </div>
+
+    <main class="page">
+      <section class="hero">
+        <div class="i18n" data-lang="en">
+          <div class="eyebrow">Archival Infrastructure</div>
+          <h1>A Future-Proof Archival Infrastructure</h1>
+          <p class="hero-subtitle">
+            The archive functions as durable institutional infrastructure rather
+            than a shared drive and spreadsheet stack. Historical materials
+            require preservation-grade rigor to support long-term trust, strong
+            discovery, and rights-aware governance. The target state protects
+            source files and source meaning, supports trustworthy access, and
+            remains sustainable and interoperable as collections, partner
+            sources, metadata models, and AI-enhanced access continue to grow.
+          </p>
+        </div>
+
+        <div class="i18n" data-lang="zh">
+          <div class="eyebrow">档案基础设施</div>
+          <h1>一个面向长期的档案基础设施</h1>
+          <p class="hero-subtitle">
+            这套架构把档案系统定义为一个面向长期的机构基础设施，而不是“共享网盘 +
+            电子表格”的组合。历史档案材料如果要实现长期可信、优质检索与合规治理，就必须满足保存级别的技术严谨性。目标状态是建设一个能够保护源文件与源语义、支持可信访问，并在馆藏规模持续增长、合作档案机构与高校持续贡献记录、元数据模型持续演进、以及
+            AI 支持翻译、转录、检索与问答时，仍保持可持续性与互操作性的档案基础设施。
+          </p>
+        </div>
+
+        <div class="hero-grid">
+          <article class="hero-panel">
+            <div class="i18n" data-lang="en">
+              <h3>What We Need to Protect</h3>
+              <p>
+                The system must preserve collection hierarchy, source-native description, digital
+                representation, preservation files, rights and access state, and AI-derived access
+                layers as distinct but connected parts of one governed record.
+              </p>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>必须被保护的结构边界</h3>
+              <p>
+                系统必须把馆藏层级、来源原生描述、数字表征、保存文件、权限与访问状态，以及
+                AI 衍生访问层明确区分，同时在一个可治理的记录体系中彼此连接。
+              </p>
+            </div>
+          </article>
+
+          <article class="hero-panel">
+            <div class="i18n" data-lang="en">
+              <h3>System Priority</h3>
+              <p>
+                Build the archival infrastructure before scaling discovery and AI. Let search,
+                OCR, transcripts, translations, vectors, and summaries expand access, but never
+                overwrite the canonical record or preservation evidence.
+              </p>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>核心判断</h3>
+              <p>
+                先把档案基础设施建对，再去放大检索与 AI。搜索、OCR、转录、翻译、向量索引与
+                AI 摘要都可以扩展访问能力，但绝不能覆盖权威主记录（canonical record）或保存证据。
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Direction</div>
+            <div class="kicker i18n" data-lang="zh">方向</div>
+            <h2 class="i18n" data-lang="en">Core Direction of the Program</h2>
+            <h2 class="i18n" data-lang="zh">项目的核心方向</h2>
+            <p class="i18n" data-lang="en">
+              The program centers on the system boundary, the authoritative
+              record model, and the relationship between preservation,
+              discovery, and partner interoperability.
+            </p>
+            <p class="i18n" data-lang="zh">
+              这一架构总览的核心，是明确系统边界、权威记录模型，以及保存、检索与合作伙伴互操作之间的关系。
+            </p>
+          </div>
+        </div>
+
+        <div class="decision-banner">
+          <article class="decision-summary">
+            <div class="i18n" data-lang="en">
+              <h3>Core Direction</h3>
+              <ul class="list">
+                <li>Adopt a canonical archival system of record for governed metadata and files.</li>
+                <li>Treat shared drives and spreadsheets as intake and coordination surfaces, not the long-term database.</li>
+                <li>Begin with one representative collection and one partner-held record stream.</li>
+              </ul>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>核心方向</h3>
+              <ul class="list">
+                <li>建立一个承载治理性元数据与保存文件的档案权威主系统（canonical archival system of record）。</li>
+                <li>把共享网盘和电子表格保留为采集入口与协作界面，而不是长期数据库。</li>
+                <li>从一个代表性馆藏和一条合作伙伴记录线开始落地。</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="decision-note">
+            <div class="i18n" data-lang="en">
+              <h3>Implementation Character</h3>
+              <p>
+                Durable architecture boundaries remain stable while the
+                implementation path stays replaceable.
+              </p>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>实施特征</h3>
+              <p>
+                长期稳定的是架构边界，可替换的是具体实施路径，而不是固定的软件清单。
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Why Change</div>
+            <div class="kicker i18n" data-lang="zh">为什么现在要改</div>
+            <h2 class="i18n" data-lang="en">Why the Current Pattern Will Not Hold at Scale</h2>
+            <h2 class="i18n" data-lang="zh">为什么当前模式在规模扩大后不可持续</h2>
+            <p class="i18n" data-lang="en">
+              Shared storage and spreadsheets are useful operational tools. They are not sufficient
+              archival infrastructure once we need preservation evidence, rights governance,
+              cross-institution exchange, and explainable discovery.
+            </p>
+            <p class="i18n" data-lang="zh">
+              共享存储和电子表格作为日常操作工具有价值，但一旦系统需要保存证据、权限治理、跨机构交换与可解释检索，它们就不足以构成真正的档案基础设施。
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article class="signal">
+            <div class="chip navy i18n" data-lang="en">Preservation risk</div>
+            <div class="chip navy i18n" data-lang="zh">保存风险</div>
+            <h3 class="i18n" data-lang="en">Authenticity Becomes Hard to Prove</h3>
+            <h3 class="i18n" data-lang="zh">真实性会越来越难以证明</h3>
+            <p class="i18n" data-lang="en">
+              When preservation files, access copies, and staff edits live in the same loose file
+              pattern, fixity, version history, and source provenance become difficult to audit.
+            </p>
+            <p class="i18n" data-lang="zh">
+              当保存文件、访问副本和人工编辑都混在松散的文件结构中时，校验值、版本历史与来源链条都很难被稳定审计。
+            </p>
+          </article>
+
+          <article class="signal">
+            <div class="chip teal i18n" data-lang="en">Governance risk</div>
+            <div class="chip teal i18n" data-lang="zh">治理风险</div>
+            <h3 class="i18n" data-lang="en">Rights and Access Stay Fragile</h3>
+            <h3 class="i18n" data-lang="zh">权限与开放状态会持续脆弱</h3>
+            <p class="i18n" data-lang="en">
+              Publication status, restrictions, and review state should not depend on ad hoc
+              columns or inferred search results. They need governed fields, decisions, and logs.
+            </p>
+            <p class="i18n" data-lang="zh">
+              发布状态、限制条件与审核状态不应依赖临时列或推断出的搜索结果，而应依赖被治理的字段、明确决策与可追溯日志。
+            </p>
+          </article>
+
+          <article class="signal">
+            <div class="chip slate i18n" data-lang="en">Discovery and AI risk</div>
+            <div class="chip slate i18n" data-lang="zh">检索与 AI 风险</div>
+            <h3 class="i18n" data-lang="en">Search Quality Stalls Without Structure</h3>
+            <h3 class="i18n" data-lang="zh">没有结构，检索质量和 AI 都会很快碰顶</h3>
+            <p class="i18n" data-lang="en">
+              Reliable retrieval depends on clear entity boundaries, citations, and source
+              relationships. If derived AI output is mixed back into the record, trust erodes.
+            </p>
+            <p class="i18n" data-lang="zh">
+              可信检索依赖清晰的实体边界、引用位置与来源关系。一旦把 AI 衍生内容重新混入原始记录，系统可信度就会下降。
+            </p>
+          </article>
+        </div>
+
+        <div class="callout i18n" data-lang="en">
+              Shared drives and spreadsheets still have a role in temporary
+              intake, coordination, and ingestion triggers. They do not remain
+              the long-term system of record.
+        </div>
+        <div class="callout i18n" data-lang="zh">
+              共享网盘和电子表格仍然承担临时采集、协作整理和导入触发器（ingestion
+              trigger）等角色，但它们不充当长期的权威主系统（system of record）。
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Target State</div>
+            <div class="kicker i18n" data-lang="zh">目标状态</div>
+            <h2 class="i18n" data-lang="en">Five Connected Layers of the Target Infrastructure</h2>
+            <h2 class="i18n" data-lang="zh">目标基础设施的五个连接层</h2>
+            <p class="i18n" data-lang="en">
+              The architecture separates responsibilities cleanly.
+              Preservation protects evidence, discovery improves access, and AI
+              operates as a replaceable enrichment layer rather than hidden
+              authority.
+            </p>
+            <p class="i18n" data-lang="zh">
+              这个架构需要把职责明确拆开：保存层保护证据，发现层提升访问能力，AI
+              作为可替换的增强层存在，而不是隐藏的权威来源。
+            </p>
+          </div>
+        </div>
+
+        <div class="layers">
+          <article class="layer">
+            <div class="chip navy i18n" data-lang="en">Layer 1</div>
+            <div class="chip navy i18n" data-lang="zh">第一层</div>
+            <h3 class="i18n" data-lang="en">Collections and Description</h3>
+            <h3 class="i18n" data-lang="zh">馆藏与描述</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>Canonical entities, persistent identifiers, and collection hierarchy</li>
+              <li>Source descriptions, agents, places, events, subjects, and rights</li>
+              <li>The authoritative descriptive record that downstream systems consume</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>Canonical 实体、持久标识符与馆藏层级</li>
+              <li>来源描述、人物机构、地点、事件、主题与权限字段</li>
+              <li>供下游系统消费的权威描述记录</li>
+            </ul>
+          </article>
+
+          <article class="layer">
+            <div class="chip olive i18n" data-lang="en">Layer 2</div>
+            <div class="chip olive i18n" data-lang="zh">第二层</div>
+            <h3 class="i18n" data-lang="en">Preservation</h3>
+            <h3 class="i18n" data-lang="zh">保存</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>Original and preservation files, not just access copies</li>
+              <li>Checksums, fixity, versions, storage copies, and preservation events</li>
+              <li>Format intelligence and auditable custody over time</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>保存原始文件与 preservation files，而不是只保留访问副本</li>
+              <li>校验值、fixity、版本、存储副本与保存事件</li>
+              <li>格式信息与可审计的长期保管链条</li>
+            </ul>
+          </article>
+
+          <article class="layer">
+            <div class="chip teal i18n" data-lang="en">Layer 3</div>
+            <div class="chip teal i18n" data-lang="zh">第三层</div>
+            <h3 class="i18n" data-lang="en">Delivery and Interoperability</h3>
+            <h3 class="i18n" data-lang="zh">交付与互操作</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>IIIF, APIs, exports, and standards-based exchange</li>
+              <li>Partner access without flattening source identity or rights</li>
+              <li>Versioned crosswalks rather than one-off spreadsheet mappings</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>IIIF、API、导出与基于标准的交换机制</li>
+              <li>在不抹平来源身份与权限前提下支持合作方访问</li>
+              <li>使用可版本化的 crosswalk，而不是一次性的表格映射</li>
+            </ul>
+          </article>
+
+          <article class="layer">
+            <div class="chip slate i18n" data-lang="en">Layer 4</div>
+            <div class="chip slate i18n" data-lang="zh">第四层</div>
+            <h3 class="i18n" data-lang="en">Discovery</h3>
+            <h3 class="i18n" data-lang="zh">发现与检索</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>Exact and fielded search, lexical search, semantic retrieval, and reranking</li>
+              <li>Authority resolution, filters, facets, and evidence-based result views</li>
+              <li>Research access that remains explainable and reviewable</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>精确字段检索、词汇检索、语义检索与重排</li>
+              <li>名称规范、过滤器、facet 与带证据的结果展示</li>
+              <li>保持可解释、可复核的研究访问路径</li>
+            </ul>
+          </article>
+
+          <article class="layer">
+            <div class="chip coral i18n" data-lang="en">Layer 5</div>
+            <div class="chip coral i18n" data-lang="zh">第五层</div>
+            <h3 class="i18n" data-lang="en">AI and Enrichment</h3>
+            <h3 class="i18n" data-lang="zh">AI 与增强</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>OCR, ASR, translation, entity extraction, embeddings, and summaries</li>
+              <li>Clearly labeled, versioned, reviewable, and replaceable derivatives</li>
+              <li>AI extends access; it does not rewrite archival authority</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>OCR、ASR、翻译、实体抽取、向量嵌入与摘要</li>
+              <li>所有衍生物都必须被明确标注、版本化、可审核、可替换</li>
+              <li>AI 扩展访问能力，但不能改写档案权威性</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Operating Model</div>
+            <div class="kicker i18n" data-lang="zh">运行模型</div>
+            <h2 class="i18n" data-lang="en">Non-Negotiable Design Rules</h2>
+            <h2 class="i18n" data-lang="zh">不可退让的设计规则</h2>
+            <p class="i18n" data-lang="en">
+              These rules keep the system durable as collections multiply,
+              partner records arrive in different schemas, and retrieval
+              methods change.
+            </p>
+            <p class="i18n" data-lang="zh">
+              即使馆藏持续扩张、合作方记录来自不同 schema、检索方法不断变化，这些规则也能确保系统保持长期稳定。
+            </p>
+          </div>
+        </div>
+
+        <div class="principles">
+          <article class="principle">
+            <h3 class="i18n" data-lang="en">Separate Authoritative from Derived</h3>
+            <h3 class="i18n" data-lang="zh">把权威记录与衍生物分开</h3>
+            <p class="i18n" data-lang="en">
+              Source descriptions, rights decisions, and preservation files must not be silently
+              overwritten by search or AI layers.
+            </p>
+            <p class="i18n" data-lang="zh">
+              来源描述、权限决策与保存文件不能被搜索层或 AI 层悄悄覆盖。
+            </p>
+          </article>
+
+          <article class="principle">
+            <h3 class="i18n" data-lang="en">Model the Historical Object Correctly</h3>
+            <h3 class="i18n" data-lang="zh">正确建模历史对象</h3>
+            <p class="i18n" data-lang="en">
+              Collections, objects, source records, representations, files, and segments need
+              distinct identities and lifecycles.
+            </p>
+            <p class="i18n" data-lang="zh">
+              馆藏、对象、来源记录、数字表征、文件与片段都需要独立身份与生命周期。
+            </p>
+          </article>
+
+          <article class="principle">
+            <h3 class="i18n" data-lang="en">Preserve Differences; Harmonize for Discovery</h3>
+            <h3 class="i18n" data-lang="zh">保留差异，再为检索做协调</h3>
+            <p class="i18n" data-lang="en">
+              Keep source-native meaning where it matters, then map into a smaller canonical model
+              for shared retrieval and analytics.
+            </p>
+            <p class="i18n" data-lang="zh">
+              在关键处保留来源原生语义，再映射到较小的 canonical model 以支持共享检索和分析。
+            </p>
+          </article>
+
+          <article class="principle">
+            <h3 class="i18n" data-lang="en">Federate Without Erasing Source Identity</h3>
+            <h3 class="i18n" data-lang="zh">联邦互通，但不抹平来源身份</h3>
+            <p class="i18n" data-lang="en">
+              Cross-institution discovery should preserve provider terms, rights, provenance, and
+              the ability to cite the original source.
+            </p>
+            <p class="i18n" data-lang="zh">
+              跨机构发现必须保留提供方术语、权限、来源链和对原始来源的可引用能力。
+            </p>
+          </article>
+
+          <article class="principle">
+            <h3 class="i18n" data-lang="en">Design for Replacement</h3>
+            <h3 class="i18n" data-lang="zh">按“可替换”原则设计</h3>
+            <p class="i18n" data-lang="en">
+              Search engines, vector indexes, and AI models will change. Stable records and stable
+              interfaces should let us upgrade without rewriting the archive.
+            </p>
+            <p class="i18n" data-lang="zh">
+              搜索引擎、向量索引和 AI 模型都会变化。稳定的记录层与接口层应让系统能够升级而不必重写档案本体。
+            </p>
+          </article>
+        </div>
+
+        <div class="model-shell">
+          <article class="model-card">
+            <div class="i18n" data-lang="en">
+              <h3>Canonical Model Boundary</h3>
+              <p>
+                The core record should distinguish context, thing, description, digital form, and
+                stored file. That separation is what makes provenance, replacement, and precise
+                citation possible.
+              </p>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>Canonical Model 的边界</h3>
+              <p>
+                核心记录必须区分上下文、对象、描述、数字形态与存储文件。只有这样，来源链、可替换性与精确引用才真正成立。
+              </p>
+            </div>
+
+            <div class="entity-chain">
+              <div class="entity">
+                <h4>Collection</h4>
+                <p class="i18n" data-lang="en">Context, grouping, hierarchy</p>
+                <p class="i18n" data-lang="zh">上下文、归组、层级</p>
+              </div>
+              <div class="arrow">→</div>
+              <div class="entity">
+                <h4>Object</h4>
+                <p class="i18n" data-lang="en">What the item is</p>
+                <p class="i18n" data-lang="zh">对象本身是什么</p>
+              </div>
+              <div class="arrow">→</div>
+              <div class="entity">
+                <h4>Source Record</h4>
+                <p class="i18n" data-lang="en">A description created by a source</p>
+                <p class="i18n" data-lang="zh">由来源创建的描述记录</p>
+              </div>
+              <div class="arrow">→</div>
+              <div class="entity">
+                <h4>Representation</h4>
+                <p class="i18n" data-lang="en">How it appears digitally</p>
+                <p class="i18n" data-lang="zh">它如何以数字形式呈现</p>
+              </div>
+              <div class="arrow">→</div>
+              <div class="entity">
+                <h4>File / Bitstream</h4>
+                <p class="i18n" data-lang="en">Stored file and integrity state</p>
+                <p class="i18n" data-lang="zh">实际存储文件与完整性状态</p>
+              </div>
+              <div class="arrow">→</div>
+              <div class="entity">
+                <h4>Part / Segment</h4>
+                <p class="i18n" data-lang="en">Page, region, clip, timestamp</p>
+                <p class="i18n" data-lang="zh">页、区域、片段、时间码</p>
+              </div>
+            </div>
+
+            <div class="support-tags">
+              <span class="support-tag i18n" data-lang="en">Agents</span>
+              <span class="support-tag i18n" data-lang="zh">人物与机构</span>
+              <span class="support-tag i18n" data-lang="en">Places</span>
+              <span class="support-tag i18n" data-lang="zh">地点</span>
+              <span class="support-tag i18n" data-lang="en">Events</span>
+              <span class="support-tag i18n" data-lang="zh">事件</span>
+              <span class="support-tag i18n" data-lang="en">Subjects</span>
+              <span class="support-tag i18n" data-lang="zh">主题</span>
+              <span class="support-tag i18n" data-lang="en">Rights</span>
+              <span class="support-tag i18n" data-lang="zh">权限</span>
+            </div>
+          </article>
+
+          <article class="model-card">
+            <div class="i18n" data-lang="en">
+              <h3>Why This Boundary Matters</h3>
+              <ul class="list">
+                <li>Prevents loss of source-native meaning when multiple institutions describe the same object</li>
+                <li>Allows OCR, transcripts, thumbnails, vectors, and AI output to stay replaceable</li>
+                <li>Supports precise citation down to page, region, clip, or timestamp</li>
+                <li>Creates a stable place to revise taxonomy and search logic without corrupting source evidence</li>
+              </ul>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>为什么这个边界很重要</h3>
+              <ul class="list">
+                <li>避免多个机构描述同一对象时丢失来源原生语义</li>
+                <li>让 OCR、转录、缩略图、向量索引与 AI 输出保持可替换</li>
+                <li>支持精确到页面、区域、片段或时间码的引用</li>
+                <li>在不破坏源证据的前提下，持续调整 taxonomy 和检索逻辑</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Discovery and AI</div>
+            <div class="kicker i18n" data-lang="zh">检索与 AI</div>
+            <h2 class="i18n" data-lang="en">Hybrid Retrieval, Governed by Structured Facts</h2>
+            <h2 class="i18n" data-lang="zh">由结构化事实约束的混合检索</h2>
+            <p class="i18n" data-lang="en">
+              Deterministic metadata governs access, dates, rights, and hierarchy. Probabilistic
+              retrieval improves discovery over text, language, and concepts. Both are necessary,
+              but they must play different roles.
+            </p>
+            <p class="i18n" data-lang="zh">
+              确定性的结构化元数据负责访问、日期、权限与层级；概率性的检索方法负责在文本、语言与概念层面提升发现能力。两者都需要，但职责必须不同。
+            </p>
+          </div>
+        </div>
+
+        <div class="search-stack">
+          <article class="search-step">
+            <h3 class="i18n" data-lang="en">1. Exact and Fielded Search</h3>
+            <h3 class="i18n" data-lang="zh">1. 精确与字段检索</h3>
+            <p class="i18n" data-lang="en">
+              Best for identifiers, names, dates, rights states, collection filters, and known-item
+              retrieval.
+            </p>
+            <p class="i18n" data-lang="zh">
+              最适合处理标识符、人名、日期、权限状态、馆藏过滤以及 known-item 查询。
+            </p>
+          </article>
+
+          <article class="search-step">
+            <h3 class="i18n" data-lang="en">2. Lexical Search</h3>
+            <h3 class="i18n" data-lang="zh">2. 词汇检索</h3>
+            <p class="i18n" data-lang="en">
+              BM25-style retrieval remains strong for rare names, historical phrasing, acronyms,
+              and quoted language.
+            </p>
+            <p class="i18n" data-lang="zh">
+              BM25 一类的词汇检索仍然非常适合罕见姓名、历史表述、缩写与精确短语。
+            </p>
+          </article>
+
+          <article class="search-step">
+            <h3 class="i18n" data-lang="en">3. Semantic Retrieval</h3>
+            <h3 class="i18n" data-lang="zh">3. 语义检索</h3>
+            <p class="i18n" data-lang="en">
+              Vector retrieval can connect multilingual wording, indirect references, and
+              conceptually related materials across collections.
+            </p>
+            <p class="i18n" data-lang="zh">
+              向量检索可以连接跨语言表达、间接提及和跨馆藏的概念关联材料。
+            </p>
+          </article>
+
+          <article class="search-step">
+            <h3 class="i18n" data-lang="en">4. Reranking and Evidence Packages</h3>
+            <h3 class="i18n" data-lang="zh">4. 重排与证据包</h3>
+            <p class="i18n" data-lang="en">
+              Final ranking should combine relevance, authority signals, and explicit evidence such
+              as source record, page, region, or timestamp.
+            </p>
+            <p class="i18n" data-lang="zh">
+              最终排序应结合相关性、权威信号与明确证据，例如来源记录、页面、区域或时间码。
+            </p>
+          </article>
+        </div>
+
+        <div class="callout i18n" data-lang="en">
+          AI assistants should answer over evidence packages, not over detached chunks without
+          source context. Every AI-derived translation, transcript, extraction, or summary should
+          carry citation, review state, and provenance.
+        </div>
+        <div class="callout i18n" data-lang="zh">
+          AI 助手应基于带来源上下文的证据包回答，而不是基于脱离语境的孤立文本块。所有
+          AI 生成的翻译、转录、抽取与摘要都应带有引用、审核状态与来源信息。
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Roadmap</div>
+            <div class="kicker i18n" data-lang="zh">路线图</div>
+            <h2 class="i18n" data-lang="en">Phase the Work to Reduce Risk</h2>
+            <h2 class="i18n" data-lang="zh">通过分阶段交付降低风险</h2>
+            <p class="i18n" data-lang="en">
+              The work begins with the canonical record and preservation
+              boundary, then layers discovery, interoperability, and AI on top.
+            </p>
+            <p class="i18n" data-lang="zh">
+              工作先建立权威主记录（canonical record）与保存边界，再叠加检索能力，最后扩展互操作与 AI。
+            </p>
+          </div>
+        </div>
+
+        <div class="phases">
+          <article class="phase">
+            <div class="phase-label i18n" data-lang="en">Phase 1</div>
+            <div class="phase-label i18n" data-lang="zh">阶段一</div>
+            <h3 class="i18n" data-lang="en">Foundation Pilot</h3>
+            <h3 class="i18n" data-lang="zh">基础试点</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>Choose identifiers, canonical schema, and preservation boundary</li>
+              <li>Ingest one representative collection and its preservation masters</li>
+              <li>Establish rights review, provenance logging, and auditability</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>确定标识符体系、canonical schema 与保存边界</li>
+              <li>导入一个代表性馆藏及其保存母版（preservation masters）</li>
+              <li>建立权限审核、来源日志与可审计机制</li>
+            </ul>
+          </article>
+
+          <article class="phase">
+            <div class="phase-label i18n" data-lang="en">Phase 2</div>
+            <div class="phase-label i18n" data-lang="zh">阶段二</div>
+            <h3 class="i18n" data-lang="en">Discovery Release</h3>
+            <h3 class="i18n" data-lang="zh">检索能力上线</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>Launch structured browse, filters, exact search, and hybrid retrieval</li>
+              <li>Add OCR, transcripts, and translations as governed derivatives</li>
+              <li>Deliver source-aware evidence views for researchers</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>上线结构化浏览、过滤器、精确检索与混合检索</li>
+              <li>把 OCR、转录与翻译作为受治理的衍生层引入</li>
+              <li>为研究者提供带来源上下文的证据视图</li>
+            </ul>
+          </article>
+
+          <article class="phase">
+            <div class="phase-label i18n" data-lang="en">Phase 3</div>
+            <div class="phase-label i18n" data-lang="zh">阶段三</div>
+            <h3 class="i18n" data-lang="en">Federation and AI Expansion</h3>
+            <h3 class="i18n" data-lang="zh">联邦互通与 AI 扩展</h3>
+            <ul class="list i18n" data-lang="en">
+              <li>Enable partner ingest, exports, and cross-institution access workflows</li>
+              <li>Support taxonomy revision, authority reconciliation, and multilingual discovery</li>
+              <li>Introduce question answering only on top of traceable evidence packages</li>
+            </ul>
+            <ul class="list i18n" data-lang="zh">
+              <li>打通合作方导入、导出与跨机构访问工作流</li>
+              <li>支持 taxonomy 修订、authority reconciliation 与多语言检索</li>
+              <li>仅在可追踪的证据包之上引入问答能力</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="metrics">
+          <article class="metric">
+            <h3 class="i18n" data-lang="en">Governance</h3>
+            <h3 class="i18n" data-lang="zh">治理</h3>
+            <p class="i18n" data-lang="en">
+              Every published record carries explicit provenance, rights, and access state.
+            </p>
+            <p class="i18n" data-lang="zh">
+              所有已发布记录都带有明确的来源链（provenance）、权限（rights）与开放状态（access state）。
+            </p>
+          </article>
+
+          <article class="metric">
+            <h3 class="i18n" data-lang="en">Preservation</h3>
+            <h3 class="i18n" data-lang="zh">保存</h3>
+            <p class="i18n" data-lang="en">
+              Preservation files have fixity, version history, and independent storage controls.
+            </p>
+            <p class="i18n" data-lang="zh">
+              Preservation files 具备 fixity、版本历史与独立的存储控制。
+            </p>
+          </article>
+
+          <article class="metric">
+            <h3 class="i18n" data-lang="en">Discovery</h3>
+            <h3 class="i18n" data-lang="zh">检索</h3>
+            <p class="i18n" data-lang="en">
+              Known-item and exploratory query sets are measured with metrics such as MRR and nDCG.
+            </p>
+            <p class="i18n" data-lang="zh">
+              已知目标查询（known-item）与探索式查询集合使用 MRR、nDCG 等指标持续评估。
+            </p>
+          </article>
+
+          <article class="metric">
+            <h3 class="i18n" data-lang="en">Interoperability and AI</h3>
+            <h3 class="i18n" data-lang="zh">互操作与 AI</h3>
+            <p class="i18n" data-lang="en">
+              Partner exchange works through governed APIs or exports, and all AI outputs remain
+              labeled, reversible, and citable.
+            </p>
+            <p class="i18n" data-lang="zh">
+              合作方交换通过受治理的 API 或导出完成，所有 AI 输出都保持可标注、可回退、可引用。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div>
+            <div class="kicker i18n" data-lang="en">Research Basis</div>
+            <div class="kicker i18n" data-lang="zh">研究依据</div>
+            <h2 class="i18n" data-lang="en">Standards and Implementation References</h2>
+            <h2 class="i18n" data-lang="zh">标准与实现参考</h2>
+            <p class="i18n" data-lang="en">
+              This direction aligns with current archival and digital preservation practice. The
+              aim is not to adopt every standard in full, but to use the right ones for the right
+              layer and keep mappings explicit.
+            </p>
+            <p class="i18n" data-lang="zh">
+              这个方向与当前档案学和数字保存实践一致。目标不是把所有标准全部照搬，而是在合适的层使用合适的标准，并把映射关系保持明确。
+            </p>
+          </div>
+        </div>
+
+        <div class="reference-layout">
+          <article class="reference-card">
+            <div class="i18n" data-lang="en">
+              <h3>Core Standards</h3>
+              <ul>
+                <li><strong>OAIS</strong>: preservation repository concepts and functional boundaries</li>
+                <li><strong>PREMIS</strong>: preservation events, agents, rights, and fixity evidence</li>
+                <li><strong>DCMI</strong>: broadly interoperable descriptive terms</li>
+                <li><strong>EAD</strong>: archival hierarchy and finding-aid structure</li>
+                <li><strong>LIDO</strong>: richer object-oriented exchange for complex heritage materials</li>
+                <li><strong>IIIF Presentation 3.0</strong>: interoperable image, AV, ranges, and annotations delivery</li>
+                <li><strong>OAI-PMH</strong>: metadata harvesting for federation</li>
+                <li><strong>OCFL and NDSA Levels</strong>: storage versioning and operational preservation practice</li>
+              </ul>
+              <small>
+                Official sources:
+                <a href="https://public.ccsds.org/Pubs/650x0m3.pdf">OAIS</a> ·
+                <a href="https://www.loc.gov/standards/premis/">PREMIS</a> ·
+                <a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">DCMI</a> ·
+                <a href="https://www.loc.gov/ead/">EAD</a> ·
+                <a href="https://lido-schema.org/schema/latest/lido.html">LIDO</a> ·
+                <a href="https://iiif.io/api/presentation/3.0/">IIIF</a> ·
+                <a href="https://www.openarchives.org/pmh/">OAI-PMH</a> ·
+                <a href="https://ocfl.io/">OCFL</a> ·
+                <a href="https://www.ndsa.org/publications/levels-of-digital-preservation/">NDSA Levels</a>
+              </small>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>核心标准</h3>
+              <ul>
+                <li><strong>OAIS</strong>：保存仓储的概念模型与功能边界</li>
+                <li><strong>PREMIS</strong>：保存事件、参与者、权限与 fixity 证据</li>
+                <li><strong>DCMI</strong>：广泛互操作的描述性术语</li>
+                <li><strong>EAD</strong>：档案层级与 finding aid 结构</li>
+                <li><strong>LIDO</strong>：适用于复杂馆藏对象的面向对象交换模型</li>
+                <li><strong>IIIF Presentation 3.0</strong>：图像、音视频、范围与标注的互操作交付</li>
+                <li><strong>OAI-PMH</strong>：联邦场景中的元数据 harvest 机制</li>
+                <li><strong>OCFL 与 NDSA Levels</strong>：存储版本化与保存运营实践</li>
+              </ul>
+              <small>
+                官方来源：
+                <a href="https://public.ccsds.org/Pubs/650x0m3.pdf">OAIS</a> ·
+                <a href="https://www.loc.gov/standards/premis/">PREMIS</a> ·
+                <a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">DCMI</a> ·
+                <a href="https://www.loc.gov/ead/">EAD</a> ·
+                <a href="https://lido-schema.org/schema/latest/lido.html">LIDO</a> ·
+                <a href="https://iiif.io/api/presentation/3.0/">IIIF</a> ·
+                <a href="https://www.openarchives.org/pmh/">OAI-PMH</a> ·
+                <a href="https://ocfl.io/">OCFL</a> ·
+                <a href="https://www.ndsa.org/publications/levels-of-digital-preservation/">NDSA Levels</a>
+              </small>
+            </div>
+          </article>
+
+          <article class="reference-card">
+            <div class="i18n" data-lang="en">
+              <h3>Implementation Patterns Worth Studying</h3>
+              <ul>
+                <li><strong>Library of Congress</strong>: digital collections management and derivatives governance</li>
+                <li><strong>NARA</strong>: preservation copies, fixity, and auditable archival handling</li>
+                <li><strong>ArchivesSpace</strong>: archival description and hierarchy as a governed system of record</li>
+                <li><strong>Archivematica</strong>: OAIS-aligned preservation workflow patterns</li>
+                <li><strong>IIIF community practice</strong>: presentation and citation across institutions</li>
+              </ul>
+              <small>
+                Institutional references:
+                <a href="https://www.loc.gov/programs/digital-collections-management/about-this-program/frequently-asked-questions/">Library of Congress DCMC</a> ·
+                <a href="https://www.archives.gov/preservation/digital-preservation/about">NARA Digital Preservation Program</a> ·
+                <a href="https://docs.archivesspace.org/">ArchivesSpace Technical Documentation</a> ·
+                <a href="https://www.archivematica.org/en/">Archivematica</a>
+                <br />
+                The right implementation may combine open-source and managed components. The
+                architecture should preserve replaceability instead of binding the program to one
+                product family.
+              </small>
+            </div>
+            <div class="i18n" data-lang="zh">
+              <h3>值得借鉴的实现模式</h3>
+              <ul>
+                <li><strong>Library of Congress</strong>：数字馆藏管理与衍生层治理</li>
+                <li><strong>NARA</strong>：preservation copies、fixity 与可审计档案处理</li>
+                <li><strong>ArchivesSpace</strong>：把档案描述与层级作为可治理的 system of record</li>
+                <li><strong>Archivematica</strong>：与 OAIS 对齐的保存工作流模式</li>
+                <li><strong>IIIF 社区实践</strong>：跨机构展示与引用能力</li>
+              </ul>
+              <small>
+                机构来源：
+                <a href="https://www.loc.gov/programs/digital-collections-management/about-this-program/frequently-asked-questions/">Library of Congress DCMC</a> ·
+                <a href="https://www.archives.gov/preservation/digital-preservation/about">NARA Digital Preservation Program</a> ·
+                <a href="https://docs.archivesspace.org/">ArchivesSpace Technical Documentation</a> ·
+                <a href="https://www.archivematica.org/en/">Archivematica</a>
+                <br />
+                最终实现可以是开源组件与托管组件的组合。重点不是绑定某一类产品，而是让架构本身保持可替换。
+              </small>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <div class="i18n" data-lang="en">
+          Research basis checked against official standards and institutional sources on August 10,
+          2026, including OAIS, PREMIS, DCMI, EAD, LIDO, IIIF, OAI-PMH, OCFL, NDSA, Library of
+          Congress, NARA, ArchivesSpace, and Archivematica.
+        </div>
+        <div class="i18n" data-lang="zh">
+          研究依据已在 2026 年 8 月 10 日对照官方标准与机构来源复核，包括 OAIS、PREMIS、DCMI、EAD、LIDO、IIIF、OAI-PMH、OCFL、NDSA、Library
+          of Congress、NARA、ArchivesSpace 与 Archivematica。
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      const root = document.body;
+      const buttons = Array.from(document.querySelectorAll("[data-switch]"));
+
+      function setLanguage(lang) {
+        root.setAttribute("data-lang", lang);
+        buttons.forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.switch === lang);
+        });
+        try {
+          localStorage.setItem("archival-proposal-lang", lang);
+        } catch (error) {
+          void error;
+        }
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.switch));
+      });
+
+      const saved = (() => {
+        try {
+          return localStorage.getItem("archival-proposal-lang");
+        } catch (error) {
+          return null;
+        }
+      })();
+
+      setLanguage(saved === "zh" ? "zh" : "en");
+    </script>
+  </body>
+</html>

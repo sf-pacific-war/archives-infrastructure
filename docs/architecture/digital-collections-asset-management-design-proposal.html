@@ -1,0 +1,2727 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digital Collections Asset Management Design Proposal</title>
+    <style>
+      :root {
+        --paper: #f4f2ed;
+        --surface: #fffdf8;
+        --surface-soft: #f8f4ec;
+        --ink: #1e1a17;
+        --muted: #5d554b;
+        --navy: #21374d;
+        --blue: #315470;
+        --brass: #a8792e;
+        --seal: #8b3c35;
+        --sage: #5f7868;
+        --teal: #2e6f72;
+        --plum: #605071;
+        --mist: #d8dee2;
+        --line: rgba(33, 55, 77, 0.16);
+        --line-strong: rgba(33, 55, 77, 0.32);
+        --max: 1180px;
+        --radius: 8px;
+        --shadow: 0 20px 48px rgba(33, 55, 77, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background:
+          linear-gradient(90deg, rgba(33, 55, 77, 0.05) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(33, 55, 77, 0.04) 1px, transparent 1px),
+          radial-gradient(circle at 90% 10%, rgba(168, 121, 46, 0.16), transparent 28%),
+          var(--paper);
+        background-size: 48px 48px, 48px 48px, auto, auto;
+        color: var(--ink);
+        font-family:
+          "IBM Plex Sans", "Avenir Next", "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Noto Sans SC", Arial, sans-serif;
+        line-height: 1.62;
+        margin: 0;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .site-header {
+        background: rgba(244, 242, 237, 0.94);
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .topbar {
+        align-items: center;
+        display: flex;
+        gap: 18px;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: var(--max);
+        padding: 14px 122px 14px 18px;
+        position: relative;
+      }
+
+      .brand {
+        align-items: center;
+        color: var(--navy);
+        display: flex;
+        gap: 10px;
+        min-width: 0;
+        text-decoration: none;
+      }
+
+      .brand span {
+        color: var(--navy);
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .topbar-tools,
+      .nav,
+      .lang-switch {
+        align-items: center;
+        display: flex;
+      }
+
+      .topbar-tools {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .nav {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .nav a {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 0.83rem;
+        font-weight: 800;
+        padding: 7px 11px;
+        text-decoration: none;
+      }
+
+      .nav a:hover {
+        border-color: var(--brass);
+        color: var(--navy);
+      }
+
+      .lang-switch {
+        background: rgba(33, 55, 77, 0.06);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        gap: 3px;
+        padding: 3px;
+        position: absolute;
+        right: 18px;
+        top: 14px;
+      }
+
+      .lang-tab {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        border-radius: 999px;
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 900;
+        min-height: 30px;
+        padding: 5px 9px;
+      }
+
+      .lang-tab.is-active {
+        background: var(--navy);
+        color: #fff8e9;
+      }
+
+      .hero {
+        background:
+          linear-gradient(135deg, rgba(33, 55, 77, 0.98), rgba(49, 84, 112, 0.95)),
+          var(--navy);
+        color: #fff8e9;
+      }
+
+      .hero-inner {
+        align-items: center;
+        display: grid;
+        gap: 24px;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr);
+        margin: 0 auto;
+        max-width: var(--max);
+        min-height: clamp(360px, 46vh, 500px);
+        padding: clamp(28px, 4vw, 50px) 18px;
+      }
+
+      .hero-card {
+        background: rgba(255, 248, 233, 0.08);
+        border: 1px solid rgba(255, 248, 233, 0.18);
+        border-radius: var(--radius);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.14);
+        padding: 18px;
+      }
+
+      .hero-card strong {
+        color: #fff8e9;
+        display: block;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      .hero-card p {
+        color: rgba(255, 248, 233, 0.86);
+        margin: 0;
+      }
+
+      .eyebrow,
+      .kicker {
+        color: var(--brass);
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin: 0;
+      }
+
+      h1,
+      h2 {
+        font-family:
+          "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype",
+          "Source Han Serif SC", "Noto Serif SC", "Songti SC", Georgia, serif;
+      }
+
+      h1 {
+        font-size: clamp(2.2rem, 5vw, 4.6rem);
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1.02;
+        margin-top: 10px;
+        max-width: 980px;
+      }
+
+      .hero-lead {
+        color: rgba(255, 248, 233, 0.86);
+        font-size: clamp(1rem, 1.45vw, 1.2rem);
+        margin: 14px 0 0;
+        max-width: 900px;
+      }
+
+      .band {
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+        padding: clamp(30px, 5vw, 58px) 18px;
+      }
+
+      .band.alt {
+        background: var(--surface-soft);
+      }
+
+      .section-inner {
+        margin: 0 auto;
+        max-width: var(--max);
+      }
+
+      .section-head {
+        align-items: start;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(0, 0.82fr) minmax(260px, 0.3fr);
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        color: var(--navy);
+        font-size: clamp(1.75rem, 3vw, 3.05rem);
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 1.08;
+        margin-top: 8px;
+      }
+
+      h3 {
+        color: var(--navy);
+        font-size: 1.05rem;
+        line-height: 1.28;
+      }
+
+      h4 {
+        color: var(--navy);
+        font-size: 0.88rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .lead,
+      .note,
+      .card p,
+      .model-node p,
+      .standard p,
+      .metric p,
+      .step p,
+      .track p,
+      .table-card td {
+        color: var(--muted);
+      }
+
+      .lead {
+        margin: 10px 0 0;
+        max-width: 850px;
+      }
+
+      .note {
+        background: #fff8e9;
+        border-left: 4px solid var(--brass);
+        border-radius: var(--radius);
+        margin: 0;
+        padding: 12px 14px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid.four {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .card,
+      .metric,
+      .standard,
+      .step,
+      .track,
+      .table-card {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+
+      .card,
+      .metric,
+      .standard,
+      .step,
+      .track {
+        padding: 18px;
+      }
+
+      .card h3,
+      .metric h3,
+      .standard h3,
+      .step h3,
+      .track h3 {
+        margin-bottom: 8px;
+      }
+
+      .card p,
+      .metric p,
+      .standard p,
+      .step p,
+      .track p {
+        margin: 0;
+      }
+
+      .danger {
+        border-top: 5px solid var(--seal);
+      }
+
+      .safe {
+        border-top: 5px solid var(--sage);
+      }
+
+      .brass {
+        border-top: 5px solid var(--brass);
+      }
+
+      .blue {
+        border-top: 5px solid var(--blue);
+      }
+
+      .plum {
+        border-top: 5px solid var(--plum);
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .tag {
+        background: rgba(33, 55, 77, 0.07);
+        border: 1px solid rgba(33, 55, 77, 0.1);
+        border-radius: 999px;
+        color: var(--navy);
+        font-size: 0.74rem;
+        font-weight: 900;
+        padding: 4px 8px;
+      }
+
+      .decision-panel {
+        background: var(--navy);
+        border-radius: var(--radius);
+        color: #fff8e9;
+        padding: 18px;
+      }
+
+      .decision-panel h3 {
+        color: #fff8e9;
+        margin-bottom: 10px;
+      }
+
+      .decision-panel ol,
+      .decision-panel ul,
+      .card ul,
+      .metric ul,
+      .standard ul,
+      .step ul,
+      .track ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .decision-panel li {
+        color: rgba(255, 248, 233, 0.86);
+        margin-top: 7px;
+      }
+
+      .card li,
+      .metric li,
+      .standard li,
+      .step li,
+      .track li {
+        color: var(--muted);
+        margin-top: 7px;
+      }
+
+      .track-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .track {
+        min-height: 100%;
+      }
+
+      .track-code {
+        align-items: center;
+        background: var(--navy);
+        border-radius: var(--radius);
+        color: #fff8e9;
+        display: inline-flex;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-weight: 900;
+        height: 42px;
+        justify-content: center;
+        margin-bottom: 12px;
+        width: 42px;
+      }
+
+      .model-shell {
+        background:
+          linear-gradient(135deg, rgba(33, 55, 77, 0.04), transparent 42%),
+          #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .model-chain {
+        align-items: stretch;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        margin: 16px 0;
+      }
+
+      .model-node {
+        background: #f7f1e6;
+        border: 1px solid rgba(33, 55, 77, 0.18);
+        border-radius: var(--radius);
+        min-height: 164px;
+        padding: 14px;
+        position: relative;
+      }
+
+      .model-node::after {
+        color: var(--brass);
+        content: "->";
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-weight: 900;
+        position: absolute;
+        right: -15px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .model-node:last-child::after {
+        content: "";
+      }
+
+      .model-icon {
+        align-items: center;
+        background: var(--navy);
+        border-radius: 999px;
+        color: #fff8e9;
+        display: inline-flex;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-size: 0.76rem;
+        font-weight: 900;
+        height: 38px;
+        justify-content: center;
+        margin-bottom: 10px;
+        width: 38px;
+      }
+
+      .model-node:nth-child(2) .model-icon {
+        background: var(--sage);
+      }
+
+      .model-node:nth-child(3) .model-icon {
+        background: var(--brass);
+      }
+
+      .model-node:nth-child(4) .model-icon {
+        background: var(--plum);
+      }
+
+      .model-node:nth-child(5) .model-icon {
+        background: var(--teal);
+      }
+
+      .model-node:nth-child(6) .model-icon {
+        background: var(--blue);
+      }
+
+      .model-node h3 {
+        margin-bottom: 6px;
+      }
+
+      .model-node p {
+        font-size: 0.9rem;
+        margin: 0;
+      }
+
+      .example-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: minmax(0, 0.54fr) minmax(0, 0.46fr);
+        margin-top: 14px;
+      }
+
+      .example-box {
+        background: #fff8e9;
+        border: 1px solid rgba(168, 121, 46, 0.28);
+        border-radius: var(--radius);
+        padding: 14px;
+      }
+
+      .example-box h3 {
+        margin-bottom: 8px;
+      }
+
+      .example-box p {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .example-box p + p {
+        margin-top: 8px;
+      }
+
+      .gear-map {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .standard {
+        min-height: 100%;
+        position: relative;
+      }
+
+      .standard::before {
+        background: var(--brass);
+        border-radius: 999px;
+        content: "";
+        height: 8px;
+        left: 18px;
+        position: absolute;
+        top: -4px;
+        width: 44px;
+      }
+
+      .split-layout {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .split-panel {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+
+      .split-panel h3 {
+        background: var(--navy);
+        color: #fff8e9;
+        padding: 14px 16px;
+      }
+
+      .split-panel.search h3 {
+        background: var(--sage);
+      }
+
+      .split-panel ul {
+        margin: 0;
+        padding: 16px 18px 18px 34px;
+      }
+
+      .split-panel li {
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      .search-logic-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 14px;
+      }
+
+      .search-logic-grid + .split-layout {
+        margin-top: 14px;
+      }
+
+      .search-logic-card {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        min-height: 100%;
+        padding: 18px;
+      }
+
+      .search-logic-number {
+        color: var(--brass);
+        display: block;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-size: 0.86rem;
+        font-weight: 900;
+        margin-bottom: 8px;
+      }
+
+      .search-logic-card h3 {
+        margin-bottom: 8px;
+      }
+
+      .search-logic-card p {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .funnel {
+        display: grid;
+        gap: 12px;
+        justify-items: center;
+        margin-top: 10px;
+      }
+
+      .funnel-step {
+        background: var(--navy);
+        border: 1px solid rgba(255, 248, 233, 0.32);
+        box-shadow: 0 8px 0 rgba(33, 55, 77, 0.16);
+        color: #fff8e9;
+        padding: 16px 22px;
+        text-align: center;
+      }
+
+      .funnel-step:nth-child(1) {
+        width: 92%;
+      }
+
+      .funnel-step:nth-child(2) {
+        width: 80%;
+      }
+
+      .funnel-step:nth-child(3) {
+        width: 68%;
+      }
+
+      .funnel-step:nth-child(4) {
+        width: 52%;
+      }
+
+      .funnel-step h3 {
+        color: #f3cf88;
+        margin-bottom: 4px;
+      }
+
+      .funnel-step p {
+        color: rgba(255, 248, 233, 0.86);
+        margin: 0;
+      }
+
+      .strategy-table {
+        margin-bottom: 14px;
+      }
+
+      .category-label {
+        align-items: center;
+        color: var(--navy);
+        display: inline-flex;
+        font-weight: 900;
+        gap: 8px;
+      }
+
+      .category-mark {
+        align-items: center;
+        background: rgba(33, 55, 77, 0.08);
+        border: 1px solid rgba(33, 55, 77, 0.14);
+        border-radius: 7px;
+        display: inline-flex;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-size: 0.72rem;
+        height: 26px;
+        justify-content: center;
+        width: 30px;
+      }
+
+      .field-note {
+        background: #fff8e9;
+        border: 1px solid rgba(168, 121, 46, 0.24);
+        border-radius: 999px;
+        color: var(--navy);
+        font-size: 0.84rem;
+        font-weight: 800;
+        margin: 12px 0 0;
+        padding: 8px 12px;
+      }
+
+      .material-layout {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: minmax(0, 0.9fr) minmax(270px, 0.52fr);
+        margin-top: 14px;
+      }
+
+      .material-map {
+        background: #f7f1e6;
+        border: 1px solid rgba(33, 55, 77, 0.08);
+        border-radius: var(--radius);
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 16px;
+      }
+
+      .material-node,
+      .material-object {
+        align-items: center;
+        border-radius: var(--radius);
+        display: flex;
+        font-weight: 900;
+        justify-content: center;
+        min-height: 72px;
+        padding: 10px;
+        text-align: center;
+      }
+
+      .material-node {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        color: var(--navy);
+        font-size: 0.86rem;
+      }
+
+      .material-object {
+        background: rgba(95, 120, 104, 0.22);
+        border: 1px solid rgba(95, 120, 104, 0.4);
+        border-radius: 999px;
+        color: var(--navy);
+        min-height: 92px;
+      }
+
+      .relation-types {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px;
+      }
+
+      .relation-types h3 {
+        margin-bottom: 10px;
+      }
+
+      .relation-types dl {
+        margin: 0;
+      }
+
+      .relation-types div {
+        border-bottom: 1px solid rgba(33, 55, 77, 0.09);
+        display: grid;
+        gap: 10px;
+        grid-template-columns: minmax(0, 128px) minmax(0, 1fr);
+        padding: 8px 0;
+      }
+
+      .relation-types div:last-child {
+        border-bottom: 0;
+      }
+
+      .relation-types dt {
+        color: var(--navy);
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-size: 0.74rem;
+        font-weight: 900;
+      }
+
+      .relation-types dd {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .workflow-rail {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(10, minmax(98px, 1fr));
+        margin-top: 14px;
+      }
+
+      .workflow-step {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        min-height: 150px;
+        padding: 12px;
+        position: relative;
+      }
+
+      .workflow-step::after {
+        color: var(--brass);
+        content: "->";
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-weight: 900;
+        position: absolute;
+        right: -11px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+
+      .workflow-step:last-child::after {
+        content: "";
+      }
+
+      .workflow-number {
+        align-items: center;
+        background: rgba(33, 55, 77, 0.08);
+        border: 1px solid rgba(33, 55, 77, 0.14);
+        border-radius: 999px;
+        color: var(--navy);
+        display: inline-flex;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-size: 0.72rem;
+        font-weight: 900;
+        height: 28px;
+        justify-content: center;
+        margin-bottom: 8px;
+        width: 28px;
+      }
+
+      .workflow-step h3 {
+        font-size: 0.92rem;
+        margin-bottom: 6px;
+      }
+
+      .workflow-step p {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.42;
+        margin: 0;
+      }
+
+      .workflow-notes {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 14px;
+      }
+
+      .workflow-note {
+        background: #fff8e9;
+        border: 1px solid rgba(168, 121, 46, 0.26);
+        border-radius: var(--radius);
+        padding: 16px;
+      }
+
+      .workflow-note h3 {
+        margin-bottom: 8px;
+      }
+
+      .workflow-note ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .workflow-note li {
+        color: var(--muted);
+        margin-top: 7px;
+      }
+
+      .relation-map {
+        background: #f7f1e6;
+        border: 1px solid rgba(33, 55, 77, 0.08);
+        border-radius: var(--radius);
+        display: grid;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .relation-hub {
+        align-items: center;
+        background: rgba(95, 120, 104, 0.18);
+        border: 1px solid rgba(95, 120, 104, 0.34);
+        border-radius: 999px;
+        color: var(--navy);
+        display: inline-flex;
+        font-weight: 900;
+        justify-content: center;
+        justify-self: center;
+        min-height: 56px;
+        min-width: 144px;
+        padding: 10px 18px;
+      }
+
+      .relation-spokes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .relation-node {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--navy);
+        font-size: 0.78rem;
+        font-weight: 900;
+        padding: 6px 10px;
+      }
+
+      .table-card {
+        overflow-x: auto;
+      }
+
+      table {
+        border-collapse: collapse;
+        min-width: 840px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--navy);
+        color: #fff8e9;
+        font-size: 0.82rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      tr:nth-child(even) td {
+        background: #f7f1e6;
+      }
+
+      td strong {
+        color: var(--navy);
+      }
+
+      .metric-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .metric-value {
+        align-items: center;
+        background: #f7f1e6;
+        border: 1px solid rgba(33, 55, 77, 0.1);
+        border-radius: 999px;
+        color: var(--navy);
+        display: flex;
+        font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+        font-size: 1.2rem;
+        font-weight: 900;
+        justify-content: space-between;
+        margin: 14px 0 12px;
+        overflow: hidden;
+        padding-left: 14px;
+      }
+
+      .metric-fill {
+        background: var(--brass);
+        color: #fff8e9;
+        padding: 8px 14px;
+      }
+
+      .source-links {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .source-links a {
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        color: var(--navy);
+        font-weight: 900;
+        min-height: 76px;
+        padding: 14px;
+        text-decoration: none;
+      }
+
+      .source-links a:hover {
+        border-color: var(--brass);
+      }
+
+      .footer {
+        background: var(--navy);
+        color: rgba(255, 248, 233, 0.78);
+        padding: 26px 18px;
+      }
+
+      .footer-inner {
+        align-items: center;
+        display: flex;
+        gap: 18px;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: var(--max);
+      }
+
+      .footer a {
+        color: #fff8e9;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      @media (max-width: 1080px) {
+        .hero-inner,
+        .section-head,
+        .grid.two,
+        .grid.three,
+        .grid.four,
+        .track-grid,
+        .model-chain,
+        .gear-map,
+        .split-layout,
+        .search-logic-grid,
+        .example-grid,
+        .material-layout,
+        .material-map,
+        .workflow-rail,
+        .workflow-notes,
+        .metric-grid,
+        .source-links {
+          grid-template-columns: 1fr;
+        }
+
+        .model-node::after {
+          bottom: -18px;
+          right: auto;
+          top: auto;
+          transform: rotate(90deg);
+        }
+
+        .workflow-step::after {
+          bottom: -18px;
+          left: 18px;
+          right: auto;
+          top: auto;
+          transform: rotate(90deg);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .topbar,
+        .topbar-tools,
+        .footer-inner {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .topbar {
+          padding-right: 18px;
+        }
+
+        .lang-switch {
+          position: static;
+        }
+
+        .nav {
+          justify-content: flex-start;
+        }
+
+        .hero-inner {
+          min-height: auto;
+          padding-bottom: 40px;
+          padding-top: 36px;
+        }
+
+        h1 {
+          font-size: clamp(2.1rem, 10vw, 2.7rem);
+        }
+      }
+
+      @media (max-width: 560px) {
+        .brand span {
+          display: none;
+        }
+
+        .band {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+
+        .card,
+        .metric,
+        .standard,
+        .step,
+        .track,
+        .model-shell {
+          padding: 14px;
+        }
+
+        .funnel-step,
+        .funnel-step:nth-child(1),
+        .funnel-step:nth-child(2),
+        .funnel-step:nth-child(3),
+        .funnel-step:nth-child(4) {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body data-lang="en">
+    <header class="site-header">
+      <div class="topbar">
+        <a class="brand" href="../../index.html" aria-label="SF Pacific War Archives Infrastructure Project home">
+          <span>SF Pacific War Archives Infrastructure Project</span>
+        </a>
+        <div class="topbar-tools">
+          <div class="lang-switch" role="group" aria-label="Language">
+            <button class="lang-tab is-active" data-lang="en" type="button">EN</button>
+            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+          </div>
+          <nav class="nav" aria-label="Proposal sections">
+            <a href="#why" data-i18n="navWhy">Why Change</a>
+            <a href="#principles" data-i18n="navPrinciples">Principles</a>
+            <a href="#model" data-i18n="navModel">Data Model</a>
+            <a href="#standards" data-i18n="navStandards">Standards</a>
+            <a href="#ingestion" data-i18n="navIngestion">Ingestion</a>
+            <a href="#retrieval" data-i18n="navRetrieval">Retrieval</a>
+            <a href="#success" data-i18n="navSuccess">Success</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <div>
+            <span class="eyebrow" data-i18n="heroEyebrow">Design Proposal</span>
+            <h1 data-i18n="heroTitle">Preservation-Led Digital Collections Asset Management</h1>
+            <p class="hero-lead" data-i18n="heroLead">
+              This proposal defines why shared drives and spreadsheets should not remain the
+              long-term system of record for the archive, and why the preservation and asset
+              management track must be designed as governed infrastructure. The target system
+              separates canonical metadata, provenance, preservation files, access derivatives,
+              federation, and AI/search layers so that collection growth does not destroy
+              evidence or source meaning.
+            </p>
+          </div>
+          <aside class="hero-card">
+            <strong data-i18n="heroAskTitle">Decision Requested</strong>
+            <p data-i18n="heroAskBody">
+              Approve a dedicated preservation and asset management track, with Google Drive and
+              Sheets limited to intake, coordination, and temporary staging.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="band" id="why">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="whyKicker">System Boundary</span>
+              <h2 data-i18n="whyTitle">Why Drive and Sheets are not a safe archival system.</h2>
+              <p class="lead" data-i18n="whyLead">
+                Google Drive and Google Sheets are useful operating tools. They are not a
+                preservation repository, archival database, rights-governance layer, or durable
+                data model. The risk is not only inconvenience - the risk is losing original files,
+                losing provenance, publishing restricted material, or making AI/search output look
+                more authoritative than the source record.
+              </p>
+            </div>
+            <p class="note" data-i18n="whyNote">
+              Proposed role: Drive and Sheets can stay in the workflow as intake and collaboration
+              surfaces. They should not be the long-term system of record.
+            </p>
+          </div>
+
+          <div class="grid three">
+            <article class="card danger">
+              <h3 data-i18n="driveRisk1Title">No preservation boundary</h3>
+              <p data-i18n="driveRisk1Body">
+                Originals, access copies, edits, and exports can be mixed in the same folder.
+                Without fixity, preservation events, and file-role controls, master files can be
+                overwritten, renamed, duplicated, or lost.
+              </p>
+            </article>
+            <article class="card danger">
+              <h3 data-i18n="driveRisk2Title">No reliable provenance chain</h3>
+              <p data-i18n="driveRisk2Body">
+                Spreadsheet history is not a complete chain of custody. It does not reliably
+                preserve who created a source description, when a file was received, how it changed,
+                and which derivative was produced from which master.
+              </p>
+            </article>
+            <article class="card danger">
+              <h3 data-i18n="driveRisk3Title">No enforceable rights model</h3>
+              <p data-i18n="driveRisk3Body">
+                Access decisions cannot depend on ad hoc columns, folder names, or semantic
+                similarity. Rights, restrictions, review status, embargoes, and publication state
+                need governed fields and audit logs.
+              </p>
+            </article>
+            <article class="card danger">
+              <h3 data-i18n="driveRisk4Title">No real entity model</h3>
+              <p data-i18n="driveRisk4Body">
+                One row cannot safely carry collection context, object identity, source metadata,
+                digital representation, stored file, and page or timestamp-level segments.
+              </p>
+            </article>
+            <article class="card danger">
+              <h3 data-i18n="driveRisk5Title">No federation strategy</h3>
+              <p data-i18n="driveRisk5Body">
+                Partner archives, universities, and national repositories need stable identifiers,
+                APIs, export formats, source IDs, and mapping rules - not local-only spreadsheet
+                conventions.
+              </p>
+            </article>
+            <article class="card danger">
+              <h3 data-i18n="driveRisk6Title">No safe AI boundary</h3>
+              <p data-i18n="driveRisk6Body">
+                OCR, transcripts, translations, summaries, and vectors are useful but derived.
+                They must remain labeled, reviewable, rebuildable, and subordinate to source
+                evidence.
+              </p>
+            </article>
+          </div>
+
+          <div class="grid two" style="margin-top: 14px">
+            <article class="track safe">
+              <div class="track-code">P</div>
+              <h3 data-i18n="trackPTitle">Preservation track</h3>
+              <p data-i18n="trackPBody">
+                Protect original and preservation master files with storage policy, checksums,
+                versioned packages, preservation events, and auditable custody.
+              </p>
+            </article>
+            <article class="track safe">
+              <div class="track-code">A</div>
+              <h3 data-i18n="trackATitle">Asset management track</h3>
+              <p data-i18n="trackABody">
+                Manage relationships among objects, representations, files, derivatives, rights,
+                and access copies so discovery and delivery can grow without corrupting the record.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band alt" id="principles">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="principlesKicker">Core Principles</span>
+              <h2 data-i18n="principlesTitle">Three foundation concepts for long-term digital asset management.</h2>
+              <p class="lead" data-i18n="principlesLead">
+                These principles come directly from the proposed design notes: preserve a canonical
+                metadata layer, keep provenance explicit, and federate through APIs and standards
+                without erasing source identity.
+              </p>
+            </div>
+            <p class="note" data-i18n="principlesNote">
+              The architecture should make later search and AI stronger by making the underlying
+              records more disciplined, not more blended.
+            </p>
+          </div>
+
+          <div class="grid three">
+            <article class="card blue">
+              <h3 data-i18n="principle1Title">Canonical Metadata</h3>
+              <p data-i18n="principle1Body">
+                A governed, institution-approved source of truth for the fields the program is
+                willing to claim: identity, hierarchy, rights, publication state, source context,
+                and preservation status.
+              </p>
+              <div class="tag-row">
+                <span class="tag">system of record</span>
+                <span class="tag">stable IDs</span>
+                <span class="tag">review state</span>
+              </div>
+            </article>
+            <article class="card brass">
+              <h3 data-i18n="principle2Title">Provenance</h3>
+              <p data-i18n="principle2Body">
+                Every important record or file carries origin, acquisition path, processing history,
+                derivative lineage, and change events across its lifecycle.
+              </p>
+              <div class="tag-row">
+                <span class="tag">chain of custody</span>
+                <span class="tag">events</span>
+                <span class="tag">audit log</span>
+              </div>
+            </article>
+            <article class="card safe">
+              <h3 data-i18n="principle3Title">Federation</h3>
+              <p data-i18n="principle3Body">
+                The archive should connect dynamically to partner repositories through APIs,
+                harvests, exports, and mapping rules while respecting source rights and updates.
+              </p>
+              <div class="tag-row">
+                <span class="tag">APIs</span>
+                <span class="tag">crosswalks</span>
+                <span class="tag">source IDs</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="model">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="modelKicker">Entity Model</span>
+              <h2 data-i18n="modelTitle">Do not flatten the archive into one spreadsheet row.</h2>
+              <p class="lead" data-i18n="modelLead">
+                The core model separates ideas, descriptions, representations, files, and segments.
+                Each entity has its own identity, lifecycle, relationships, and governance rules.
+                This reflects the attached data-model proposal and the research framework for the
+                current system.
+              </p>
+            </div>
+            <p class="note" data-i18n="modelNote">
+              The model is lightweight by design: enough structure to preserve truth, but not a
+              heavyweight attempt to force every external standard into one local table.
+            </p>
+          </div>
+
+          <div class="model-shell">
+            <div class="model-chain" aria-label="Data model chain">
+              <article class="model-node">
+                <div class="model-icon">C</div>
+                <h3 data-i18n="modelNode1Title">Collection</h3>
+                <p data-i18n="modelNode1Body">Context, grouping, fonds, series, collection hierarchy.</p>
+              </article>
+              <article class="model-node">
+                <div class="model-icon">O</div>
+                <h3 data-i18n="modelNode2Title">Object</h3>
+                <p data-i18n="modelNode2Body">The cultural, historical, or knowledge object being described.</p>
+              </article>
+              <article class="model-node">
+                <div class="model-icon">SR</div>
+                <h3 data-i18n="modelNode3Title">Source Record</h3>
+                <p data-i18n="modelNode3Body">A description from a source institution, catalog, donor, or archivist.</p>
+              </article>
+              <article class="model-node">
+                <div class="model-icon">DR</div>
+                <h3 data-i18n="modelNode4Title">Digital Representation</h3>
+                <p data-i18n="modelNode4Body">How the object appears digitally: scan, audio, video, transcript, derivative.</p>
+              </article>
+              <article class="model-node">
+                <div class="model-icon">F</div>
+                <h3 data-i18n="modelNode5Title">File / Bitstream</h3>
+                <p data-i18n="modelNode5Body">The actual stored file, checksum, format, storage location, and file role.</p>
+              </article>
+              <article class="model-node">
+                <div class="model-icon">S</div>
+                <h3 data-i18n="modelNode6Title">Part / Segment</h3>
+                <p data-i18n="modelNode6Body">Specific page, region, clip, transcript span, or timestamp for citation.</p>
+              </article>
+            </div>
+
+            <div class="example-grid">
+              <article class="example-box">
+                <h3 data-i18n="exampleTitle">Example model instance</h3>
+                <p data-i18n="example1"><strong>Collection:</strong> Flying Tigers Historical Collection, including correspondence and audio from 1940-1945.</p>
+                <p data-i18n="example2"><strong>Object:</strong> Claire Chennault oral-history interview, 1944, subject: air war.</p>
+                <p data-i18n="example3"><strong>Representation:</strong> WAV preservation audio, MP3 access audio, and ASR transcript.</p>
+                <p data-i18n="example4"><strong>File:</strong> interview_master.wav with checksum 8a7b42f... for fixity verification.</p>
+                <p data-i18n="example5"><strong>Segment:</strong> page, region, or timestamp span, such as 00:13:14-00:14:22, for precise citation.</p>
+              </article>
+              <article class="example-box">
+                <h3 data-i18n="separationTitle">Why this separation matters</h3>
+                <p data-i18n="separation1">It prevents loss of original meaning and source differences.</p>
+                <p data-i18n="separation2">It allows multiple descriptions for the same object.</p>
+                <p data-i18n="separation3">It makes OCR, AI output, thumbnails, vectors, and access copies replaceable.</p>
+                <p data-i18n="separation4">It supports precise citation down to page, region, transcript span, or timestamp.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band alt" id="standards">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="standardsKicker">Standards Ecosystem</span>
+              <h2 data-i18n="standardsTitle">Use a gear map, not a single winner standard.</h2>
+              <p class="lead" data-i18n="standardsLead">
+                The practical architecture should define a lightweight internal application profile
+                and map external standards into it without loss. Each standard keeps its job. The
+                canonical model coordinates them.
+              </p>
+            </div>
+            <p class="note" data-i18n="standardsNote">
+              Strategy: define the internal canonical model first, then maintain versioned
+              crosswalks for source import, partner export, and federation.
+            </p>
+          </div>
+
+          <div class="gear-map">
+            <article class="standard">
+              <h3 data-i18n="dcmiTitle">Dublin Core / DCMI</h3>
+              <p data-i18n="dcmiBody">Broad cross-domain discovery and baseline metadata exchange.</p>
+            </article>
+            <article class="standard">
+              <h3 data-i18n="modsTitle">MODS</h3>
+              <p data-i18n="modsBody">Richer bibliographic and library-oriented structured description.</p>
+            </article>
+            <article class="standard">
+              <h3 data-i18n="eadTitle">EAD</h3>
+              <p data-i18n="eadBody">Archival hierarchy and finding-aid depth: fonds, series, files, items.</p>
+            </article>
+            <article class="standard">
+              <h3 data-i18n="lidoTitle">LIDO</h3>
+              <p data-i18n="lidoBody">Museum and material-culture object exchange, including complex object context.</p>
+            </article>
+            <article class="standard">
+              <h3 data-i18n="premisTitle">PREMIS</h3>
+              <p data-i18n="premisBody">Preservation metadata for files, events, agents, rights, and fixity evidence.</p>
+            </article>
+          </div>
+
+          <div class="table-card" style="margin-top: 14px">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="crosswalkHeader1">Architecture area</th>
+                  <th data-i18n="crosswalkHeader2">Canonical fields</th>
+                  <th data-i18n="crosswalkHeader3">Standards mapped</th>
+                  <th data-i18n="crosswalkHeader4">Governance rule</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong data-i18n="crosswalkArea1">Identity and hierarchy</strong></td>
+                  <td data-i18n="crosswalkFields1">collection_id, object_id, parent_id, object_type, title</td>
+                  <td data-i18n="crosswalkStandards1">EAD, DCMI, MODS, LIDO</td>
+                  <td data-i18n="crosswalkRule1">Every public record must resolve to stable internal identity.</td>
+                </tr>
+                <tr>
+                  <td><strong data-i18n="crosswalkArea2">Source and provenance</strong></td>
+                  <td data-i18n="crosswalkFields2">source_record_id, source_institution, harvest_date, event_log</td>
+                  <td data-i18n="crosswalkStandards2">PREMIS, OAI-PMH, partner APIs</td>
+                  <td data-i18n="crosswalkRule2">Do not erase source-native terms when harmonizing for discovery.</td>
+                </tr>
+                <tr>
+                  <td><strong data-i18n="crosswalkArea3">Digital assets</strong></td>
+                  <td data-i18n="crosswalkFields3">representation_id, file_id, file_role, format, checksum</td>
+                  <td data-i18n="crosswalkStandards3">PREMIS, IIIF, OCFL-style storage concepts</td>
+                  <td data-i18n="crosswalkRule3">Preservation files and access derivatives must stay distinct.</td>
+                </tr>
+                <tr>
+                  <td><strong data-i18n="crosswalkArea4">Rights and publication</strong></td>
+                  <td data-i18n="crosswalkFields4">rights_status, access_policy, review_state, publication_state</td>
+                  <td data-i18n="crosswalkStandards4">PREMIS rights, local policy, partner restrictions</td>
+                  <td data-i18n="crosswalkRule4">Unknown or restricted rights do not default to public release.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="metadata">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="metadataKicker">Metadata Detail</span>
+              <h2 data-i18n="metadataTitle">Relationships are first-class metadata, not notes in a cell.</h2>
+              <p class="lead" data-i18n="metadataLead">
+                Relationship modeling lets the system support authority resolution, multilingual
+                discovery, precise citation, and explainable AI answers. It also keeps source
+                descriptions separate from institution-approved assertions.
+              </p>
+            </div>
+            <p class="note" data-i18n="metadataNote">
+              This is where the later metadata-design detail and relationship demo can be expanded
+              without changing the core model.
+            </p>
+          </div>
+
+          <div class="table-card strategy-table">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="strategyHeaderCategory">Category</th>
+                  <th data-i18n="strategyHeaderFields">Examples of fields</th>
+                  <th data-i18n="strategyHeaderPurpose">Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">ID</span>
+                      <span data-i18n="strategyCatIdentity">Identity</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsIdentity">title, alternative_title, record_id, object_type</td>
+                  <td data-i18n="strategyPurposeIdentity">Who or what is this?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">CX</span>
+                      <span data-i18n="strategyCatContext">Context</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsContext">collection, hierarchy, provenance, source_institution</td>
+                  <td data-i18n="strategyPurposeContext">Where does it come from?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">AG</span>
+                      <span data-i18n="strategyCatAgents">Agents</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsAgents">creator, photographer, interviewer, donor</td>
+                  <td data-i18n="strategyPurposeAgents">Who is involved?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">PT</span>
+                      <span data-i18n="strategyCatPlaceTime">Place and Time</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsPlaceTime">place, date_display, date_from, date_to, event</td>
+                  <td data-i18n="strategyPurposePlaceTime">When and where?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">SB</span>
+                      <span data-i18n="strategyCatSubject">Subject</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsSubject">subject_terms, concepts, keywords controlled by vocabulary</td>
+                  <td data-i18n="strategyPurposeSubject">What is it about?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">RA</span>
+                      <span data-i18n="strategyCatRights">Rights and Access</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsRights">copyright, license_uri, access_policy, restrictions</td>
+                  <td data-i18n="strategyPurposeRights">How can it be used?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">SP</span>
+                      <span data-i18n="strategyCatSource">Source and Provenance</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsSource">source_record_id, source_url, harvest_date, cataloger</td>
+                  <td data-i18n="strategyPurposeSource">How do we know this?</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="category-label">
+                      <span class="category-mark">RL</span>
+                      <span data-i18n="strategyCatRelationships">Relationships</span>
+                    </span>
+                  </td>
+                  <td data-i18n="strategyFieldsRelationships">related_objects, part_of, is_version_of, references</td>
+                  <td data-i18n="strategyPurposeRelationships">How is it connected?</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="field-note" data-i18n="strategyFootnote">
+              All important fields carry source, date_created, last_updated, and confidence or review status.
+            </p>
+          </div>
+
+          <div class="material-layout">
+            <article class="card">
+              <h3 data-i18n="relationshipDemoTitle">Relationships between different types of materials</h3>
+              <div class="material-map" aria-label="Object-centered relationship map">
+                <span class="material-node" data-i18n="materialPhoto">Photo</span>
+                <span class="material-node" data-i18n="materialVideo">Video / Audio</span>
+                <span class="material-node" data-i18n="materialEvent">Event</span>
+                <span class="material-node" data-i18n="materialDocument">Document</span>
+                <span class="material-object" data-i18n="materialObject">Object</span>
+                <span class="material-node" data-i18n="materialPlace">Place</span>
+                <span class="material-node" data-i18n="materialOralHistory">Oral History</span>
+                <span class="material-node" data-i18n="materialAgent">Person / Agent</span>
+                <span class="material-node" data-i18n="materialRights">Rights / Access</span>
+              </div>
+            </article>
+            <article class="relation-types">
+              <h3 data-i18n="commonRelationshipsTitle">Common relationships</h3>
+              <dl>
+                <div>
+                  <dt>is_part_of</dt>
+                  <dd data-i18n="relationshipType1">Part of a larger item or collection</dd>
+                </div>
+                <div>
+                  <dt>has_version</dt>
+                  <dd data-i18n="relationshipType2">Different versions or representations</dd>
+                </div>
+                <div>
+                  <dt>is_about</dt>
+                  <dd data-i18n="relationshipType3">Relates to a person, place, or event</dd>
+                </div>
+                <div>
+                  <dt>references</dt>
+                  <dd data-i18n="relationshipType4">Cites or mentions another item</dd>
+                </div>
+                <div>
+                  <dt>is_derived_from</dt>
+                  <dd data-i18n="relationshipType5">Created from another item</dd>
+                </div>
+                <div>
+                  <dt>is_format_of</dt>
+                  <dd data-i18n="relationshipType6">Same intellectual content, different format</dd>
+                </div>
+                <div>
+                  <dt>is_associated_with</dt>
+                  <dd data-i18n="relationshipType7">Linked by context or subject</dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+
+          <div class="example-box" style="margin-top: 14px">
+            <h3 data-i18n="relationshipExampleTitle">Relationship example</h3>
+            <p data-i18n="relationshipExampleBody">
+              An oral-history interview can reference a letter and a photograph about the same
+              event in Kunming, 1944. All are linked to an Event with date and place, a Person
+              as interviewee, a Collection as source context, and Rights as access rules.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="band alt" id="ingestion">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="ingestionKicker">Ingestion and Federation Workflow</span>
+              <h2 data-i18n="ingestionTitle">When a new file comes in, every stage should be auditable and reversible.</h2>
+              <p class="lead" data-i18n="ingestionLead">
+                The workflow treats a new file as evidence first, then as a discoverable asset.
+                It captures provenance and rights before enrichment, maps source metadata into the
+                canonical model before federation, and allows AI to suggest derivatives without
+                silently overwriting cataloger-controlled fields.
+              </p>
+            </div>
+            <p class="note" data-i18n="ingestionNote">
+              This is the operational bridge between preservation, asset management, metadata
+              design, partner exchange, and downstream discovery.
+            </p>
+          </div>
+
+          <div class="workflow-rail" aria-label="Ingestion and federation workflow">
+            <article class="workflow-step">
+              <span class="workflow-number">1</span>
+              <h3 data-i18n="workflow1Title">Acquire / Harvest</h3>
+              <p data-i18n="workflow1Body">Receive a file, partner package, upload, or harvested record with its source context.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">2</span>
+              <h3 data-i18n="workflow2Title">Rights and Terms Gate</h3>
+              <p data-i18n="workflow2Body">Check donor terms, provider restrictions, copyright, privacy, and access policy before processing.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">3</span>
+              <h3 data-i18n="workflow3Title">Validate and Profile</h3>
+              <p data-i18n="workflow3Body">Identify format, create checksums, inspect technical metadata, and reject unsafe or incomplete packages.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">4</span>
+              <h3 data-i18n="workflow4Title">Canonical Mapping</h3>
+              <p data-i18n="workflow4Body">Map source metadata into the internal model while retaining source-native fields and identifiers.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">5</span>
+              <h3 data-i18n="workflow5Title">Normalize and Enrich</h3>
+              <p data-i18n="workflow5Body">Create access formats, normalize dates and names, and prepare files for delivery or indexing.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">6</span>
+              <h3 data-i18n="workflow6Title">Authority / Entity Reconciliation</h3>
+              <p data-i18n="workflow6Body">Link people, organizations, places, events, and subjects to controlled entities where possible.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">7</span>
+              <h3 data-i18n="workflow7Title">Deduplicate Relationships</h3>
+              <p data-i18n="workflow7Body">Detect duplicates, versions, format variants, citations, and part-of relationships before publication.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">8</span>
+              <h3 data-i18n="workflow8Title">OCR / ASR / AI Suggestions</h3>
+              <p data-i18n="workflow8Body">Generate transcripts, OCR, summaries, topics, and embeddings as versioned derivative evidence.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">9</span>
+              <h3 data-i18n="workflow9Title">QA / Human Review</h3>
+              <p data-i18n="workflow9Body">Review rights, metadata quality, entity links, AI outputs, and search evidence before public release.</p>
+            </article>
+            <article class="workflow-step">
+              <span class="workflow-number">10</span>
+              <h3 data-i18n="workflow10Title">Publish Authoritatively</h3>
+              <p data-i18n="workflow10Body">Publish approved records, delivery manifests, APIs, exports, and search indexes from the canonical layer.</p>
+            </article>
+          </div>
+
+          <div class="workflow-notes">
+            <article class="workflow-note">
+              <h3 data-i18n="workflowAuditTitle">Audit and rollback controls</h3>
+              <ul>
+                <li data-i18n="workflowAudit1">Every stage records who acted, when it happened, what changed, and which source file or record was affected.</li>
+                <li data-i18n="workflowAudit2">AI enrichments are versioned derivatives and never silently overwrite cataloger or rights-review fields.</li>
+                <li data-i18n="workflowAudit3">Failed validation or rights uncertainty stops publication but preserves the evidence package for later review.</li>
+              </ul>
+            </article>
+            <article class="workflow-note">
+              <h3 data-i18n="workflowFederationTitle">Federation outputs</h3>
+              <ul>
+                <li data-i18n="workflowFederation1">Provider identity, source URL, source record ID, retrieval history, rights terms, and mapping provenance travel with the record.</li>
+                <li data-i18n="workflowFederation2">Downstream APIs, IIIF manifests, OAI-PMH exports, and search indexes receive only the fields permitted by access policy.</li>
+                <li data-i18n="workflowFederation3">Partner updates can be reconciled through source IDs and crosswalk versions instead of manual spreadsheet repair.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="retrieval">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="retrievalKicker">Search and AI</span>
+              <h2 data-i18n="retrievalTitle">Hybrid retrieval constrained by structured facts.</h2>
+              <p class="lead" data-i18n="retrievalLead">
+                Deterministic structured metadata governs access, dates, rights, and hierarchy.
+                Probabilistic search improves discovery across text, language, and concepts. Both
+                are necessary, but they must play different roles.
+              </p>
+            </div>
+            <p class="note" data-i18n="retrievalNote">
+              This boundary is the main control that makes AI useful without turning generated
+              text into undocumented archival truth.
+            </p>
+          </div>
+
+          <div class="search-logic-grid">
+            <article class="search-logic-card">
+              <span class="search-logic-number" data-i18n="logic1Number">1.</span>
+              <h3 data-i18n="logic1Title">Exact and fielded search</h3>
+              <p data-i18n="logic1Body">
+                Best for identifiers, names, dates, rights states, collection filters, and
+                known-item retrieval.
+              </p>
+            </article>
+            <article class="search-logic-card">
+              <span class="search-logic-number" data-i18n="logic2Number">2.</span>
+              <h3 data-i18n="logic2Title">Lexical search</h3>
+              <p data-i18n="logic2Body">
+                BM25-style retrieval remains strong for rare names, historical wording,
+                abbreviations, and exact phrases.
+              </p>
+            </article>
+            <article class="search-logic-card">
+              <span class="search-logic-number" data-i18n="logic3Number">3.</span>
+              <h3 data-i18n="logic3Title">Semantic search</h3>
+              <p data-i18n="logic3Body">
+                Vector retrieval connects multilingual expressions, indirect mentions, and
+                conceptually related materials across collections.
+              </p>
+            </article>
+            <article class="search-logic-card">
+              <span class="search-logic-number" data-i18n="logic4Number">4.</span>
+              <h3 data-i18n="logic4Title">Reranking and evidence package</h3>
+              <p data-i18n="logic4Body">
+                Final ranking combines relevance, authority signals, and explicit evidence such as
+                source record, page, region, or timestamp.
+              </p>
+            </article>
+          </div>
+
+          <div class="split-layout">
+            <article class="split-panel">
+              <h3 data-i18n="deterministicTitle">Must rely on structured canonical metadata</h3>
+              <ul>
+                <li data-i18n="deterministic1">Rights and copyright control: never use semantic similarity to decide whether a restricted file is public.</li>
+                <li data-i18n="deterministic2">Exact historical dates and source-institution attribution.</li>
+                <li data-i18n="deterministic3">Archival hierarchy and context: fonds, series, file, item, segment.</li>
+                <li data-i18n="deterministic4">File fixity, preservation events, and long-term storage status.</li>
+              </ul>
+            </article>
+            <article class="split-panel search">
+              <h3 data-i18n="probabilisticTitle">Appropriate for non-authoritative derived search</h3>
+              <ul>
+                <li data-i18n="probabilistic1">Full-text OCR and long-form oral-history transcripts.</li>
+                <li data-i18n="probabilistic2">Expanded essays, summaries, translations, and topic suggestions.</li>
+                <li data-i18n="probabilistic3">Regenerable semantic vector indexes for concept and multilingual discovery.</li>
+                <li data-i18n="probabilistic4">Reranking over evidence packages, never over detached chunks without source context.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="funnel">
+            <article class="funnel-step">
+              <h3 data-i18n="funnel1Title">Foundation Filters: Exact / Facets</h3>
+              <p data-i18n="funnel1Body">Use canonical metadata for date ranges, rights, named entities, collections, formats, and publication state.</p>
+            </article>
+            <article class="funnel-step">
+              <h3 data-i18n="funnel2Title">Lexical Retrieval: BM25</h3>
+              <p data-i18n="funnel2Body">Use precise keyword matching for rare names, military unit codes, acronyms, and quoted phrases.</p>
+            </article>
+            <article class="funnel-step">
+              <h3 data-i18n="funnel3Title">Semantic Retrieval: Dense Vectors</h3>
+              <p data-i18n="funnel3Body">Use embeddings to capture conceptual similarity and multilingual variants that may not share exact vocabulary.</p>
+            </article>
+            <article class="funnel-step">
+              <h3 data-i18n="funnel4Title">Reranking</h3>
+              <p data-i18n="funnel4Body">Combine relevance, authority signals, and evidence references to improve the top results.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band alt" id="success">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="successKicker">Success Factors</span>
+              <h2 data-i18n="successTitle">Evaluate the system as infrastructure, not as a prettier spreadsheet.</h2>
+              <p class="lead" data-i18n="successLead">
+                The pilot should be judged on governance, search quality, and preservation
+                durability. These metrics translate the rough dashboard concept into measurable
+                success criteria.
+              </p>
+            </div>
+            <p class="note" data-i18n="successNote">
+              Search tests should include known-item queries and exploratory historical questions,
+              with results evaluated against citation-bearing evidence.
+            </p>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric">
+              <h3 data-i18n="metric1Title">Data Integrity and Provenance</h3>
+              <div class="metric-value">
+                <span data-i18n="metric1Value">Target</span>
+                <span class="metric-fill">100%</span>
+              </div>
+              <ul>
+                <li data-i18n="metric1Bullet1">Provenance coverage for published records should reach 100%.</li>
+                <li data-i18n="metric1Bullet2">All public records must carry explicit rights and access decisions.</li>
+                <li data-i18n="metric1Bullet3">Every derived record links back to source evidence.</li>
+              </ul>
+            </article>
+            <article class="metric">
+              <h3 data-i18n="metric2Title">AI and Discovery Accuracy</h3>
+              <div class="metric-value">
+                <span data-i18n="metric2Value">Pilot</span>
+                <span class="metric-fill">>=98%</span>
+              </div>
+              <ul>
+                <li data-i18n="metric2Bullet1">Entity-link precision target: >=98% on reviewed pilot entities.</li>
+                <li data-i18n="metric2Bullet2">MRR measures known-item retrieval efficiency.</li>
+                <li data-i18n="metric2Bullet3">nDCG measures ranking quality for exploratory historical queries.</li>
+              </ul>
+            </article>
+            <article class="metric">
+              <h3 data-i18n="metric3Title">Digital Preservation Resilience</h3>
+              <div class="metric-value">
+                <span data-i18n="metric3Value">Fixity</span>
+                <span class="metric-fill">100%</span>
+              </div>
+              <ul>
+                <li data-i18n="metric3Bullet1">Scheduled fixity checks should pass for preservation files.</li>
+                <li data-i18n="metric3Bullet2">Storage forecast should cover the next 12 months of expected ingest.</li>
+                <li data-i18n="metric3Bullet3">Preservation copies must be separate from public access derivatives.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="roadmap">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="roadmapKicker">Implementation Path</span>
+              <h2 data-i18n="roadmapTitle">Pilot the architecture before scaling the collection.</h2>
+              <p class="lead" data-i18n="roadmapLead">
+                The first milestone should prove one representative collection end to end: intake,
+                canonical modeling, preservation storage, derivatives, relationship metadata,
+                search evaluation, and partner-ready export.
+              </p>
+            </div>
+            <p class="note" data-i18n="roadmapNote">
+              The proposal deliberately avoids big-bang migration. A small pilot can expose model
+              gaps before the institution commits to a broader rollout.
+            </p>
+          </div>
+
+          <div class="grid three">
+            <article class="step">
+              <h3 data-i18n="phase1Title">Phase 1: Define and ingest</h3>
+              <p data-i18n="phase1Body">Select the pilot collection, assign stable IDs, define the canonical profile, capture preservation files, and generate fixity records.</p>
+            </article>
+            <article class="step">
+              <h3 data-i18n="phase2Title">Phase 2: Model and enrich</h3>
+              <p data-i18n="phase2Body">Create source records, representations, file relationships, segments, rights states, OCR/ASR/translations, and derivative metadata.</p>
+            </article>
+            <article class="step">
+              <h3 data-i18n="phase3Title">Phase 3: Test and federate</h3>
+              <p data-i18n="phase3Body">Evaluate retrieval with MRR and nDCG, validate provenance coverage, test IIIF/API/export paths, and document crosswalk decisions.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="band alt" id="references">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <span class="kicker" data-i18n="referencesKicker">Research Basis</span>
+              <h2 data-i18n="referencesTitle">References used for best-practice alignment.</h2>
+              <p class="lead" data-i18n="referencesLead">
+                This proposal uses the attached framework PDF and design screenshots as internal
+                source material, then aligns the recommendations with official standards and
+                institutional implementation references.
+              </p>
+            </div>
+            <p class="note" data-i18n="referencesNote">
+              The sources support the architecture direction; they do not require adopting every
+              standard wholesale.
+            </p>
+          </div>
+
+          <div class="source-links">
+            <a href="https://ccsds.org/searchpubs/entry/3054/" data-i18n="sourceOais">OAIS Reference Model</a>
+            <a href="https://www.loc.gov/standards/premis/" data-i18n="sourcePremis">PREMIS Preservation Metadata</a>
+            <a href="https://www.loc.gov/standards/mods/" data-i18n="sourceMods">MODS, Library of Congress</a>
+            <a href="https://www.loc.gov/ead/" data-i18n="sourceEad">EAD, Library of Congress</a>
+            <a href="https://lido-schema.org/schema/latest/lido.html" data-i18n="sourceLido">LIDO Schema</a>
+            <a href="https://iiif.io/api/presentation/3.0/" data-i18n="sourceIiif">IIIF Presentation API 3.0</a>
+            <a href="https://www.openarchives.org/pmh/" data-i18n="sourceOaiPmh">OAI-PMH</a>
+            <a href="https://ocfl.io/" data-i18n="sourceOcfl">OCFL</a>
+            <a href="https://www.ndsa.org/publications/levels-of-digital-preservation/" data-i18n="sourceNdsa">NDSA Levels of Digital Preservation</a>
+            <a href="https://www.archives.gov/preservation/digital-preservation/about" data-i18n="sourceNara">NARA Digital Preservation</a>
+            <a href="https://www.loc.gov/programs/digital-collections-management/about-this-program/frequently-asked-questions/" data-i18n="sourceLocDcmc">Library of Congress DCMC</a>
+            <a href="https://sdr.library.stanford.edu/about" data-i18n="sourceStanford">Stanford Digital Repository</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span data-i18n="footerNote">
+          Draft design proposal for the preservation and asset-management track, based on attached design notes and standards research reviewed in August 2026.
+        </span>
+        <a href="./archival-infrastructure-architecture-proposal.html" data-i18n="footerLink">Back to architecture overview</a>
+      </div>
+    </footer>
+
+    <script>
+      const translations = {
+        en: {
+          navWhy: "Why Change",
+          navPrinciples: "Principles",
+          navModel: "Data Model",
+          navStandards: "Standards",
+          navIngestion: "Ingestion",
+          navRetrieval: "Retrieval",
+          navSuccess: "Success",
+          heroEyebrow: "Design Proposal",
+          heroTitle: "Preservation-Led Digital Collections Asset Management",
+          heroLead:
+            "This proposal defines why shared drives and spreadsheets should not remain the long-term system of record for the archive, and why the preservation and asset management track must be designed as governed infrastructure. The target system separates canonical metadata, provenance, preservation files, access derivatives, federation, and AI/search layers so that collection growth does not destroy evidence or source meaning.",
+          heroAskTitle: "Decision Requested",
+          heroAskBody:
+            "Approve a dedicated preservation and asset management track, with Google Drive and Sheets limited to intake, coordination, and temporary staging.",
+          whyKicker: "System Boundary",
+          whyTitle: "Why Drive and Sheets are not a safe archival system.",
+          whyLead:
+            "Google Drive and Google Sheets are useful operating tools. They are not a preservation repository, archival database, rights-governance layer, or durable data model. The risk is not only inconvenience - the risk is losing original files, losing provenance, publishing restricted material, or making AI/search output look more authoritative than the source record.",
+          whyNote:
+            "Proposed role: Drive and Sheets can stay in the workflow as intake and collaboration surfaces. They should not be the long-term system of record.",
+          driveRisk1Title: "No preservation boundary",
+          driveRisk1Body:
+            "Originals, access copies, edits, and exports can be mixed in the same folder. Without fixity, preservation events, and file-role controls, master files can be overwritten, renamed, duplicated, or lost.",
+          driveRisk2Title: "No reliable provenance chain",
+          driveRisk2Body:
+            "Spreadsheet history is not a complete chain of custody. It does not reliably preserve who created a source description, when a file was received, how it changed, and which derivative was produced from which master.",
+          driveRisk3Title: "No enforceable rights model",
+          driveRisk3Body:
+            "Access decisions cannot depend on ad hoc columns, folder names, or semantic similarity. Rights, restrictions, review status, embargoes, and publication state need governed fields and audit logs.",
+          driveRisk4Title: "No real entity model",
+          driveRisk4Body:
+            "One row cannot safely carry collection context, object identity, source metadata, digital representation, stored file, and page or timestamp-level segments.",
+          driveRisk5Title: "No federation strategy",
+          driveRisk5Body:
+            "Partner archives, universities, and national repositories need stable identifiers, APIs, export formats, source IDs, and mapping rules - not local-only spreadsheet conventions.",
+          driveRisk6Title: "No safe AI boundary",
+          driveRisk6Body:
+            "OCR, transcripts, translations, summaries, and vectors are useful but derived. They must remain labeled, reviewable, rebuildable, and subordinate to source evidence.",
+          trackPTitle: "Preservation track",
+          trackPBody:
+            "Protect original and preservation master files with storage policy, checksums, versioned packages, preservation events, and auditable custody.",
+          trackATitle: "Asset management track",
+          trackABody:
+            "Manage relationships among objects, representations, files, derivatives, rights, and access copies so discovery and delivery can grow without corrupting the record.",
+          principlesKicker: "Core Principles",
+          principlesTitle: "Three foundation concepts for long-term digital asset management.",
+          principlesLead:
+            "These principles come directly from the proposed design notes: preserve a canonical metadata layer, keep provenance explicit, and federate through APIs and standards without erasing source identity.",
+          principlesNote:
+            "The architecture should make later search and AI stronger by making the underlying records more disciplined, not more blended.",
+          principle1Title: "Canonical Metadata",
+          principle1Body:
+            "A governed, institution-approved source of truth for the fields the program is willing to claim: identity, hierarchy, rights, publication state, source context, and preservation status.",
+          principle2Title: "Provenance",
+          principle2Body:
+            "Every important record or file carries origin, acquisition path, processing history, derivative lineage, and change events across its lifecycle.",
+          principle3Title: "Federation",
+          principle3Body:
+            "The archive should connect dynamically to partner repositories through APIs, harvests, exports, and mapping rules while respecting source rights and updates.",
+          modelKicker: "Entity Model",
+          modelTitle: "Do not flatten the archive into one spreadsheet row.",
+          modelLead:
+            "The core model separates ideas, descriptions, representations, files, and segments. Each entity has its own identity, lifecycle, relationships, and governance rules. This reflects the attached data-model proposal and the research framework for the current system.",
+          modelNote:
+            "The model is lightweight by design: enough structure to preserve truth, but not a heavyweight attempt to force every external standard into one local table.",
+          modelNode1Title: "Collection",
+          modelNode1Body: "Context, grouping, fonds, series, collection hierarchy.",
+          modelNode2Title: "Object",
+          modelNode2Body: "The cultural, historical, or knowledge object being described.",
+          modelNode3Title: "Source Record",
+          modelNode3Body: "A description from a source institution, catalog, donor, or archivist.",
+          modelNode4Title: "Digital Representation",
+          modelNode4Body: "How the object appears digitally: scan, audio, video, transcript, derivative.",
+          modelNode5Title: "File / Bitstream",
+          modelNode5Body: "The actual stored file, checksum, format, storage location, and file role.",
+          modelNode6Title: "Part / Segment",
+          modelNode6Body: "Specific page, region, clip, transcript span, or timestamp for citation.",
+          exampleTitle: "Example model instance",
+          example1:
+            "<strong>Collection:</strong> Flying Tigers Historical Collection, including correspondence and audio from 1940-1945.",
+          example2:
+            "<strong>Object:</strong> Claire Chennault oral-history interview, 1944, subject: air war.",
+          example3:
+            "<strong>Representation:</strong> WAV preservation audio, MP3 access audio, and ASR transcript.",
+          example4:
+            "<strong>File:</strong> interview_master.wav with checksum 8a7b42f... for fixity verification.",
+          example5:
+            "<strong>Segment:</strong> page, region, or timestamp span, such as 00:13:14-00:14:22, for precise citation.",
+          separationTitle: "Why this separation matters",
+          separation1: "It prevents loss of original meaning and source differences.",
+          separation2: "It allows multiple descriptions for the same object.",
+          separation3: "It makes OCR, AI output, thumbnails, vectors, and access copies replaceable.",
+          separation4: "It supports precise citation down to page, region, transcript span, or timestamp.",
+          standardsKicker: "Standards Ecosystem",
+          standardsTitle: "Use a gear map, not a single winner standard.",
+          standardsLead:
+            "The practical architecture should define a lightweight internal application profile and map external standards into it without loss. Each standard keeps its job. The canonical model coordinates them.",
+          standardsNote:
+            "Strategy: define the internal canonical model first, then maintain versioned crosswalks for source import, partner export, and federation.",
+          dcmiTitle: "Dublin Core / DCMI",
+          dcmiBody: "Broad cross-domain discovery and baseline metadata exchange.",
+          modsTitle: "MODS",
+          modsBody: "Richer bibliographic and library-oriented structured description.",
+          eadTitle: "EAD",
+          eadBody: "Archival hierarchy and finding-aid depth: fonds, series, files, items.",
+          lidoTitle: "LIDO",
+          lidoBody: "Museum and material-culture object exchange, including complex object context.",
+          premisTitle: "PREMIS",
+          premisBody: "Preservation metadata for files, events, agents, rights, and fixity evidence.",
+          crosswalkHeader1: "Architecture area",
+          crosswalkHeader2: "Canonical fields",
+          crosswalkHeader3: "Standards mapped",
+          crosswalkHeader4: "Governance rule",
+          crosswalkArea1: "Identity and hierarchy",
+          crosswalkFields1: "collection_id, object_id, parent_id, object_type, title",
+          crosswalkStandards1: "EAD, DCMI, MODS, LIDO",
+          crosswalkRule1: "Every public record must resolve to stable internal identity.",
+          crosswalkArea2: "Source and provenance",
+          crosswalkFields2: "source_record_id, source_institution, harvest_date, event_log",
+          crosswalkStandards2: "PREMIS, OAI-PMH, partner APIs",
+          crosswalkRule2: "Do not erase source-native terms when harmonizing for discovery.",
+          crosswalkArea3: "Digital assets",
+          crosswalkFields3: "representation_id, file_id, file_role, format, checksum",
+          crosswalkStandards3: "PREMIS, IIIF, OCFL-style storage concepts",
+          crosswalkRule3: "Preservation files and access derivatives must stay distinct.",
+          crosswalkArea4: "Rights and publication",
+          crosswalkFields4: "rights_status, access_policy, review_state, publication_state",
+          crosswalkStandards4: "PREMIS rights, local policy, partner restrictions",
+          crosswalkRule4: "Unknown or restricted rights do not default to public release.",
+          metadataKicker: "Metadata Detail",
+          metadataTitle: "Relationships are first-class metadata, not notes in a cell.",
+          metadataLead:
+            "Relationship modeling lets the system support authority resolution, multilingual discovery, precise citation, and explainable AI answers. It also keeps source descriptions separate from institution-approved assertions.",
+          metadataNote:
+            "This is where the later metadata-design detail and relationship demo can be expanded without changing the core model.",
+          strategyHeaderCategory: "Category",
+          strategyHeaderFields: "Examples of fields",
+          strategyHeaderPurpose: "Purpose",
+          strategyCatIdentity: "Identity",
+          strategyFieldsIdentity: "title, alternative_title, record_id, object_type",
+          strategyPurposeIdentity: "Who or what is this?",
+          strategyCatContext: "Context",
+          strategyFieldsContext: "collection, hierarchy, provenance, source_institution",
+          strategyPurposeContext: "Where does it come from?",
+          strategyCatAgents: "Agents",
+          strategyFieldsAgents: "creator, photographer, interviewer, donor",
+          strategyPurposeAgents: "Who is involved?",
+          strategyCatPlaceTime: "Place and Time",
+          strategyFieldsPlaceTime: "place, date_display, date_from, date_to, event",
+          strategyPurposePlaceTime: "When and where?",
+          strategyCatSubject: "Subject",
+          strategyFieldsSubject: "subject_terms, concepts, keywords controlled by vocabulary",
+          strategyPurposeSubject: "What is it about?",
+          strategyCatRights: "Rights and Access",
+          strategyFieldsRights: "copyright, license_uri, access_policy, restrictions",
+          strategyPurposeRights: "How can it be used?",
+          strategyCatSource: "Source and Provenance",
+          strategyFieldsSource: "source_record_id, source_url, harvest_date, cataloger",
+          strategyPurposeSource: "How do we know this?",
+          strategyCatRelationships: "Relationships",
+          strategyFieldsRelationships: "related_objects, part_of, is_version_of, references",
+          strategyPurposeRelationships: "How is it connected?",
+          strategyFootnote:
+            "All important fields carry source, date_created, last_updated, and confidence or review status.",
+          relationshipDemoTitle: "Relationships between different types of materials",
+          materialPhoto: "Photo",
+          materialVideo: "Video / Audio",
+          materialEvent: "Event",
+          materialDocument: "Document",
+          materialObject: "Object",
+          materialPlace: "Place",
+          materialOralHistory: "Oral History",
+          materialAgent: "Person / Agent",
+          materialRights: "Rights / Access",
+          commonRelationshipsTitle: "Common relationships",
+          relationshipType1: "Part of a larger item or collection",
+          relationshipType2: "Different versions or representations",
+          relationshipType3: "Relates to a person, place, or event",
+          relationshipType4: "Cites or mentions another item",
+          relationshipType5: "Created from another item",
+          relationshipType6: "Same intellectual content, different format",
+          relationshipType7: "Linked by context or subject",
+          relationshipExampleTitle: "Relationship example",
+          relationshipExampleBody:
+            "An oral-history interview can reference a letter and a photograph about the same event in Kunming, 1944. All are linked to an Event with date and place, a Person as interviewee, a Collection as source context, and Rights as access rules.",
+          ingestionKicker: "Ingestion and Federation Workflow",
+          ingestionTitle:
+            "When a new file comes in, every stage should be auditable and reversible.",
+          ingestionLead:
+            "The workflow treats a new file as evidence first, then as a discoverable asset. It captures provenance and rights before enrichment, maps source metadata into the canonical model before federation, and allows AI to suggest derivatives without silently overwriting cataloger-controlled fields.",
+          ingestionNote:
+            "This is the operational bridge between preservation, asset management, metadata design, partner exchange, and downstream discovery.",
+          workflow1Title: "Acquire / Harvest",
+          workflow1Body:
+            "Receive a file, partner package, upload, or harvested record with its source context.",
+          workflow2Title: "Rights and Terms Gate",
+          workflow2Body:
+            "Check donor terms, provider restrictions, copyright, privacy, and access policy before processing.",
+          workflow3Title: "Validate and Profile",
+          workflow3Body:
+            "Identify format, create checksums, inspect technical metadata, and reject unsafe or incomplete packages.",
+          workflow4Title: "Canonical Mapping",
+          workflow4Body:
+            "Map source metadata into the internal model while retaining source-native fields and identifiers.",
+          workflow5Title: "Normalize and Enrich",
+          workflow5Body:
+            "Create access formats, normalize dates and names, and prepare files for delivery or indexing.",
+          workflow6Title: "Authority / Entity Reconciliation",
+          workflow6Body:
+            "Link people, organizations, places, events, and subjects to controlled entities where possible.",
+          workflow7Title: "Deduplicate Relationships",
+          workflow7Body:
+            "Detect duplicates, versions, format variants, citations, and part-of relationships before publication.",
+          workflow8Title: "OCR / ASR / AI Suggestions",
+          workflow8Body:
+            "Generate transcripts, OCR, summaries, topics, and embeddings as versioned derivative evidence.",
+          workflow9Title: "QA / Human Review",
+          workflow9Body:
+            "Review rights, metadata quality, entity links, AI outputs, and search evidence before public release.",
+          workflow10Title: "Publish Authoritatively",
+          workflow10Body:
+            "Publish approved records, delivery manifests, APIs, exports, and search indexes from the canonical layer.",
+          workflowAuditTitle: "Audit and rollback controls",
+          workflowAudit1:
+            "Every stage records who acted, when it happened, what changed, and which source file or record was affected.",
+          workflowAudit2:
+            "AI enrichments are versioned derivatives and never silently overwrite cataloger or rights-review fields.",
+          workflowAudit3:
+            "Failed validation or rights uncertainty stops publication but preserves the evidence package for later review.",
+          workflowFederationTitle: "Federation outputs",
+          workflowFederation1:
+            "Provider identity, source URL, source record ID, retrieval history, rights terms, and mapping provenance travel with the record.",
+          workflowFederation2:
+            "Downstream APIs, IIIF manifests, OAI-PMH exports, and search indexes receive only the fields permitted by access policy.",
+          workflowFederation3:
+            "Partner updates can be reconciled through source IDs and crosswalk versions instead of manual spreadsheet repair.",
+          retrievalKicker: "Search and AI",
+          retrievalTitle: "Hybrid retrieval constrained by structured facts.",
+          retrievalLead:
+            "Deterministic structured metadata governs access, dates, rights, and hierarchy. Probabilistic search improves discovery across text, language, and concepts. Both are necessary, but they must play different roles.",
+          retrievalNote:
+            "This boundary is the main control that makes AI useful without turning generated text into undocumented archival truth.",
+          logic1Number: "1.",
+          logic1Title: "Exact and fielded search",
+          logic1Body:
+            "Best for identifiers, names, dates, rights states, collection filters, and known-item retrieval.",
+          logic2Number: "2.",
+          logic2Title: "Lexical search",
+          logic2Body:
+            "BM25-style retrieval remains strong for rare names, historical wording, abbreviations, and exact phrases.",
+          logic3Number: "3.",
+          logic3Title: "Semantic search",
+          logic3Body:
+            "Vector retrieval connects multilingual expressions, indirect mentions, and conceptually related materials across collections.",
+          logic4Number: "4.",
+          logic4Title: "Reranking and evidence package",
+          logic4Body:
+            "Final ranking combines relevance, authority signals, and explicit evidence such as source record, page, region, or timestamp.",
+          deterministicTitle: "Must rely on structured canonical metadata",
+          deterministic1:
+            "Rights and copyright control: never use semantic similarity to decide whether a restricted file is public.",
+          deterministic2: "Exact historical dates and source-institution attribution.",
+          deterministic3: "Archival hierarchy and context: fonds, series, file, item, segment.",
+          deterministic4: "File fixity, preservation events, and long-term storage status.",
+          probabilisticTitle: "Appropriate for non-authoritative derived search",
+          probabilistic1: "Full-text OCR and long-form oral-history transcripts.",
+          probabilistic2: "Expanded essays, summaries, translations, and topic suggestions.",
+          probabilistic3: "Regenerable semantic vector indexes for concept and multilingual discovery.",
+          probabilistic4: "Reranking over evidence packages, never over detached chunks without source context.",
+          funnel1Title: "Foundation Filters: Exact / Facets",
+          funnel1Body:
+            "Use canonical metadata for date ranges, rights, named entities, collections, formats, and publication state.",
+          funnel2Title: "Lexical Retrieval: BM25",
+          funnel2Body:
+            "Use precise keyword matching for rare names, military unit codes, acronyms, and quoted phrases.",
+          funnel3Title: "Semantic Retrieval: Dense Vectors",
+          funnel3Body:
+            "Use embeddings to capture conceptual similarity and multilingual variants that may not share exact vocabulary.",
+          funnel4Title: "Reranking",
+          funnel4Body: "Combine relevance, authority signals, and evidence references to improve the top results.",
+          successKicker: "Success Factors",
+          successTitle: "Evaluate the system as infrastructure, not as a prettier spreadsheet.",
+          successLead:
+            "The pilot should be judged on governance, search quality, and preservation durability. These metrics translate the rough dashboard concept into measurable success criteria.",
+          successNote:
+            "Search tests should include known-item queries and exploratory historical questions, with results evaluated against citation-bearing evidence.",
+          metric1Title: "Data Integrity and Provenance",
+          metric1Value: "Target",
+          metric1Bullet1: "Provenance coverage for published records should reach 100%.",
+          metric1Bullet2: "All public records must carry explicit rights and access decisions.",
+          metric1Bullet3: "Every derived record links back to source evidence.",
+          metric2Title: "AI and Discovery Accuracy",
+          metric2Value: "Pilot",
+          metric2Bullet1: "Entity-link precision target: >=98% on reviewed pilot entities.",
+          metric2Bullet2: "MRR measures known-item retrieval efficiency.",
+          metric2Bullet3: "nDCG measures ranking quality for exploratory historical queries.",
+          metric3Title: "Digital Preservation Resilience",
+          metric3Value: "Fixity",
+          metric3Bullet1: "Scheduled fixity checks should pass for preservation files.",
+          metric3Bullet2: "Storage forecast should cover the next 12 months of expected ingest.",
+          metric3Bullet3: "Preservation copies must be separate from public access derivatives.",
+          roadmapKicker: "Implementation Path",
+          roadmapTitle: "Pilot the architecture before scaling the collection.",
+          roadmapLead:
+            "The first milestone should prove one representative collection end to end: intake, canonical modeling, preservation storage, derivatives, relationship metadata, search evaluation, and partner-ready export.",
+          roadmapNote:
+            "The proposal deliberately avoids big-bang migration. A small pilot can expose model gaps before the institution commits to a broader rollout.",
+          phase1Title: "Phase 1: Define and ingest",
+          phase1Body:
+            "Select the pilot collection, assign stable IDs, define the canonical profile, capture preservation files, and generate fixity records.",
+          phase2Title: "Phase 2: Model and enrich",
+          phase2Body:
+            "Create source records, representations, file relationships, segments, rights states, OCR/ASR/translations, and derivative metadata.",
+          phase3Title: "Phase 3: Test and federate",
+          phase3Body:
+            "Evaluate retrieval with MRR and nDCG, validate provenance coverage, test IIIF/API/export paths, and document crosswalk decisions.",
+          referencesKicker: "Research Basis",
+          referencesTitle: "References used for best-practice alignment.",
+          referencesLead:
+            "This proposal uses the attached framework PDF and design screenshots as internal source material, then aligns the recommendations with official standards and institutional implementation references.",
+          referencesNote:
+            "The sources support the architecture direction; they do not require adopting every standard wholesale.",
+          sourceOais: "OAIS Reference Model",
+          sourcePremis: "PREMIS Preservation Metadata",
+          sourceMods: "MODS, Library of Congress",
+          sourceEad: "EAD, Library of Congress",
+          sourceLido: "LIDO Schema",
+          sourceIiif: "IIIF Presentation API 3.0",
+          sourceOaiPmh: "OAI-PMH",
+          sourceOcfl: "OCFL",
+          sourceNdsa: "NDSA Levels of Digital Preservation",
+          sourceNara: "NARA Digital Preservation",
+          sourceLocDcmc: "Library of Congress DCMC",
+          sourceStanford: "Stanford Digital Repository",
+          footerNote:
+            "Draft design proposal for the preservation and asset-management track, based on attached design notes and standards research reviewed in August 2026.",
+          footerLink: "Back to architecture overview"
+        },
+        zh: {
+          navWhy: "为什么要改",
+          navPrinciples: "原则",
+          navModel: "数据模型",
+          navStandards: "标准生态",
+          navIngestion: "导入与联邦",
+          navRetrieval: "检索",
+          navSuccess: "成功指标",
+          heroEyebrow: "设计提案",
+          heroTitle: "以保存为核心的数字馆藏资产管理",
+          heroLead:
+            "这份提案说明为什么共享网盘和电子表格不应继续作为档案的长期权威系统，也说明为什么 preservation 与 asset management 这条 track 必须作为可治理的基础设施来设计。目标系统会明确拆分 canonical metadata、provenance、保存文件、访问衍生物、联邦互通以及 AI/检索层，避免馆藏规模扩大时损失证据或来源语义。",
+          heroAskTitle: "需要批准的决策",
+          heroAskBody:
+            "批准单独建设 preservation 与 asset management track，并把 Google Drive / Sheets 限定为采集入口、协作界面和临时 staging 区。",
+          whyKicker: "系统边界",
+          whyTitle: "为什么 Drive 和 Sheets 不是安全的档案系统。",
+          whyLead:
+            "Google Drive 和 Google Sheets 是有用的操作工具，但它们不是 preservation repository、档案数据库、权限治理层，也不是长期数据模型。风险不只是“不方便”，而是原始文件丢失、来源链丢失、受限材料被误公开，或 AI/检索输出看起来比源记录更权威。",
+          whyNote:
+            "建议角色：Drive 和 Sheets 可以继续留在流程中作为 intake 与协作界面，但不应作为长期 system of record。",
+          driveRisk1Title: "没有保存边界",
+          driveRisk1Body:
+            "原始文件、访问副本、人工编辑和导出文件可能混在同一个文件夹里。没有 fixity、保存事件和 file-role 控制，master files 就可能被覆盖、重命名、重复或丢失。",
+          driveRisk2Title: "没有可靠 provenance 链",
+          driveRisk2Body:
+            "表格历史不是完整的 chain of custody。它无法可靠保存 source description 由谁创建、文件何时接收、如何变化、哪个衍生物来自哪个 master。",
+          driveRisk3Title: "没有可执行的权限模型",
+          driveRisk3Body:
+            "访问决策不能依赖临时列、文件夹名或语义相似度。版权、限制、审核状态、embargo 和发布状态都需要受治理字段与审计日志。",
+          driveRisk4Title: "没有真正的实体模型",
+          driveRisk4Body:
+            "一行表格无法安全承载馆藏上下文、对象身份、来源元数据、数字表征、存储文件，以及页码或时间码级别的片段。",
+          driveRisk5Title: "没有联邦互通策略",
+          driveRisk5Body:
+            "合作档案馆、高校和国家级库需要稳定标识符、API、导出格式、来源 ID 和映射规则，而不是只在本地有效的表格约定。",
+          driveRisk6Title: "没有安全 AI 边界",
+          driveRisk6Body:
+            "OCR、转录、翻译、摘要和向量都很有用，但它们是衍生物。它们必须被标注、可审核、可重建，并且从属于来源证据。",
+          trackPTitle: "Preservation track",
+          trackPBody:
+            "用存储策略、checksum、版本化包、保存事件和可审计 custody 来保护原始文件和 preservation master files。",
+          trackATitle: "Asset management track",
+          trackABody:
+            "管理对象、数字表征、文件、衍生物、权限和访问副本之间的关系，让发现与交付能力可以增长而不污染记录。",
+          principlesKicker: "核心原则",
+          principlesTitle: "长期数字资产管理的三个基础概念。",
+          principlesLead:
+            "这些原则直接来自这批设计草稿：保留 canonical metadata 层，明确 provenance，并通过 API 与标准实现 federation，同时不抹掉来源身份。",
+          principlesNote:
+            "这个架构应该通过更严谨的底层记录让后续搜索和 AI 更强，而不是把所有东西混成一层。",
+          principle1Title: "Canonical Metadata",
+          principle1Body:
+            "一个经机构认可、受治理的权威事实来源，承载项目愿意正式声明的字段：身份、层级、权限、发布状态、来源上下文与保存状态。",
+          principle2Title: "Provenance",
+          principle2Body:
+            "每条重要记录或文件都携带来源、获取路径、处理历史、衍生链路以及生命周期中的变更事件。",
+          principle3Title: "Federation",
+          principle3Body:
+            "档案系统应通过 API、harvest、export 和 mapping rules 动态连接合作方库，同时尊重来源权限与更新。",
+          modelKicker: "实体模型",
+          modelTitle: "不要把档案压平成一行电子表格。",
+          modelLead:
+            "核心模型区分 ideas、descriptions、representations、files 和 segments。每个实体都有自己的身份、生命周期、关系和治理规则。这与附件中的 data-model proposal 以及当前系统 research framework 一致。",
+          modelNote:
+            "这个模型刻意保持轻量：结构足以保存事实，但不会试图把所有外部标准都硬塞进一张本地表。",
+          modelNode1Title: "Collection",
+          modelNode1Body: "上下文、分组、fonds、series 与馆藏层级。",
+          modelNode2Title: "Object",
+          modelNode2Body: "被描述的文化、历史或知识对象本身。",
+          modelNode3Title: "Source Record",
+          modelNode3Body: "来自来源机构、目录、捐赠者或档案员的一条描述。",
+          modelNode4Title: "Digital Representation",
+          modelNode4Body: "对象如何以数字方式出现：扫描件、音频、视频、转录或衍生物。",
+          modelNode5Title: "File / Bitstream",
+          modelNode5Body: "实际存储文件、checksum、格式、存储位置与文件角色。",
+          modelNode6Title: "Part / Segment",
+          modelNode6Body: "用于引用的具体页面、区域、片段、转录范围或时间码。",
+          exampleTitle: "示例模型实例",
+          example1:
+            "<strong>Collection:</strong> 飞虎队历史档案集合，包含 1940-1945 年间的通信与音频。",
+          example2:
+            "<strong>Object:</strong> Claire Chennault 口述历史访谈，1944，主题：空战。",
+          example3:
+            "<strong>Representation:</strong> WAV 保存音频、MP3 访问音频，以及 ASR 转录文本。",
+          example4:
+            "<strong>File:</strong> interview_master.wav，带 checksum 8a7b42f... 用于 fixity 校验。",
+          example5:
+            "<strong>Segment:</strong> 页面、区域或时间码片段，例如 00:13:14-00:14:22，用于精确引用。",
+          separationTitle: "为什么这种拆分重要",
+          separation1: "它防止原始含义和来源差异丢失。",
+          separation2: "它允许同一个对象拥有多个来源描述。",
+          separation3: "它让 OCR、AI 输出、缩略图、向量和访问副本保持可替换。",
+          separation4: "它支持精确到页面、区域、转录范围或时间码的引用。",
+          standardsKicker: "标准生态",
+          standardsTitle: "使用 gear map，而不是寻找唯一赢家标准。",
+          standardsLead:
+            "务实的架构应定义一个轻量的内部 application profile，并把外部标准无损映射进来。每个标准各司其职，由 canonical model 协调。",
+          standardsNote:
+            "策略：先定义内部 canonical model，再维护可版本化 crosswalk，用于来源导入、合作方导出与 federation。",
+          dcmiTitle: "Dublin Core / DCMI",
+          dcmiBody: "用于广泛跨领域发现和基础元数据交换。",
+          modsTitle: "MODS",
+          modsBody: "用于更丰富的书目与图书馆取向结构化描述。",
+          eadTitle: "EAD",
+          eadBody: "用于档案层级和 finding-aid 深度：fonds、series、files、items。",
+          lidoTitle: "LIDO",
+          lidoBody: "用于博物馆和物质文化对象交换，包括复杂对象上下文。",
+          premisTitle: "PREMIS",
+          premisBody: "用于文件、事件、agent、rights 与 fixity 证据等保存元数据。",
+          crosswalkHeader1: "架构区域",
+          crosswalkHeader2: "Canonical fields",
+          crosswalkHeader3: "映射标准",
+          crosswalkHeader4: "治理规则",
+          crosswalkArea1: "身份与层级",
+          crosswalkFields1: "collection_id, object_id, parent_id, object_type, title",
+          crosswalkStandards1: "EAD, DCMI, MODS, LIDO",
+          crosswalkRule1: "每条公开记录都必须能解析到稳定的内部身份。",
+          crosswalkArea2: "来源与 provenance",
+          crosswalkFields2: "source_record_id, source_institution, harvest_date, event_log",
+          crosswalkStandards2: "PREMIS, OAI-PMH, partner APIs",
+          crosswalkRule2: "为检索做协调时，不能抹掉 source-native terms。",
+          crosswalkArea3: "数字资产",
+          crosswalkFields3: "representation_id, file_id, file_role, format, checksum",
+          crosswalkStandards3: "PREMIS, IIIF, OCFL-style storage concepts",
+          crosswalkRule3: "保存文件与访问衍生物必须保持区分。",
+          crosswalkArea4: "权限与发布",
+          crosswalkFields4: "rights_status, access_policy, review_state, publication_state",
+          crosswalkStandards4: "PREMIS rights, local policy, partner restrictions",
+          crosswalkRule4: "未知或受限权限不能默认公开。",
+          metadataKicker: "元数据细节",
+          metadataTitle: "关系是一等元数据，不是单元格备注。",
+          metadataLead:
+            "关系建模让系统支持 authority resolution、多语言发现、精确引用和可解释 AI 答案，同时也把来源描述与机构认可的断言分开。",
+          metadataNote:
+            "之后的 metadata design detail 和 relationship demo 可以在这里继续扩展，而不需要改变核心模型。",
+          strategyHeaderCategory: "类别",
+          strategyHeaderFields: "字段示例",
+          strategyHeaderPurpose: "目的",
+          strategyCatIdentity: "Identity",
+          strategyFieldsIdentity: "title, alternative_title, record_id, object_type",
+          strategyPurposeIdentity: "这是什么，或是谁？",
+          strategyCatContext: "Context",
+          strategyFieldsContext: "collection, hierarchy, provenance, source_institution",
+          strategyPurposeContext: "它从哪里来？",
+          strategyCatAgents: "Agents",
+          strategyFieldsAgents: "creator, photographer, interviewer, donor",
+          strategyPurposeAgents: "谁参与其中？",
+          strategyCatPlaceTime: "Place and Time",
+          strategyFieldsPlaceTime: "place, date_display, date_from, date_to, event",
+          strategyPurposePlaceTime: "何时何地？",
+          strategyCatSubject: "Subject",
+          strategyFieldsSubject: "subject_terms, concepts, keywords controlled by vocabulary",
+          strategyPurposeSubject: "它关于什么？",
+          strategyCatRights: "Rights and Access",
+          strategyFieldsRights: "copyright, license_uri, access_policy, restrictions",
+          strategyPurposeRights: "它可以如何被使用？",
+          strategyCatSource: "Source and Provenance",
+          strategyFieldsSource: "source_record_id, source_url, harvest_date, cataloger",
+          strategyPurposeSource: "我们如何知道这些信息？",
+          strategyCatRelationships: "Relationships",
+          strategyFieldsRelationships: "related_objects, part_of, is_version_of, references",
+          strategyPurposeRelationships: "它如何与其他材料相连？",
+          strategyFootnote:
+            "所有重要字段都应携带 source、date_created、last_updated，以及 confidence 或 review status。",
+          relationshipDemoTitle: "不同材料类型之间的关系",
+          materialPhoto: "Photo",
+          materialVideo: "Video / Audio",
+          materialEvent: "Event",
+          materialDocument: "Document",
+          materialObject: "Object",
+          materialPlace: "Place",
+          materialOralHistory: "Oral History",
+          materialAgent: "Person / Agent",
+          materialRights: "Rights / Access",
+          commonRelationshipsTitle: "常见关系类型",
+          relationshipType1: "属于更大的 item 或 collection",
+          relationshipType2: "不同版本或不同数字表征",
+          relationshipType3: "关联到人物、地点或事件",
+          relationshipType4: "引用或提及另一件材料",
+          relationshipType5: "由另一件材料生成",
+          relationshipType6: "相同 intellectual content，不同 format",
+          relationshipType7: "由上下文或主题连接",
+          relationshipExampleTitle: "关系示例",
+          relationshipExampleBody:
+            "一段口述历史访谈可以引用一封信和一张照片，它们共同指向 1944 年昆明的同一事件。所有材料都应连接到 Event（日期与地点）、Person（受访者）、Collection（来源上下文）和 Rights（访问规则）。",
+          ingestionKicker: "导入与联邦工作流",
+          ingestionTitle: "当新文件进入系统时，每一步都应可审计、可回退。",
+          ingestionLead:
+            "这个工作流先把新文件视为证据，再把它转化为可发现资产。系统在增强之前先捕获 provenance 与 rights，在 federation 之前先把来源元数据映射进 canonical model，并允许 AI 提供衍生建议，但不能静默覆盖 cataloger 控制字段。",
+          ingestionNote:
+            "这是连接 preservation、asset management、metadata design、partner exchange 与下游 discovery 的操作桥梁。",
+          workflow1Title: "Acquire / Harvest",
+          workflow1Body: "接收文件、合作方 package、人工上传或 harvested record，并保留来源上下文。",
+          workflow2Title: "Rights and Terms Gate",
+          workflow2Body:
+            "处理前先检查 donor terms、provider restrictions、copyright、privacy 与 access policy。",
+          workflow3Title: "Validate and Profile",
+          workflow3Body:
+            "识别文件格式，生成 checksums，检查技术元数据，并拒绝不安全或不完整的 package。",
+          workflow4Title: "Canonical Mapping",
+          workflow4Body:
+            "把来源元数据映射到内部模型，同时保留 source-native fields 与 identifiers。",
+          workflow5Title: "Normalize and Enrich",
+          workflow5Body: "生成访问格式，规范化日期与名称，并为 delivery 或 indexing 准备文件。",
+          workflow6Title: "Authority / Entity Reconciliation",
+          workflow6Body: "尽可能把人物、机构、地点、事件与主题连接到受控实体。",
+          workflow7Title: "Deduplicate Relationships",
+          workflow7Body: "发布前识别重复项、版本、格式变体、引用关系与 part-of 关系。",
+          workflow8Title: "OCR / ASR / AI Suggestions",
+          workflow8Body:
+            "把 transcripts、OCR、summaries、topics 与 embeddings 生成为可版本化的衍生证据。",
+          workflow9Title: "QA / Human Review",
+          workflow9Body:
+            "公开前审核 rights、metadata quality、entity links、AI outputs 与 search evidence。",
+          workflow10Title: "Publish Authoritatively",
+          workflow10Body:
+            "从 canonical layer 发布已批准记录、delivery manifests、APIs、exports 与 search indexes。",
+          workflowAuditTitle: "审计与回退控制",
+          workflowAudit1:
+            "每一步都记录谁执行、何时发生、修改了什么、影响了哪个来源文件或记录。",
+          workflowAudit2:
+            "AI enrichments 是可版本化衍生物，绝不能静默覆盖 cataloger 或 rights-review 字段。",
+          workflowAudit3:
+            "验证失败或 rights 不确定会阻止发布，但保留 evidence package 供后续审核。",
+          workflowFederationTitle: "Federation 输出",
+          workflowFederation1:
+            "provider identity、source URL、source record ID、retrieval history、rights terms 与 mapping provenance 随记录一起传递。",
+          workflowFederation2:
+            "下游 API、IIIF manifests、OAI-PMH exports 与 search indexes 只接收 access policy 允许的字段。",
+          workflowFederation3:
+            "合作方更新可以通过 source IDs 与 crosswalk versions 对齐，而不是靠人工修表。",
+          retrievalKicker: "检索与 AI",
+          retrievalTitle: "由结构化事实约束的混合检索。",
+          retrievalLead:
+            "确定性的结构化元数据负责访问、日期、权限与层级；概率性的检索方法负责在文本、语言与概念层面提升发现能力。两者都需要，但职责必须不同。",
+          retrievalNote:
+            "这个边界是让 AI 有用但不把生成文本变成 undocumented archival truth 的关键控制点。",
+          logic1Number: "1.",
+          logic1Title: "精确与字段检索",
+          logic1Body:
+            "最适合处理标识符、人名、日期、权限状态、馆藏过滤以及 known-item 查询。",
+          logic2Number: "2.",
+          logic2Title: "词汇检索",
+          logic2Body:
+            "BM25 一类的词汇检索仍然非常适合罕见姓名、历史表述、缩写与精确短语。",
+          logic3Number: "3.",
+          logic3Title: "语义检索",
+          logic3Body:
+            "向量检索可以连接跨语言表达、间接提及和跨馆藏的概念关联材料。",
+          logic4Number: "4.",
+          logic4Title: "重排与证据包",
+          logic4Body:
+            "最终排序应结合相关性、权威信号与明确证据，例如来源记录、页面、区域或时间码。",
+          deterministicTitle: "必须依赖结构化 canonical metadata",
+          deterministic1:
+            "权限与版权控制：绝不能用语义相似度判断一份受限档案是否公开。",
+          deterministic2: "精确历史日期与来源机构归属证明。",
+          deterministic3: "档案层级与上下文：fonds、series、file、item、segment。",
+          deterministic4: "文件 fixity、preservation events 与长期存储状态。",
+          probabilisticTitle: "适合非权威衍生检索",
+          probabilistic1: "OCR 全文与长篇口述历史转录。",
+          probabilistic2: "扩展文章、摘要、翻译和主题建议。",
+          probabilistic3: "可再生成的语义向量索引，用于概念与多语言发现。",
+          probabilistic4: "基于证据包 reranking，而不是基于脱离来源上下文的孤立 chunks。",
+          funnel1Title: "基础过滤：Exact / Facets",
+          funnel1Body:
+            "使用 canonical metadata 处理日期范围、权限、命名实体、馆藏、格式与发布状态。",
+          funnel2Title: "词汇检索：BM25",
+          funnel2Body:
+            "使用精确关键词匹配处理罕见姓名、军事单位编号、缩写和引用短语。",
+          funnel3Title: "语义检索：Dense Vectors",
+          funnel3Body:
+            "使用 embeddings 捕捉概念相似度和不共享精确词汇的多语言变体。",
+          funnel4Title: "重排：Reranking",
+          funnel4Body: "结合相关性、权威信号与证据引用来提升 Top results。",
+          successKicker: "成功指标",
+          successTitle: "用基础设施标准评估系统，而不是把它当作更好看的表格。",
+          successLead:
+            "试点应从治理、检索质量与保存韧性三个角度评估。这些指标把原始 dashboard 概念转化为可衡量的成功标准。",
+          successNote:
+            "检索测试应包含 known-item queries 和探索式历史问题，并基于带引用证据的结果来评估。",
+          metric1Title: "数据完整性与 provenance",
+          metric1Value: "目标",
+          metric1Bullet1: "已发布记录的 provenance 覆盖率应达到 100%。",
+          metric1Bullet2: "所有公开记录必须带有明确 rights 与 access decisions。",
+          metric1Bullet3: "每条衍生记录都必须链接回 source evidence。",
+          metric2Title: "AI 与发现准确度",
+          metric2Value: "试点",
+          metric2Bullet1: "审核过的 pilot entities 上，entity-link precision 目标 >=98%。",
+          metric2Bullet2: "MRR 衡量 known-item retrieval 的查找效率。",
+          metric2Bullet3: "nDCG 衡量探索式历史查询的排序质量。",
+          metric3Title: "数字保存韧性",
+          metric3Value: "Fixity",
+          metric3Bullet1: "preservation files 的定期 fixity checks 应通过。",
+          metric3Bullet2: "存储预测应覆盖未来 12 个月预期 ingest。",
+          metric3Bullet3: "保存副本必须与公开访问衍生物分开。",
+          roadmapKicker: "实施路径",
+          roadmapTitle: "先试点架构，再扩大馆藏规模。",
+          roadmapLead:
+            "第一个里程碑应端到端验证一个代表性馆藏：intake、canonical modeling、保存存储、衍生物、关系元数据、检索评估和 partner-ready export。",
+          roadmapNote:
+            "这个提案刻意避免 big-bang migration。小试点可以在机构投入更大规模 rollout 前暴露模型缺口。",
+          phase1Title: "阶段一：定义与导入",
+          phase1Body:
+            "选择 pilot collection，分配 stable IDs，定义 canonical profile，捕获 preservation files，并生成 fixity records。",
+          phase2Title: "阶段二：建模与增强",
+          phase2Body:
+            "创建 source records、representations、file relationships、segments、rights states、OCR/ASR/translations 与 derivative metadata。",
+          phase3Title: "阶段三：测试与联邦互通",
+          phase3Body:
+            "用 MRR 和 nDCG 评估 retrieval，验证 provenance coverage，测试 IIIF/API/export 路径，并记录 crosswalk decisions。",
+          referencesKicker: "研究依据",
+          referencesTitle: "用于 best-practice alignment 的参考来源。",
+          referencesLead:
+            "这份提案把附件 framework PDF 和设计截图作为内部 source material，同时对齐官方标准与机构实现参考。",
+          referencesNote:
+            "这些来源支持架构方向，但不代表必须完整采用每一个标准。",
+          sourceOais: "OAIS Reference Model",
+          sourcePremis: "PREMIS Preservation Metadata",
+          sourceMods: "MODS, Library of Congress",
+          sourceEad: "EAD, Library of Congress",
+          sourceLido: "LIDO Schema",
+          sourceIiif: "IIIF Presentation API 3.0",
+          sourceOaiPmh: "OAI-PMH",
+          sourceOcfl: "OCFL",
+          sourceNdsa: "NDSA Levels of Digital Preservation",
+          sourceNara: "NARA Digital Preservation",
+          sourceLocDcmc: "Library of Congress DCMC",
+          sourceStanford: "Stanford Digital Repository",
+          footerNote:
+            "Preservation 与 asset-management track 设计提案草稿，基于附件设计笔记与 2026 年 8 月核对的 standards research。",
+          footerLink: "返回 architecture overview"
+        }
+      };
+
+      const buttons = Array.from(document.querySelectorAll(".lang-tab"));
+      const translatable = Array.from(document.querySelectorAll("[data-i18n]"));
+
+      function setLanguage(lang) {
+        document.body.dataset.lang = lang;
+        document.documentElement.lang = lang === "zh" ? "zh-Hans" : "en";
+        buttons.forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.lang === lang);
+        });
+
+        translatable.forEach((node) => {
+          const key = node.dataset.i18n;
+          const value = translations[lang][key];
+          if (value === undefined) return;
+          node.innerHTML = value;
+        });
+
+        try {
+          localStorage.setItem("digitalCollectionsProposalLang", lang);
+        } catch (error) {
+          void error;
+        }
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.lang));
+      });
+
+      let saved = "en";
+      try {
+        saved = localStorage.getItem("digitalCollectionsProposalLang") || "en";
+      } catch (error) {
+        saved = "en";
+      }
+
+      setLanguage(saved === "zh" ? "zh" : "en");
+    </script>
+  </body>
+</html>

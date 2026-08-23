@@ -86,6 +86,7 @@
       .brand {
         gap: 10px;
         min-width: 0;
+        text-decoration: none;
       }
 
       .brand img {
@@ -291,24 +292,105 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      .card,
-      .source-card {
+      .logic-grid {
+        margin-bottom: 12px;
+      }
+
+      .layer-map-note {
+        background: rgba(33, 55, 77, 0.05);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        color: var(--muted);
+        font-size: 0.92rem;
+        margin-bottom: 14px;
+        margin-top: 0;
+        padding: 10px 12px;
+      }
+
+      .layer-card,
+      .layered-card {
+        --layer-color: var(--blue);
+        --layer-bg: rgba(43, 71, 98, 0.1);
+        --layer-border: rgba(43, 71, 98, 0.34);
+      }
+
+      .layer-general {
+        --layer-color: var(--blue);
+        --layer-bg: rgba(43, 71, 98, 0.1);
+        --layer-border: rgba(43, 71, 98, 0.34);
+      }
+
+      .layer-domain {
+        --layer-color: var(--seal);
+        --layer-bg: rgba(139, 60, 53, 0.1);
+        --layer-border: rgba(139, 60, 53, 0.34);
+      }
+
+      .layer-authority {
+        --layer-color: var(--sage);
+        --layer-bg: rgba(109, 121, 110, 0.14);
+        --layer-border: rgba(109, 121, 110, 0.38);
+      }
+
+      .card.layer-card {
+        background: linear-gradient(180deg, var(--layer-bg), var(--surface-solid) 54%);
+        border-top: 5px solid var(--layer-color);
+      }
+
+      .layer-card h3 {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+      }
+
+      .layer-marker {
+        align-items: center;
+        background: var(--layer-color);
+        border-radius: 999px;
+        color: #fffaf2;
+        display: inline-flex;
+        flex: 0 0 auto;
+        font-size: 0.78rem;
+        height: 28px;
+        justify-content: center;
+        line-height: 1;
+        width: 28px;
+      }
+
+      .card.layered-card {
+        border-left: 5px solid var(--layer-color);
+      }
+
+      .layer-tag {
+        background: var(--layer-bg);
+        border: 1px solid var(--layer-border);
+        border-radius: 999px;
+        color: var(--layer-color);
+        display: inline-flex;
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        line-height: 1;
+        margin-bottom: 10px;
+        padding: 5px 8px;
+        text-transform: uppercase;
+      }
+
+      .card {
         background: var(--surface-solid);
         border: 1px solid var(--line);
         border-radius: var(--radius);
         padding: 16px;
       }
 
-      .card h3,
-      .source-card h3 {
+      .card h3 {
         color: var(--navy);
         font-size: 1.04rem;
         line-height: 1.25;
         margin: 0 0 8px;
       }
 
-      .card p,
-      .source-card p {
+      .card p {
         color: var(--muted);
         margin: 0;
       }
@@ -393,41 +475,6 @@
         min-height: 210px;
       }
 
-      .source-map {
-        display: grid;
-        gap: 12px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .source-card {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .source-card small {
-        color: var(--muted);
-        display: block;
-        font-size: 0.78rem;
-      }
-
-      .source-link {
-        align-items: center;
-        border-top: 1px solid var(--line);
-        display: flex;
-        justify-content: space-between;
-        margin-top: auto;
-        padding-top: 10px;
-      }
-
-      .source-link span {
-        color: var(--brass-dark);
-        font-size: 0.78rem;
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
       .foot {
         color: var(--muted);
         font-size: 0.86rem;
@@ -440,8 +487,7 @@
         .section-head,
         .grid.two,
         .grid.three,
-        .model,
-        .source-map {
+        .model {
           grid-template-columns: 1fr;
         }
 
@@ -502,14 +548,14 @@
   <body data-lang="en">
     <main class="page lang-zh">
       <div class="topbar">
-        <div class="brand">
+        <a class="brand" href="../../index.html" aria-label="Back to home page">
           <img src="../standards/branding/assets/memorial-hall-logo.png" alt="" />
-          <span>SF Pacific War Archives Infrastructure Project</span>
-        </div>
+          <span>Back to home page</span>
+        </a>
         <div class="topbar-tools">
           <div class="lang-switch" role="tablist" aria-label="Language switcher">
             <button class="lang-tab" data-lang="en" type="button">EN</button>
-            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+            <button class="lang-tab" data-lang="zh" type="button">中文</button>
           </div>
         </div>
       </div>
@@ -533,7 +579,7 @@
             <span class="kicker">Comparative Cases</span>
             <h2>同行实践表明，数字馆藏项目通常同时服务保存、公众访问和研究复用。</h2>
             <p class="lead">
-              DPLA、Europeana、NARA、Library of Congress、Densho、JACAR 和 Stanford 的相关项目显示，
+              DPLA、Europeana、NARA、Library of Congress、UNT、昭和馆、Densho、JACAR 和 Stanford 的相关项目显示，
               可持续数字馆藏依赖清晰来源、标准化描述和明确的合作边界。
             </p>
           </div>
@@ -545,24 +591,56 @@
 
         <div class="grid three">
           <article class="card">
-            <h3>DPLA 与 Europeana</h3>
-            <p>代表大型 cultural heritage aggregation 模式。它们把多机构资源组织为统一发现入口，同时保留 provider 与 data provider 的区别。</p>
+            <h3>DPLA</h3>
+            <p>大型美国 cultural heritage aggregation 模式，把图书馆、档案馆、博物馆和地方 hub 的 metadata 汇入统一发现入口。技术上最值得看的是 hub/provider 分层、Metadata Application Profile、source attribution 和面向 reuse 的聚合数据结构。</p>
             <div class="badge-row">
               <a class="badge" href="https://pro.dp.la/hubs/metadata-application-profile">DPLA MAP</a>
-              <a class="badge" href="https://pro.europeana.eu/index.php/page/edm-documentation">Europeana EDM</a>
+              <a class="badge" href="https://dp.la/search">Discovery</a>
             </div>
           </article>
           <article class="card">
-            <h3>NARA 与 Library of Congress</h3>
-            <p>代表国家级开放访问能力。Catalog API、item API 和 IIIF 服务说明公众访问应建立在稳定 ID 与结构化数据上。</p>
+            <h3>Europeana</h3>
+            <p>欧洲级文化遗产聚合平台，把多国机构资料组织为跨语言、跨机构发现系统。技术上可以参考 Europeana Data Model、provider/data provider 区分、rights statement、linked-data oriented aggregation 和统一 API。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://pro.europeana.eu/index.php/page/edm-documentation">Europeana EDM</a>
+              <a class="badge" href="https://pro.europeana.eu/page/apis">APIs</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>NARA Catalog</h3>
+            <p>美国国家档案馆的公共检索系统，适合参考 national-scale records、series、file units、items 和 digital objects 的公开发现方式。技术上重点看 NAID、Catalog API、source-native identifiers、digital object link-out 和 metadata harvesting。</p>
             <div class="badge-row">
               <a class="badge" href="https://www.archives.gov/research/catalog/help/api">NARA API</a>
+              <a class="badge" href="https://catalog.archives.gov/">Catalog</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Library of Congress</h3>
+            <p>国家级 digital collections 与 item API 参考，覆盖图像、文本、音频、影像、地图和展览型 collection。技术上可参考稳定 URL、JSON API、IIIF image service、rights/access note 和 collection-level browse。</p>
+            <div class="badge-row">
               <a class="badge" href="https://www.loc.gov/apis/">LoC APIs</a>
+              <a class="badge" href="https://www.loc.gov/collections/">Collections</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>UNT Portal: National Museum of the Pacific War</h3>
+            <p>与本项目主题最接近的 Pacific War digital archive 参考，聚合照片、文本、信件、音频、地图、视频、实物和系列收藏。技术上最值得看的是 collection/series/resource type/facet 多层 taxonomy、ARK persistent IDs、IIIF manifest、OAI/DC/METS exports、caption files 和 rich item metadata。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://texashistory.unt.edu/explore/collections/NMPWA/">Collection</a>
+              <a class="badge" href="https://texashistory.unt.edu/ark:/67531/metapth1687980/">Item model</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>昭和馆 Digital Archive</h3>
+            <p>日本昭和馆的战中战后生活资料检索系统，覆盖实物、照片、影像、口述史、SP 唱片、图书、杂志和馆藏目录。技术上适合参考 cross-category search、asset-type tabs with counts、type-specific filters、public/onsite availability labels 和 detail-page metadata layout。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://search.showakan.go.jp/">Archive</a>
+              <a class="badge" href="https://search.showakan.go.jp/howto/">Search model</a>
             </div>
           </article>
           <article class="card">
             <h3>Densho Digital Repository</h3>
-            <p>对战争记忆、社区协作、口述史、照片与文件并置尤其相关。它展示了公共教育与规范档案记录可以同时成立。</p>
+            <p>面向 Japanese American incarceration、战争记忆和社区档案的 public research repository。技术上值得参考的是主题 browse、人物与机构 authority、口述史/照片/文件并置、source collections、rights statements 和教育导向的公开访问层。</p>
             <div class="badge-row">
               <a class="badge" href="https://ddr.densho.org/about/">Repository</a>
               <a class="badge" href="https://ddr.densho.org/browse/">Browse model</a>
@@ -570,7 +648,7 @@
           </article>
           <article class="card">
             <h3>JACAR</h3>
-            <p>面向亚洲历史记录的跨机构检索案例。其价值在于统一检索、多机构来源、reference code 和多语言访问路径。</p>
+            <p>面向亚洲历史资料的跨机构检索系统，连接日本国立公文书馆、外务省外交史料馆、防卫省防卫研究所等来源。技术上适合参考 reference code、multi-institution search、原机构来源保持、图像/PDF link-out 和多语言检索路径。</p>
             <div class="badge-row">
               <a class="badge" href="https://www.jacar.go.jp/english/about/outline.html">Overview</a>
               <a class="badge" href="https://www.jacar.archives.go.jp/aj/help/en/search_guide.html">Search guide</a>
@@ -578,7 +656,7 @@
           </article>
           <article class="card">
             <h3>Stanford Chinese Railroad Workers</h3>
-            <p>跨国、跨语言、跨学科 digital humanities 项目。对分散证据、历史解释和公众教育之间的平衡有参考价值。</p>
+            <p>跨国、跨语言、跨学科 digital humanities 项目，围绕分散证据、研究解释、教学和公众历史叙事组织资料。技术上不是 DAMS 样板，而是 public interpretation layer 样板：研究 essays、bibliography、exhibit-like navigation 和外部来源整合。</p>
             <div class="badge-row">
               <a class="badge" href="https://amstudies.stanford.edu/about/transnational-initiatives/chinese-railroad-workers-north-america-project">Project</a>
               <a class="badge" href="https://er.educause.edu/articles/2014/6/the-chinese-railroad-workers-in-america-project">Case</a>
@@ -586,12 +664,279 @@
           </article>
           <article class="card">
             <h3>GLAM Labs 与 Collections as Data</h3>
-            <p>代表 digital humanities 对馆藏数据的研究使用需求：展示之外，还需支持计算访问、引用、再利用和研究透明度。</p>
+            <p>代表 digital humanities 对馆藏数据的研究使用需求：展示之外，还需支持计算访问、引用、再利用和研究透明度。技术上提醒本项目把 metadata exports、bulk data、documentation、citation、rights context，以及 FAIR/CARE 所强调的可发现性、伦理、community benefit 和 attribution 当成研究基础设施的一部分。</p>
             <div class="badge-row">
               <a class="badge" href="https://www.glamlabs.io/">GLAM Labs</a>
               <a class="badge" href="https://collectionsasdata.github.io/">Collections as Data</a>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="band" id="zh-metadata-review">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Metadata / Field Review</span>
+            <h2>字段标准不是导出清单，而是三层检索设计：通用发现字段、Pacific War 专题字段和 authority records。</h2>
+            <p class="lead">
+              这一层放在 archive cases 后面，方便 reviewer 在比较 UNT、昭和馆、DPLA、Europeana、NARA 和 LoC 时，
+              同步判断每个字段属于哪一层、如何进入 search index、facet、引用、导出、保存和长期迁移。
+            </p>
+          </div>
+          <p class="note">
+            建议本项目采用 local canonical profile：DCMI 负责跨馆藏通用发现，Pacific War 字段负责专题研究维度，authority records 负责把人物、地点、部队、战役和主题做成可复用、可消歧、可关联的实体。
+          </p>
+        </div>
+
+        <div class="grid three logic-grid">
+          <article class="card layer-card layer-general">
+            <h3><span class="layer-marker">1</span> 通用发现层</h3>
+            <p>Dublin Core / DCMI Terms 提供跨系统最稳定的字段语言：title、creator、date、type、subject、spatial、rights、identifier、source 和 relation。它们不只是 export mapping，也应该直接进入关键词检索、基础 facet、排序、引用和跨机构 aggregation。</p>
+          </article>
+          <article class="card layer-card layer-domain">
+            <h3><span class="layer-marker">2</span> Pacific War 专题 / 类型扩展层</h3>
+            <p>通用字段无法表达所有研究问题，所以 local profile 需要加入 theater、campaign、battle / operation、military unit、occupation context、POW camp、civilian group、language、source community 和 sensitivity / access context 等专题字段，并吸收不同材料类型、保存和媒体呈现所需字段。</p>
+          </article>
+          <article class="card layer-card layer-authority">
+            <h3><span class="layer-marker">3</span> Authority / 规范实体层</h3>
+            <p>Authority model 不是一组普通标签，而是一套可复用实体记录。档案 item 应引用 person、organization、place、unit、event 和 subject 的 authority ID，并保留 preferred label、别名、多语言形式、外部 URI 和关系。</p>
+          </article>
+        </div>
+
+        <p class="layer-map-note">下面的标准卡片用同色标签回连到上方三层；同一标准可能服务多层，这里按 reviewer 的首要用途归类。</p>
+
+        <div class="grid three layered-standards">
+          <article class="card layered-card layer-general">
+            <span class="layer-tag">Layer 1 · 通用发现</span>
+            <h3>Dublin Core / DCMI Terms</h3>
+            <p>跨领域 metadata baseline。Reviewer 不应只检查它是否能导出，还要检查 title、creator/contributor、date/created/issued、description、subject、type、format、identifier、source、language、spatial/temporal coverage、rights/license 和 relation 是否被定义清楚，并能支撑搜索、facet、引用和跨系统 aggregation。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">DCMI Terms</a>
+              <a class="badge" href="https://www.dublincore.org/specifications/dublin-core/application-profile-guidelines/">Application Profile</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · 类型扩展</span>
+            <h3>MODS</h3>
+            <p>更丰富的 library / bibliographic 描述格式。适合 reviewer 检查图书、地图、信件、报告、小册子等材料的 titleInfo、name/role、typeOfResource、genre、originInfo、language、physicalDescription、subject、relatedItem、identifier、location 和 accessCondition。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.loc.gov/standards/mods/">LoC MODS</a>
+              <a class="badge" href="https://www.loc.gov/standards/mods/userguide/">User guide</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · 档案层级扩展</span>
+            <h3>EAD</h3>
+            <p>Finding aid 与 archival hierarchy 的主要参考。适合 reviewer 检查 collection、series、file、item 层级是否保留，component ID、container、scope/content、biographical/history note、access restrictions、control access 和 related material 是否可追溯。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.loc.gov/ead/">EAD Official Site</a>
+              <a class="badge" href="https://www.loc.gov/ead/ead3schema.html">EAD3 Schema</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · 物件/事件扩展</span>
+            <h3>LIDO</h3>
+            <p>面向 museum objects 和展陈对象的事件中心模型。适合 reviewer 检查实物、纪念物、展品和视觉对象的 object/work type、materials、measurements、inscriptions、related events、actors、places、repository、rights 和 display fields。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://icom-documentation.mini.icom.museum/working-groups/lido/lido-overview/about-lido/">About LIDO</a>
+              <a class="badge" href="https://cidoc.mini.icom.museum/working-groups/lido/lido-overview/lido-technical/specification/">Specification</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-general">
+            <span class="layer-tag">Layer 1 · 聚合发现</span>
+            <h3>DPLA MAP / Europeana EDM</h3>
+            <p>Aggregation metadata 的关键参考。适合 reviewer 检查 source resource 和 web resource 是否分开、provider 和 data provider 是否分开、original record 是否保留、rights/isShownAt/object thumbnail/collection membership/facets 是否能支持跨机构发现。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://pro.dp.la/developers/field-reference">DPLA Field Reference</a>
+              <a class="badge" href="https://pro.europeana.eu/index.php/page/edm-documentation">Europeana EDM</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · 保存扩展</span>
+            <h3>Preservation metadata</h3>
+            <p>PREMIS、OAIS、NDSA Levels 和 OCFL 属于长期保存责任层，不是普通 public display 字段。适合 reviewer 检查 preservation object、file format、fixity、event、agent、rights、migration/validation/action history、storage package 和可迁移性是否能支撑长期可用性与审计。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.loc.gov/standards/premis/">PREMIS Home</a>
+              <a class="badge" href="https://ocfl.io/">OCFL</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · 媒体呈现扩展</span>
+            <h3>IIIF Presentation API</h3>
+            <p>媒体呈现和引用层参考。适合 reviewer 检查 asset 是否能通过 manifest、canvas、range、annotation、metadata label/value、image service、page region 或 timecode 被稳定查看和引用。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://iiif.io/api/presentation/3.0/">Presentation API</a>
+              <a class="badge" href="https://iiif.io/api/image/3.0/">Image API</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-authority">
+            <span class="layer-tag">Layer 3 · 规范实体</span>
+            <h3>Authorities: names, places, subjects</h3>
+            <p>Authority records 决定检索质量。Reviewer 应检查 people、organizations、places、subjects、events、military units 和 objects 是否作为可复用实体管理，而不是散落的自由文本；每个实体应有 preferred label、alternate label、source vocabulary、authority URI、language variants、local notes 和结构化关系。地点可参考 TGN，主题/名称可参考 LoC linked-data patterns，复杂关系可参考 RiC-CM、CIDOC CRM 或 Linked Art。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://id.loc.gov/">LoC Linked Data</a>
+              <a class="badge" href="https://cidoc-crm.org/">CIDOC CRM</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-general">
+            <span class="layer-tag">Layer 1 · 交换/API</span>
+            <h3>OAI-PMH / APIs</h3>
+            <p>用于让外部系统 harvest 或 request metadata。Reviewer 应检查 record identifier、datestamp、set/collection、metadataPrefix、deleted/update policy、rights note 和 source attribution 是否足够清楚，避免未来只能人工复制字段。</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.openarchives.org/pmh/">OAI-PMH</a>
+              <a class="badge" href="https://www.loc.gov/apis/">LoC APIs</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="band" id="zh-open-source-solutions">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Available Systems Overview</span>
+            <h2>可用系统应按职责分层选择：馆藏管理、公开发现、repository、保存流程、词表管理和存储不是同一类问题。</h2>
+            <p class="lead">
+              下表同时包含开源软件和商业/硬件存储选项。开源不等于零成本；云服务也不是 archival system，而是 storage layer，需要和 metadata、fixity、backup、access policy 一起设计。
+            </p>
+          </div>
+          <p class="note">
+            Rough cost uses public US pricing checked on 2026-08-23. Cloud estimates exclude taxes, egress, API operations, retrieval, replication, support, data migration, and staff time unless noted.
+          </p>
+        </div>
+
+        <div class="compare">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>System / tool</th>
+                <th>Overview</th>
+                <th>什么情况下值得用</th>
+                <th>Free / paid / estimated cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Collection management / metadata</td>
+                <td><strong><a href="https://collectiveaccess.org/?lang=en">CollectiveAccess Providence</a></strong></td>
+                <td>Core cataloguing back-end for museum and archival collections; manages metadata, media, relationships, workflows, imports/exports, reports, and configurable schemas.</td>
+                <td>当项目需要同时管理 physical objects、digital assets、people/places/events、复杂关系和高度定制 metadata profile 时使用。适合 collections management 原型。</td>
+                <td>Free, open-source GPLv3 software. Paid cost is not a license fee; it is hosting, consulting, migration, custom development, theme/workflow design, and ongoing administration.</td>
+              </tr>
+              <tr>
+                <td>Public discovery portal</td>
+                <td><strong><a href="https://www.collectiveaccess.org/get-started/">CollectiveAccess Pawtucket</a></strong></td>
+                <td>Optional public web-access front end for CollectiveAccess; provides browse, search, facets, media display, maps/timelines/visualizations, and branded public presentation.</td>
+                <td>当 Providence 已经是 cataloguing back-end，且需要从同一数据模型发布 public portal 时使用。适合 institution-owned portal，不适合单独作为 metadata system。</td>
+                <td>Free, open-source GPLv3 software. Paid cost is design/front-end implementation, hosting, search tuning, accessibility QA, image/media delivery, and maintenance.</td>
+              </tr>
+              <tr>
+                <td>Digital humanities / public collections</td>
+                <td><strong><a href="https://omeka.org/s/">Omeka S</a></strong></td>
+                <td>Linked-open-data-oriented platform for digital collections, item sets, items, media, resource templates, and multiple public sites.</td>
+                <td>当团队需要最快搭出 public-facing digital collection、exhibition、教学/研究展示或 lightweight Digital Reading Room 时使用。第一阶段很适合。</td>
+                <td>Omeka S / Classic can be self-hosted for free. Paid cost is managed hosting, support, training, and customization. Omeka.net hosted Classic tiers are roughly $35-$1000/year by storage/sites/plugins/themes.</td>
+              </tr>
+              <tr>
+                <td>Archival description / finding aids</td>
+                <td><strong><a href="https://archivesspace.org/">ArchivesSpace</a></strong></td>
+                <td>Archives information management application for accessions, resources, archival objects, agents, subjects, digital object descriptions, and finding aids.</td>
+                <td>当项目需要 staff-side archival hierarchy、collection/series/file/item 层级、creator/subject authority、EAD/finding aid governance 时使用。档案描述第一优先级。</td>
+                <td>Application is free to download and use. Paid ArchivesSpace membership supports sustainability and adds support/governance/manuals/tutorials; hosting, customization, and migration are separate costs.</td>
+              </tr>
+              <tr>
+                <td>Archival description + public access</td>
+                <td><strong><a href="https://accesstomemory.org/en/">AtoM (Access to Memory)</a></strong></td>
+                <td>Web-based, multilingual, multi-repository archival description and access application; supports standards-based description and import/export such as EAD, EAC-CPF, CSV, and SKOS.</td>
+                <td>当目标是比较轻量地把 archival descriptions 和 digital objects 一起放到 public access interface 上时使用。比 ArchivesSpace 更偏公开访问与多语环境。</td>
+                <td>AGPL open source and free to install. Artefactual hosted AtoM publicly starts around $1,945/year; implementation, migration, theming, training, and enterprise support cost extra.</td>
+              </tr>
+              <tr>
+                <td>Museum / physical collections management</td>
+                <td><strong><a href="https://collectionspace.org/">CollectionSpace</a></strong></td>
+                <td>Collections management system for museums, historical societies, universities, and collecting organizations, with collaborative workflows and unlimited user-account model.</td>
+                <td>当项目重点转向实物、展品、捐赠、馆藏登记、condition、location、loan、rights、collection-care workflow 时评估。</td>
+                <td>Open source; self-hosting has no annual license or per-user fee. Lyrasis paid hosting covers support/upgrades/maintenance/media storage; contribution tiers range from $500/year to $10,000/year.</td>
+              </tr>
+              <tr>
+                <td>Digital asset management (DAM)</td>
+                <td><strong><a href="https://www.resourcespace.com/get">ResourceSpace</a></strong></td>
+                <td>Open-source DAM for organizing, permissioning, searching, licensing, and distributing digital assets, with metadata, workflow, analytics, and cloud/self-host options.</td>
+                <td>当主要问题是 photos、video、design/media files、marketing/exhibition assets、permissions、downloads、asset licensing，而不是 archival hierarchy 时使用。</td>
+                <td>Self-hosted software is free; ResourceSpace also offers a free 10GB cloud service. Paid cloud packages cover hosting, backups, upgrades, support, SSO, API, storage, and onboarding; public pricing is package/quote-oriented rather than core license based.</td>
+              </tr>
+              <tr>
+                <td>Institutional / digital repository</td>
+                <td><strong><a href="https://dspace.org/">DSpace</a></strong></td>
+                <td>Institutional repository software commonly used for theses, papers, datasets, subject repositories, media repositories, and durable access to digital files.</td>
+                <td>当目标是 university/research repository、deposit workflow、datasets、papers、ETDs、ORCID/OpenAIRE/ROR integration 时使用；不是本项目第一阶段 Digital Reading Room 核心。</td>
+                <td>Free and open source. Paid cost is hosted repository service, implementation, migration, upgrades, support, and storage rather than a software license.</td>
+              </tr>
+              <tr>
+                <td>Repository infrastructure</td>
+                <td><strong><a href="https://fedorarepository.org/">Fedora Repository</a></strong></td>
+                <td>Standards-based repository backend for digital objects, metadata, semantic relationships, OCFL-backed persistence, and preservation-oriented repository APIs.</td>
+                <td>第二阶段使用：当 public site 之外需要真正 repository API、object relationships、fixity/version-aware persistence、OCFL storage 或 Islandora/Fedora architecture 时评估。</td>
+                <td>Core software is free and open source. Costs are servers, storage, OCFL configuration, integration, monitoring, backup, support, and vendor implementation.</td>
+              </tr>
+              <tr>
+                <td>Digital preservation workflow</td>
+                <td><strong><a href="https://archivematica.org/en/?lang=en">Archivematica</a></strong></td>
+                <td>Standards-based preservation workflow system using OAIS, METS, PREMIS, Dublin Core, BagIt, microservices, checksums, and AIP generation.</td>
+                <td>当项目开始做 preservation ingest、format identification、fixity、normalization decisions、AIP packaging、storage transfer、preservation audit trail 时使用。</td>
+                <td>AGPL open source and free to install. Artefactual hosted Archivematica starts around $11,440/year; enterprise subscriptions start around $28,600/year; storage and implementation are extra.</td>
+              </tr>
+              <tr>
+                <td>Ontology / vocabulary management</td>
+                <td><strong><a href="https://vocbench.uniroma2.it/">VocBench</a></strong></td>
+                <td>Web-based, multilingual collaborative platform for OWL ontologies, SKOS/SKOS-XL thesauri, OntoLex-lemon lexicons, and generic RDF datasets.</td>
+                <td>当项目需要正式 authority service、taxonomy governance、multilingual vocabularies、linked data / RDF model、editor workflow 和版本化概念管理时使用。</td>
+                <td>Free and open source. Paid cost is hosting, RDF store infrastructure, semantic-web expertise, training, integration, backup, and governance process design.</td>
+              </tr>
+              <tr>
+                <td>Lightweight thesaurus management</td>
+                <td><strong><a href="https://github.com/tematres/TemaTres-Vocabulary-Server">TemaTres</a></strong></td>
+                <td>PHP/MySQL vocabulary server for controlled vocabularies, taxonomies, thesauri, glossaries, SKOS import/export, mappings, reports, and APIs.</td>
+                <td>当团队需要比 VocBench 更轻、更快部署的 local thesaurus / glossary / controlled vocabulary manager 时使用。</td>
+                <td>GPLv2 open source and free to self-host. Costs are LAMP hosting, admin time, backups, customization, and integration with collection/search systems.</td>
+              </tr>
+              <tr>
+                <td>Vocabulary publishing / browsing</td>
+                <td><strong><a href="https://skosmos.org/">Skosmos</a></strong></td>
+                <td>Open-source SKOS browser and publishing tool with search, browse, concept pages, hierarchy visualization, multilingual UI, REST API, and Linked Data access.</td>
+                <td>当词表已经以 SKOS/RDF 管理，且需要给 cataloguers、researchers 或 external systems 提供 public vocabulary browsing/publishing 时使用。</td>
+                <td>MIT open source and free. Costs are hosting, SPARQL/Fuseki or RDF backend, vocabulary publishing workflow, API integration, and maintenance.</td>
+              </tr>
+              <tr>
+                <td>Canonical digital object storage</td>
+                <td><strong><a href="https://cloud.google.com/storage/pricing">Google Cloud Storage</a> / <a href="https://aws.amazon.com/s3/pricing/">AWS S3 Standard</a></strong></td>
+                <td>Commercial object storage for canonical digital objects, derivatives, manifests, exports, and application file storage. This is storage infrastructure, not metadata governance.</td>
+                <td>当需要 durable cloud object storage、programmatic access、lifecycle rules、versioning、replication、IAM、audit logs 和 scalable ingest/download path 时使用。</td>
+                <td>Not open source. Rough US storage-only estimate: GCS single-region Standard about $0.020/GiB-month; AWS S3 Standard us-east-1 about $0.023/GB-month for first 50TB. Add request, egress, replication, retrieval, monitoring, and support costs.</td>
+              </tr>
+              <tr>
+                <td>Cold long-term storage</td>
+                <td><strong><a href="https://cloud.google.com/storage/pricing">GCS Archive</a> / <a href="https://aws.amazon.com/s3/storage-classes/glacier/">AWS S3 Glacier / Deep Archive</a></strong></td>
+                <td>Commercial cold object storage for rarely accessed preservation copies, disaster recovery, and long-retention archival packages.</td>
+                <td>当数据读取得很少、可以接受 restore delay、且已有 metadata/fixity/backup policy 管理时使用。不适合经常浏览的 reading room assets。</td>
+                <td>Not open source. Rough storage-only estimate: GCS single-region Archive about $0.0012/GiB-month plus retrieval about $0.05/GiB; AWS S3 Glacier Deep Archive about $0.00099/GB-month, 180-day minimum, restore delay, and restore/retrieval/request charges.</td>
+              </tr>
+              <tr>
+                <td>Working / collaboration storage</td>
+                <td><strong><a href="https://workspace.google.com/pricing.html">Google Drive</a></strong></td>
+                <td>Collaboration storage bundled with Google accounts / Workspace for working files, drafts, spreadsheets, shared folders, and temporary review material.</td>
+                <td>适合 working storage、team collaboration、metadata spreadsheet review、meeting files 和 temporary transfer。不建议作为 canonical archive 或 preservation master storage。</td>
+                <td>Not open source. Personal accounts include 15GB free. Workspace annual-plan pricing: Starter $7/user/month with 30GB pooled per user; Standard $14/user/month with 2TB pooled per user; Plus $22/user/month with 5TB pooled per user.</td>
+              </tr>
+              <tr>
+                <td>Offline / local backup layer</td>
+                <td><strong><a href="https://www.synology.com/en-us/company/news/article/DS224p_DS124/Synology%C2%AE%20%E6%8E%A8%E5%87%BA%20DiskStation%C2%AE%20DS224%2B%20%E5%92%8C%20DS124%20%E4%B8%A4%E6%AC%BE%E5%B0%8F%E5%9E%8B%E6%A1%8C%E9%9D%A2%E7%BA%A7%20NAS%EF%BC%8C%E6%9C%89%E6%95%88%E6%8F%90%E5%8D%87%E5%8A%9E%E5%85%AC%E7%94%9F%E4%BA%A7%E5%8A%9B">External SSD / HDD / NAS</a></strong></td>
+                <td>Local or offline backup hardware layer, such as portable SSDs, external HDDs, or a small NAS with mirrored drives and periodic offsite rotation.</td>
+                <td>适合作为 3-2-1 backup 的 local/offline copy、ingest staging、onsite recovery 和 staff working copy。不能单独承担 canonical preservation repository。</td>
+                <td>Not open source. Rough hardware planning: 2-bay NAS enclosure starts around $300 before drives; NAS HDD pricing is volatile but commonly tens of dollars per TB. Budget duplicate drives, replacement cycle, offsite copy, UPS, and staff operations.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -637,153 +982,21 @@
         </div>
       </section>
 
-      <section class="band" id="zh-standards">
-        <div class="section-head">
-          <div>
-            <span class="kicker">Standards</span>
-            <h2>标准有助于降低未来合作和迁移成本，并保持数据边界清晰。</h2>
-            <p class="lead">
-              本项目不需要一次性实现所有标准。更实际的路径是用标准定义边界：
-              保存责任、描述互操作、跨机构发现、媒体呈现、关系语义和负责任的数据使用。
-            </p>
-          </div>
-          <p class="note">
-            项目可使用轻量 canonical model，并通过 DCMI、EAD、LIDO、DPLA/EDM、IIIF 等标准化出口与外部系统沟通。
-          </p>
-        </div>
-
-        <div class="compare">
-          <table>
-            <thead>
-              <tr>
-                <th>Project question</th>
-                <th>Relevant standards</th>
-                <th>Governance area</th>
-                <th>Project implication</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>How is long-term stewardship documented?</strong></td>
-                <td>OAIS, PREMIS, NDSA Levels, OCFL</td>
-                <td>Preservation accountability, events, integrity, sustainability.</td>
-                <td>Public access is not a substitute for preservation planning.</td>
-              </tr>
-              <tr>
-                <td><strong>How can others interpret our records?</strong></td>
-                <td>DCMI, MODS, EAD, LIDO</td>
-                <td>Common descriptive language across archives, libraries, and museums.</td>
-                <td>Maintain a local model, then publish clear crosswalks.</td>
-              </tr>
-              <tr>
-                <td><strong>How do partner-held records appear together?</strong></td>
-                <td>DPLA MAP, Europeana EDM, OAI-PMH, APIs</td>
-                <td>Provider identity, data provider identity, aggregation relationships.</td>
-                <td>Design for federated discovery while preserving source identity.</td>
-              </tr>
-              <tr>
-                <td><strong>How do users inspect media and cite evidence?</strong></td>
-                <td>IIIF Presentation API</td>
-                <td>Consistent viewing, manifests, pages, regions, time-based references.</td>
-                <td>Use IIIF when the collection is ready for richer object-level access.</td>
-              </tr>
-              <tr>
-                <td><strong>How do we express historical relationships?</strong></td>
-                <td>RiC-CM, CIDOC CRM, Linked Art</td>
-                <td>People, places, events, objects, records, and institutional context.</td>
-                <td>Keep relationship data structured for later knowledge-graph work.</td>
-              </tr>
-              <tr>
-                <td><strong>How do we make reuse responsible?</strong></td>
-                <td>FAIR, CARE, Collections as Data</td>
-                <td>Findability, access, reuse, ethics, community benefit, transparency.</td>
-                <td>Open data choices should include rights, attribution, and community context.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="band" id="zh-references">
-        <div class="section-head">
-          <div>
-            <span class="kicker">References</span>
-            <h2>参考来源包括公开标准、同行案例和项目维护方文档。</h2>
-            <p class="lead">
-              下列来源支撑保存、描述、聚合、发现与 AI 使用等不同层面的评估。
-            </p>
-          </div>
-          <p class="note">
-            资料核查日期：2026-08-10。
-          </p>
-        </div>
-
-        <div class="source-map">
-          <article class="source-card">
-            <small>Preservation accountability</small>
-            <h3>OAIS, PREMIS, NDSA Levels, OCFL</h3>
-            <p>用于定义长期保存责任、保存事件、完整性和可持续性成熟度。</p>
-            <div class="source-link"><span>Standards</span><a href="https://www.iso.org/standard/87471.html">OAIS</a></div>
-          </article>
-          <article class="source-card">
-            <small>Descriptive interoperability</small>
-            <h3>DCMI, MODS, EAD, LIDO</h3>
-            <p>用于处理 archives、libraries、museums 之间的描述语义和公开交换。</p>
-            <div class="source-link"><span>Metadata</span><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">DCMI</a></div>
-          </article>
-          <article class="source-card">
-            <small>Aggregation and discovery</small>
-            <h3>DPLA MAP, Europeana EDM, OAI-PMH</h3>
-            <p>用于跨机构 metadata aggregation、provider attribution 和 federated discovery。</p>
-            <div class="source-link"><span>Aggregation</span><a href="https://pro.dp.la/hubs/metadata-application-profile">DPLA MAP</a></div>
-          </article>
-          <article class="source-card">
-            <small>Media access</small>
-            <h3>IIIF Presentation API 3.0</h3>
-            <p>用于图像、音视频、页面、区域和 timecode 的标准化呈现与引用。</p>
-            <div class="source-link"><span>Access</span><a href="https://iiif.io/api/presentation/3.0/">IIIF</a></div>
-          </article>
-          <article class="source-card">
-            <small>Relationship semantics</small>
-            <h3>RiC-CM, CIDOC CRM, Linked Art</h3>
-            <p>用于表达人物、地点、事件、对象和记录之间的历史关系。</p>
-            <div class="source-link"><span>Semantics</span><a href="https://cidoc-crm.org/">CIDOC CRM</a></div>
-          </article>
-          <article class="source-card">
-            <small>Peer cases</small>
-            <h3>Densho, JACAR, Stanford CRRW</h3>
-            <p>战争记忆、亚洲历史记录、跨国移民史和分散证据整合的相关案例。</p>
-            <div class="source-link"><span>Peers</span><a href="https://ddr.densho.org/about/">Densho</a></div>
-          </article>
-          <article class="source-card">
-            <small>Institutional APIs</small>
-            <h3>NARA and Library of Congress</h3>
-            <p>说明公开访问和研究复用如何建立在 stable identifiers 与 structured APIs 上。</p>
-            <div class="source-link"><span>APIs</span><a href="https://www.archives.gov/research/catalog/help/api">NARA</a></div>
-          </article>
-          <article class="source-card">
-            <small>Open-source ecosystem</small>
-            <h3>ArchivesSpace, CollectionSpace, Archivematica, Omeka S</h3>
-            <p>代表面向治理性元数据、保存流程与公开访问的成熟工具类别。</p>
-            <div class="source-link"><span>Software</span><a href="https://archivesspace.org/">ArchivesSpace</a></div>
-          </article>
-        </div>
-        <p class="foot">
-          比较研究报告：用于整理参考来源、明确项目范围，并支撑后续系统评估。
-        </p>
-      </section>
+      <p class="foot">
+        比较研究报告：用于整理参考来源、明确项目范围，并支撑后续系统评估。
+      </p>
     </main>
 
     <main class="page lang-en">
       <div class="topbar">
-        <div class="brand">
+        <a class="brand" href="../../index.html" aria-label="Back to home page">
           <img src="../standards/branding/assets/memorial-hall-logo.png" alt="" />
-          <span>SF Pacific War Archives Infrastructure Project</span>
-        </div>
+          <span>Back to home page</span>
+        </a>
         <div class="topbar-tools">
           <div class="lang-switch" role="tablist" aria-label="Language switcher">
             <button class="lang-tab" data-lang="en" type="button">EN</button>
-            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+            <button class="lang-tab" data-lang="zh" type="button">中文</button>
           </div>
         </div>
       </div>
@@ -809,7 +1022,7 @@
             <span class="kicker">Comparative Cases</span>
             <h2>Peer practice indicates that digital collection programs commonly support preservation, public access, and research reuse together.</h2>
             <p class="lead">
-              DPLA, Europeana, NARA, the Library of Congress, Densho, JACAR, and Stanford's related work show that
+              DPLA, Europeana, NARA, the Library of Congress, UNT, Showakan, Densho, JACAR, and Stanford's related work show that
               sustainable digital collections depend on clear sources, standardized description, and defined partnership boundaries.
             </p>
           </div>
@@ -822,24 +1035,56 @@
 
         <div class="grid three">
           <article class="card">
-            <h3>DPLA and Europeana</h3>
-            <p>Large-scale cultural heritage aggregation models that provide unified discovery while preserving provider and data-provider distinctions.</p>
+            <h3>DPLA</h3>
+            <p>A large-scale U.S. cultural heritage aggregation model that brings library, archive, museum, and regional hub metadata into one discovery path. The useful technical references are hub/provider layering, the Metadata Application Profile, source attribution, and reuse-oriented aggregated metadata.</p>
             <div class="badge-row">
               <a class="badge" href="https://pro.dp.la/hubs/metadata-application-profile">DPLA MAP</a>
-              <a class="badge" href="https://pro.europeana.eu/index.php/page/edm-documentation">Europeana EDM</a>
+              <a class="badge" href="https://dp.la/search">Discovery</a>
             </div>
           </article>
           <article class="card">
-            <h3>NARA and Library of Congress</h3>
-            <p>National-scale public access models. Catalog APIs, item APIs, and IIIF services show the importance of stable IDs and structured data.</p>
+            <h3>Europeana</h3>
+            <p>A Europe-wide cultural heritage aggregation platform for multilingual and cross-institution discovery. The strongest architectural references are the Europeana Data Model, provider/data-provider separation, rights statements, linked-data-oriented aggregation, and a shared API layer.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://pro.europeana.eu/index.php/page/edm-documentation">Europeana EDM</a>
+              <a class="badge" href="https://pro.europeana.eu/page/apis">APIs</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>NARA Catalog</h3>
+            <p>The U.S. National Archives public discovery system, useful for national-scale records, series, file units, items, and digital objects. Technically, it is worth studying NAIDs, the Catalog API, source-native identifiers, digital object link-out, and harvestable metadata.</p>
             <div class="badge-row">
               <a class="badge" href="https://www.archives.gov/research/catalog/help/api">NARA API</a>
+              <a class="badge" href="https://catalog.archives.gov/">Catalog</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Library of Congress</h3>
+            <p>A national-scale reference for digital collections and item APIs across images, text, audio, video, maps, and curated collections. Useful patterns include stable URLs, JSON APIs, IIIF image service, rights/access notes, and collection-level browse.</p>
+            <div class="badge-row">
               <a class="badge" href="https://www.loc.gov/apis/">LoC APIs</a>
+              <a class="badge" href="https://www.loc.gov/collections/">Collections</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>UNT Portal: National Museum of the Pacific War</h3>
+            <p>The closest Pacific War domain reference for this project, bringing together photographs, texts, letters, audio, maps, videos, physical objects, and archival series. The most useful technical patterns are collection/series/resource type/facet taxonomy, ARK persistent IDs, IIIF manifests, OAI/DC/METS exports, caption files, and rich item metadata.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://texashistory.unt.edu/explore/collections/NMPWA/">Collection</a>
+              <a class="badge" href="https://texashistory.unt.edu/ark:/67531/metapth1687980/">Item model</a>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Showakan Digital Archive</h3>
+            <p>A Japanese wartime and postwar life archive covering physical materials, photographs, video, oral histories, SP records, books, periodicals, and catalog records. It is a good front-end reference for cross-category search, asset-type tabs with counts, type-specific filters, public/onsite availability labels, and detail-page metadata layout.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://search.showakan.go.jp/">Archive</a>
+              <a class="badge" href="https://search.showakan.go.jp/howto/">Search model</a>
             </div>
           </article>
           <article class="card">
             <h3>Densho Digital Repository</h3>
-            <p>Especially relevant for wartime memory, community partnership, oral histories, photographs, and documents in one public research environment.</p>
+            <p>A public research repository for Japanese American incarceration, wartime memory, and community archives. Useful patterns include subject browse, people and organization authorities, oral histories beside photographs and documents, source collections, rights statements, and an education-friendly access layer.</p>
             <div class="badge-row">
               <a class="badge" href="https://ddr.densho.org/about/">Repository</a>
               <a class="badge" href="https://ddr.densho.org/browse/">Browse model</a>
@@ -847,7 +1092,7 @@
           </article>
           <article class="card">
             <h3>JACAR</h3>
-            <p>A cross-institution discovery model for Asian historical records, with unified search, multiple sources, reference codes, and multilingual access.</p>
+            <p>A cross-institution discovery model for Asian historical records from Japan's national archives, diplomatic archives, and defense research sources. Useful technical references include reference codes, multi-institution search, retained source identity, image/PDF link-out, and multilingual search paths.</p>
             <div class="badge-row">
               <a class="badge" href="https://www.jacar.go.jp/english/about/outline.html">Overview</a>
               <a class="badge" href="https://www.jacar.archives.go.jp/aj/help/en/search_guide.html">Search guide</a>
@@ -855,7 +1100,7 @@
           </article>
           <article class="card">
             <h3>Stanford Chinese Railroad Workers</h3>
-            <p>A transnational, multilingual, interdisciplinary digital humanities reference point for distributed evidence and public history.</p>
+            <p>A transnational, multilingual, interdisciplinary digital humanities project that organizes distributed evidence, scholarship, teaching, and public history interpretation. It is less a DAMS reference than a public interpretation layer reference: essays, bibliography, exhibit-like navigation, and external source synthesis.</p>
             <div class="badge-row">
               <a class="badge" href="https://amstudies.stanford.edu/about/transnational-initiatives/chinese-railroad-workers-north-america-project">Project</a>
               <a class="badge" href="https://er.educause.edu/articles/2014/6/the-chinese-railroad-workers-in-america-project">Case</a>
@@ -863,12 +1108,279 @@
           </article>
           <article class="card">
             <h3>GLAM Labs and Collections as Data</h3>
-            <p>Digital humanities practice increasingly expects collections to support computation, citation, reuse, and research transparency.</p>
+            <p>Digital humanities practice increasingly expects collections to support computation, citation, reuse, and research transparency. Technically, this pushes the project to treat metadata exports, bulk data, documentation, citation, rights context, and the FAIR/CARE emphasis on findability, ethics, community benefit, and attribution as part of the research infrastructure.</p>
             <div class="badge-row">
               <a class="badge" href="https://www.glamlabs.io/">GLAM Labs</a>
               <a class="badge" href="https://collectionsasdata.github.io/">Collections as Data</a>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="band" id="en-metadata-review">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Metadata / Field Review</span>
+            <h2>Field standards are not an export checklist; they define three discovery layers: general fields, Pacific War domain fields, and authority records.</h2>
+            <p class="lead">
+              This layer sits directly under the archive cases so reviewers can compare UNT, Showakan, DPLA, Europeana, NARA, and LoC while checking
+              which layer each field belongs to and how it supports search indexes, facets, citation, export, preservation, and long-term migration.
+            </p>
+          </div>
+          <p class="note">
+            Recommended approach: keep a local canonical profile. DCMI supplies cross-collection discovery, Pacific War fields supply domain research dimensions, and authority records make people, places, units, battles, and subjects reusable, disambiguated, and linkable.
+          </p>
+        </div>
+
+        <div class="grid three logic-grid">
+          <article class="card layer-card layer-general">
+            <h3><span class="layer-marker">1</span> General Discovery Layer</h3>
+            <p>Dublin Core / DCMI Terms provide the most stable cross-system field language: title, creator, date, type, subject, spatial coverage, rights, identifier, source, and relation. They should not be export-only mappings; they should feed keyword search, core facets, sorting, citation, and cross-institution aggregation.</p>
+          </article>
+          <article class="card layer-card layer-domain">
+            <h3><span class="layer-marker">2</span> Pacific War Domain / Type Extension Layer</h3>
+            <p>General fields cannot answer all research questions. The local profile should add domain fields such as theater, campaign, battle / operation, military unit, occupation context, POW camp, civilian group, language, source community, and sensitivity / access context, while also absorbing type-specific, preservation, and media-presentation fields.</p>
+          </article>
+          <article class="card layer-card layer-authority">
+            <h3><span class="layer-marker">3</span> Authority / Entity Layer</h3>
+            <p>The authority model is not a tag list. It is a set of reusable entity records. Items should point to authority IDs for people, organizations, places, units, events, and subjects, with preferred labels, aliases, multilingual variants, external URIs, and relationships.</p>
+          </article>
+        </div>
+
+        <p class="layer-map-note">The standards below use matching layer tags to show how they connect back to the three headers. A standard may support multiple layers; this map classifies it by the reviewer's primary use.</p>
+
+        <div class="grid three layered-standards">
+          <article class="card layered-card layer-general">
+            <span class="layer-tag">Layer 1 · General Discovery</span>
+            <h3>Dublin Core / DCMI Terms</h3>
+            <p>A cross-domain metadata baseline. Reviewers should check not only whether it can be exported, but whether title, creator/contributor, date/created/issued, description, subject, type, format, identifier, source, language, spatial/temporal coverage, rights/license, and relation are defined well enough to support search, facets, citation, and cross-system aggregation.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">DCMI Terms</a>
+              <a class="badge" href="https://www.dublincore.org/specifications/dublin-core/application-profile-guidelines/">Application Profile</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · Type Extension</span>
+            <h3>MODS</h3>
+            <p>A richer library and bibliographic description format. Useful for reviewing books, maps, letters, reports, and pamphlets through titleInfo, name/role, typeOfResource, genre, originInfo, language, physicalDescription, subject, relatedItem, identifier, location, and accessCondition.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.loc.gov/standards/mods/">LoC MODS</a>
+              <a class="badge" href="https://www.loc.gov/standards/mods/userguide/">User guide</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · Archival Hierarchy</span>
+            <h3>EAD</h3>
+            <p>The main reference for finding aids and archival hierarchy. Useful for reviewing whether collection, series, file, and item levels remain visible, and whether component IDs, containers, scope/content notes, biographical/history notes, access restrictions, control access, and related materials are traceable.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.loc.gov/ead/">EAD Official Site</a>
+              <a class="badge" href="https://www.loc.gov/ead/ead3schema.html">EAD3 Schema</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · Object/Event Extension</span>
+            <h3>LIDO</h3>
+            <p>An event-centered model for museum objects and exhibition objects. Useful for reviewing artifacts, memorial objects, exhibits, and visual objects through object/work type, materials, measurements, inscriptions, related events, actors, places, repository, rights, and display fields.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://icom-documentation.mini.icom.museum/working-groups/lido/lido-overview/about-lido/">About LIDO</a>
+              <a class="badge" href="https://cidoc.mini.icom.museum/working-groups/lido/lido-overview/lido-technical/specification/">Specification</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-general">
+            <span class="layer-tag">Layer 1 · Aggregated Discovery</span>
+            <h3>DPLA MAP / Europeana EDM</h3>
+            <p>Key references for aggregation metadata. Useful for reviewing whether source resources and web resources are separated, provider and data provider are distinct, original records are preserved, and rights, isShownAt, thumbnails, collection membership, and facets support cross-institution discovery.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://pro.dp.la/developers/field-reference">DPLA Field Reference</a>
+              <a class="badge" href="https://pro.europeana.eu/index.php/page/edm-documentation">Europeana EDM</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · Preservation Extension</span>
+            <h3>Preservation metadata</h3>
+            <p>PREMIS, OAIS, NDSA Levels, and OCFL belong to the long-term stewardship layer rather than ordinary public display metadata. Useful for reviewing preservation objects, file formats, fixity, events, agents, rights, migration, validation, action history, storage packages, and migration readiness for long-term usability and audit.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.loc.gov/standards/premis/">PREMIS Home</a>
+              <a class="badge" href="https://ocfl.io/">OCFL</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-domain">
+            <span class="layer-tag">Layer 2 · Media Access Extension</span>
+            <h3>IIIF Presentation API</h3>
+            <p>A reference for media presentation and citation. Useful for reviewing whether assets can be viewed and cited through manifests, canvases, ranges, annotations, metadata label/value pairs, image services, page regions, and timecodes.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://iiif.io/api/presentation/3.0/">Presentation API</a>
+              <a class="badge" href="https://iiif.io/api/image/3.0/">Image API</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-authority">
+            <span class="layer-tag">Layer 3 · Authority/Entity</span>
+            <h3>Authorities: names, places, subjects</h3>
+            <p>Authority records determine discovery quality. Reviewers should check whether people, organizations, places, subjects, events, military units, and objects are managed as reusable entities rather than scattered free text; each entity should carry preferred labels, alternate labels, source vocabularies, authority URIs, language variants, local notes, and structured relationships. Places can reference TGN, names and subjects can follow LoC linked-data patterns, and complex relationships can reference RiC-CM, CIDOC CRM, or Linked Art.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://id.loc.gov/">LoC Linked Data</a>
+              <a class="badge" href="https://cidoc-crm.org/">CIDOC CRM</a>
+            </div>
+          </article>
+          <article class="card layered-card layer-general">
+            <span class="layer-tag">Layer 1 · Exchange/API</span>
+            <h3>OAI-PMH / APIs</h3>
+            <p>Used for metadata harvesting and requests by external systems. Reviewers should check whether record identifiers, datestamps, sets/collections, metadata prefixes, deleted/update policy, rights notes, and source attribution are clear enough to avoid manual field copying later.</p>
+            <div class="badge-row">
+              <a class="badge" href="https://www.openarchives.org/pmh/">OAI-PMH</a>
+              <a class="badge" href="https://www.loc.gov/apis/">LoC APIs</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="band" id="en-open-source-solutions">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Available Systems Overview</span>
+            <h2>Available systems should be selected by responsibility: collection management, public discovery, repository infrastructure, preservation workflow, vocabulary control, and storage are different layers.</h2>
+            <p class="lead">
+              This table includes both open-source software and commercial/hardware storage options. Open source does not mean zero cost; cloud storage is not an archival system by itself and still needs metadata, fixity, backup, and access governance.
+            </p>
+          </div>
+          <p class="note">
+            Rough cost uses public US pricing checked on 2026-08-23. Cloud estimates exclude taxes, egress, API operations, retrieval, replication, support, data migration, and staff time unless noted.
+          </p>
+        </div>
+
+        <div class="compare">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>System / tool</th>
+                <th>Overview</th>
+                <th>When it is worth using</th>
+                <th>Free / paid / estimated cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Collection management / metadata</td>
+                <td><strong><a href="https://collectiveaccess.org/?lang=en">CollectiveAccess Providence</a></strong></td>
+                <td>Core cataloguing back end for museum and archival collections; manages metadata, media, relationships, workflows, imports/exports, reports, and configurable schemas.</td>
+                <td>Use it when the project needs to manage physical objects, digital assets, people/places/events, complex relationships, and a highly customized metadata profile. Good for a collections-management prototype.</td>
+                <td>Free, open-source GPLv3 software. Paid cost is not a license fee; it is hosting, consulting, migration, custom development, theme/workflow design, and ongoing administration.</td>
+              </tr>
+              <tr>
+                <td>Public discovery portal</td>
+                <td><strong><a href="https://www.collectiveaccess.org/get-started/">CollectiveAccess Pawtucket</a></strong></td>
+                <td>Optional public web-access front end for CollectiveAccess; provides browse, search, facets, media display, maps/timelines/visualizations, and branded public presentation.</td>
+                <td>Use it when Providence is already the cataloguing back end and the institution wants to publish a public portal from the same data model. It is not a standalone metadata system.</td>
+                <td>Free, open-source GPLv3 software. Paid cost is design/front-end implementation, hosting, search tuning, accessibility QA, image/media delivery, and maintenance.</td>
+              </tr>
+              <tr>
+                <td>Digital humanities / public collections</td>
+                <td><strong><a href="https://omeka.org/s/">Omeka S</a></strong></td>
+                <td>Linked-open-data-oriented platform for digital collections, item sets, items, media, resource templates, and multiple public sites.</td>
+                <td>Use it when the team needs a fast public-facing digital collection, exhibit, teaching/research site, or lightweight Digital Reading Room. Very suitable for phase 1.</td>
+                <td>Omeka S / Classic can be self-hosted for free. Paid cost is managed hosting, support, training, and customization. Omeka.net hosted Classic tiers are roughly $35-$1000/year by storage/sites/plugins/themes.</td>
+              </tr>
+              <tr>
+                <td>Archival description / finding aids</td>
+                <td><strong><a href="https://archivesspace.org/">ArchivesSpace</a></strong></td>
+                <td>Archives information management application for accessions, resources, archival objects, agents, subjects, digital object descriptions, and finding aids.</td>
+                <td>Use it when the project needs staff-side archival hierarchy, collection/series/file/item structure, creator/subject authority control, EAD, and finding aid governance. First priority for archival description.</td>
+                <td>Application is free to download and use. Paid ArchivesSpace membership supports sustainability and adds support/governance/manuals/tutorials; hosting, customization, and migration are separate costs.</td>
+              </tr>
+              <tr>
+                <td>Archival description + public access</td>
+                <td><strong><a href="https://accesstomemory.org/en/">AtoM (Access to Memory)</a></strong></td>
+                <td>Web-based, multilingual, multi-repository archival description and access application; supports standards-based description and import/export such as EAD, EAC-CPF, CSV, and SKOS.</td>
+                <td>Use it when the goal is a relatively lightweight public access interface for archival descriptions and digital objects. It is more public-access and multilingual-access oriented than ArchivesSpace.</td>
+                <td>AGPL open source and free to install. Artefactual hosted AtoM publicly starts around $1,945/year; implementation, migration, theming, training, and enterprise support cost extra.</td>
+              </tr>
+              <tr>
+                <td>Museum / physical collections management</td>
+                <td><strong><a href="https://collectionspace.org/">CollectionSpace</a></strong></td>
+                <td>Collections management system for museums, historical societies, universities, and collecting organizations, with collaborative workflows and unlimited user-account model.</td>
+                <td>Evaluate it when the project shifts toward artifacts, exhibits, donations, registration, condition, location, loans, rights, and collection-care workflows.</td>
+                <td>Open source; self-hosting has no annual license or per-user fee. Lyrasis paid hosting covers support/upgrades/maintenance/media storage; contribution tiers range from $500/year to $10,000/year.</td>
+              </tr>
+              <tr>
+                <td>Digital asset management (DAM)</td>
+                <td><strong><a href="https://www.resourcespace.com/get">ResourceSpace</a></strong></td>
+                <td>Open-source DAM for organizing, permissioning, searching, licensing, and distributing digital assets, with metadata, workflow, analytics, and cloud/self-host options.</td>
+                <td>Use it when the main problem is photos, video, design/media files, marketing/exhibition assets, permissions, downloads, and asset licensing rather than archival hierarchy.</td>
+                <td>Self-hosted software is free; ResourceSpace also offers a free 10GB cloud service. Paid cloud packages cover hosting, backups, upgrades, support, SSO, API, storage, and onboarding; public pricing is package/quote-oriented rather than core license based.</td>
+              </tr>
+              <tr>
+                <td>Institutional / digital repository</td>
+                <td><strong><a href="https://dspace.org/">DSpace</a></strong></td>
+                <td>Institutional repository software commonly used for theses, papers, datasets, subject repositories, media repositories, and durable access to digital files.</td>
+                <td>Use it when the focus is a university/research repository, deposit workflow, datasets, papers, ETDs, or ORCID/OpenAIRE/ROR integration. It is less central to the phase-1 Digital Reading Room.</td>
+                <td>Free and open source. Paid cost is hosted repository service, implementation, migration, upgrades, support, and storage rather than a software license.</td>
+              </tr>
+              <tr>
+                <td>Repository infrastructure</td>
+                <td><strong><a href="https://fedorarepository.org/">Fedora Repository</a></strong></td>
+                <td>Standards-based repository backend for digital objects, metadata, semantic relationships, OCFL-backed persistence, and preservation-oriented repository APIs.</td>
+                <td>Use it in phase 2 when the public site needs a real repository API, object relationships, fixity/version-aware persistence, OCFL storage, or Islandora/Fedora architecture.</td>
+                <td>Core software is free and open source. Costs are servers, storage, OCFL configuration, integration, monitoring, backup, support, and vendor implementation.</td>
+              </tr>
+              <tr>
+                <td>Digital preservation workflow</td>
+                <td><strong><a href="https://archivematica.org/en/?lang=en">Archivematica</a></strong></td>
+                <td>Standards-based preservation workflow system using OAIS, METS, PREMIS, Dublin Core, BagIt, microservices, checksums, and AIP generation.</td>
+                <td>Use it when the project starts preservation ingest, format identification, fixity, normalization decisions, AIP packaging, storage transfer, and preservation audit trails.</td>
+                <td>AGPL open source and free to install. Artefactual hosted Archivematica starts around $11,440/year; enterprise subscriptions start around $28,600/year; storage and implementation are extra.</td>
+              </tr>
+              <tr>
+                <td>Ontology / vocabulary management</td>
+                <td><strong><a href="https://vocbench.uniroma2.it/">VocBench</a></strong></td>
+                <td>Web-based, multilingual collaborative platform for OWL ontologies, SKOS/SKOS-XL thesauri, OntoLex-lemon lexicons, and generic RDF datasets.</td>
+                <td>Use it when the project needs a formal authority service, taxonomy governance, multilingual vocabularies, linked data / RDF modeling, editor workflow, and versioned concept management.</td>
+                <td>Free and open source. Paid cost is hosting, RDF store infrastructure, semantic-web expertise, training, integration, backup, and governance process design.</td>
+              </tr>
+              <tr>
+                <td>Lightweight thesaurus management</td>
+                <td><strong><a href="https://github.com/tematres/TemaTres-Vocabulary-Server">TemaTres</a></strong></td>
+                <td>PHP/MySQL vocabulary server for controlled vocabularies, taxonomies, thesauri, glossaries, SKOS import/export, mappings, reports, and APIs.</td>
+                <td>Use it when the team needs a lighter, faster-to-deploy local thesaurus / glossary / controlled vocabulary manager than VocBench.</td>
+                <td>GPLv2 open source and free to self-host. Costs are LAMP hosting, admin time, backups, customization, and integration with collection/search systems.</td>
+              </tr>
+              <tr>
+                <td>Vocabulary publishing / browsing</td>
+                <td><strong><a href="https://skosmos.org/">Skosmos</a></strong></td>
+                <td>Open-source SKOS browser and publishing tool with search, browse, concept pages, hierarchy visualization, multilingual UI, REST API, and Linked Data access.</td>
+                <td>Use it when vocabularies are already managed as SKOS/RDF and should be published for cataloguers, researchers, or external systems.</td>
+                <td>MIT open source and free. Costs are hosting, SPARQL/Fuseki or RDF backend, vocabulary publishing workflow, API integration, and maintenance.</td>
+              </tr>
+              <tr>
+                <td>Canonical digital object storage</td>
+                <td><strong><a href="https://cloud.google.com/storage/pricing">Google Cloud Storage</a> / <a href="https://aws.amazon.com/s3/pricing/">AWS S3 Standard</a></strong></td>
+                <td>Commercial object storage for canonical digital objects, derivatives, manifests, exports, and application file storage. This is storage infrastructure, not metadata governance.</td>
+                <td>Use it when the project needs durable cloud object storage, programmatic access, lifecycle rules, versioning, replication, IAM, audit logs, and scalable ingest/download paths.</td>
+                <td>Not open source. Rough US storage-only estimate: GCS single-region Standard about $0.020/GiB-month; AWS S3 Standard us-east-1 about $0.023/GB-month for first 50TB. Add request, egress, replication, retrieval, monitoring, and support costs.</td>
+              </tr>
+              <tr>
+                <td>Cold long-term storage</td>
+                <td><strong><a href="https://cloud.google.com/storage/pricing">GCS Archive</a> / <a href="https://aws.amazon.com/s3/storage-classes/glacier/">AWS S3 Glacier / Deep Archive</a></strong></td>
+                <td>Commercial cold object storage for rarely accessed preservation copies, disaster recovery, and long-retention archival packages.</td>
+                <td>Use it when data is rarely read, restore delay is acceptable, and metadata/fixity/backup policy is managed elsewhere. It is not suitable for frequently browsed reading-room assets.</td>
+                <td>Not open source. Rough storage-only estimate: GCS single-region Archive about $0.0012/GiB-month plus retrieval about $0.05/GiB; AWS S3 Glacier Deep Archive about $0.00099/GB-month, 180-day minimum, restore delay, and restore/retrieval/request charges.</td>
+              </tr>
+              <tr>
+                <td>Working / collaboration storage</td>
+                <td><strong><a href="https://workspace.google.com/pricing.html">Google Drive</a></strong></td>
+                <td>Collaboration storage bundled with Google accounts / Workspace for working files, drafts, spreadsheets, shared folders, and temporary review material.</td>
+                <td>Use it for working storage, team collaboration, metadata spreadsheet review, meeting files, and temporary transfer. Do not use it as the canonical archive or preservation master storage.</td>
+                <td>Not open source. Personal accounts include 15GB free. Workspace annual-plan pricing: Starter $7/user/month with 30GB pooled per user; Standard $14/user/month with 2TB pooled per user; Plus $22/user/month with 5TB pooled per user.</td>
+              </tr>
+              <tr>
+                <td>Offline / local backup layer</td>
+                <td><strong><a href="https://www.synology.com/en-us/company/news/article/DS224p_DS124/Synology%C2%AE%20%E6%8E%A8%E5%87%BA%20DiskStation%C2%AE%20DS224%2B%20%E5%92%8C%20DS124%20%E4%B8%A4%E6%AC%BE%E5%B0%8F%E5%9E%8B%E6%A1%8C%E9%9D%A2%E7%BA%A7%20NAS%EF%BC%8C%E6%9C%89%E6%95%88%E6%8F%90%E5%8D%87%E5%8A%9E%E5%85%AC%E7%94%9F%E4%BA%A7%E5%8A%9B">External SSD / HDD / NAS</a></strong></td>
+                <td>Local or offline backup hardware layer, such as portable SSDs, external HDDs, or a small NAS with mirrored drives and periodic offsite rotation.</td>
+                <td>Use it as a local/offline copy in a 3-2-1 backup strategy, ingest staging area, onsite recovery layer, or staff working copy. It cannot be the only canonical preservation repository.</td>
+                <td>Not open source. Rough hardware planning: 2-bay NAS enclosure starts around $300 before drives; NAS HDD pricing is volatile but commonly tens of dollars per TB. Budget duplicate drives, replacement cycle, offsite copy, UPS, and staff operations.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -917,145 +1429,10 @@
         </div>
       </section>
 
-      <section class="band" id="en-standards">
-        <div class="section-head">
-          <div>
-            <span class="kicker">Standards</span>
-            <h2>Standards help reduce future partnership and migration costs while keeping data boundaries clear.</h2>
-            <p class="lead">
-              The project does not need to implement every standard at once. Use standards to define boundaries:
-              stewardship, descriptive interoperability, federated discovery, media presentation, relationship semantics, and responsible reuse.
-            </p>
-          </div>
-          <p class="note">
-            The project keeps a lightweight internal canonical model and
-            communicates externally through DCMI, EAD, LIDO, DPLA/EDM, IIIF,
-            and related profiles.
-          </p>
-        </div>
-
-        <div class="compare">
-          <table>
-            <thead>
-              <tr>
-                <th>Project question</th>
-                <th>Relevant standards</th>
-                <th>Governance area</th>
-                <th>Project implication</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>How is long-term stewardship documented?</strong></td>
-                <td>OAIS, PREMIS, NDSA Levels, OCFL</td>
-                <td>Preservation accountability, events, integrity, sustainability.</td>
-                <td>Public access is not a substitute for preservation planning.</td>
-              </tr>
-              <tr>
-                <td><strong>How can others interpret our records?</strong></td>
-                <td>DCMI, MODS, EAD, LIDO</td>
-                <td>Common descriptive language across archives, libraries, and museums.</td>
-                <td>Maintain a local model, then publish clear crosswalks.</td>
-              </tr>
-              <tr>
-                <td><strong>How do partner-held records appear together?</strong></td>
-                <td>DPLA MAP, Europeana EDM, OAI-PMH, APIs</td>
-                <td>Provider identity, data provider identity, aggregation relationships.</td>
-                <td>Design for federated discovery while preserving source identity.</td>
-              </tr>
-              <tr>
-                <td><strong>How do users inspect media and cite evidence?</strong></td>
-                <td>IIIF Presentation API</td>
-                <td>Consistent viewing, manifests, pages, regions, time-based references.</td>
-                <td>Use IIIF when the collection is ready for richer object-level access.</td>
-              </tr>
-              <tr>
-                <td><strong>How do we express historical relationships?</strong></td>
-                <td>RiC-CM, CIDOC CRM, Linked Art</td>
-                <td>People, places, events, objects, records, and institutional context.</td>
-                <td>Keep relationship data structured for later knowledge-graph work.</td>
-              </tr>
-              <tr>
-                <td><strong>How do we make reuse responsible?</strong></td>
-                <td>FAIR, CARE, Collections as Data</td>
-                <td>Findability, access, reuse, ethics, community benefit, transparency.</td>
-                <td>Open data choices should include rights, attribution, and community context.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="band" id="en-references">
-        <div class="section-head">
-          <div>
-            <span class="kicker">References</span>
-            <h2>Reference sources include public standards, peer cases, and maintainer documentation.</h2>
-            <p class="lead">
-              These sources support preservation, description, aggregation,
-              discovery, and AI-use assessment across the project.
-            </p>
-          </div>
-          <p class="note">
-            Source check date: 2026-08-10.
-          </p>
-        </div>
-
-        <div class="source-map">
-          <article class="source-card">
-            <small>Preservation accountability</small>
-            <h3>OAIS, PREMIS, NDSA Levels, OCFL</h3>
-            <p>Define stewardship responsibility, preservation events, integrity, and sustainability maturity.</p>
-            <div class="source-link"><span>Standards</span><a href="https://www.iso.org/standard/87471.html">OAIS</a></div>
-          </article>
-          <article class="source-card">
-            <small>Descriptive interoperability</small>
-            <h3>DCMI, MODS, EAD, LIDO</h3>
-            <p>Support descriptive semantics across archives, libraries, museums, and public exchange.</p>
-            <div class="source-link"><span>Metadata</span><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">DCMI</a></div>
-          </article>
-          <article class="source-card">
-            <small>Aggregation and discovery</small>
-            <h3>DPLA MAP, Europeana EDM, OAI-PMH</h3>
-            <p>Support cross-institution metadata aggregation, provider attribution, and federated discovery.</p>
-            <div class="source-link"><span>Aggregation</span><a href="https://pro.dp.la/hubs/metadata-application-profile">DPLA MAP</a></div>
-          </article>
-          <article class="source-card">
-            <small>Media access</small>
-            <h3>IIIF Presentation API 3.0</h3>
-            <p>Standardized presentation and citation for images, audiovisual materials, pages, regions, and timecodes.</p>
-            <div class="source-link"><span>Access</span><a href="https://iiif.io/api/presentation/3.0/">IIIF</a></div>
-          </article>
-          <article class="source-card">
-            <small>Relationship semantics</small>
-            <h3>RiC-CM, CIDOC CRM, Linked Art</h3>
-            <p>Express relationships among people, places, events, objects, records, and institutions.</p>
-            <div class="source-link"><span>Semantics</span><a href="https://cidoc-crm.org/">CIDOC CRM</a></div>
-          </article>
-          <article class="source-card">
-            <small>Peer cases</small>
-            <h3>Densho, JACAR, Stanford CRRW</h3>
-            <p>Relevant examples for wartime memory, Asian historical records, transnational migration history, and distributed evidence.</p>
-            <div class="source-link"><span>Peers</span><a href="https://ddr.densho.org/about/">Densho</a></div>
-          </article>
-          <article class="source-card">
-            <small>Institutional APIs</small>
-            <h3>NARA and Library of Congress</h3>
-            <p>Show how public access and research reuse can sit on stable identifiers and structured APIs.</p>
-            <div class="source-link"><span>APIs</span><a href="https://www.archives.gov/research/catalog/help/api">NARA</a></div>
-          </article>
-          <article class="source-card">
-            <small>Open-source ecosystem</small>
-            <h3>ArchivesSpace, CollectionSpace, Archivematica, Omeka S</h3>
-            <p>Mature tool categories for governed metadata, preservation workflows, and public access.</p>
-            <div class="source-link"><span>Software</span><a href="https://archivesspace.org/">ArchivesSpace</a></div>
-          </article>
-        </div>
-        <p class="foot">
-          Comparative research report for reference review, scope definition,
-          and later system evaluation.
-        </p>
-      </section>
+      <p class="foot">
+        Comparative research report for reference review, scope definition,
+        and later system evaluation.
+      </p>
     </main>
 
     <script>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Archives Infrastructure Report</title>
+    <title>SF Pacific War Archives Infrastructure Project</title>
     <style>
       :root {
         --paper: #f4f2ed;
@@ -577,14 +577,14 @@
   <body data-lang="en">
     <header class="site-header">
       <div class="topbar">
-        <a class="brand" href="./index.html" aria-label="Archives Infrastructure Report home">
+        <a class="brand" href="./index.html" aria-label="SF Pacific War Archives Infrastructure Project home">
           <img src="docs/standards/branding/assets/memorial-hall-logo.png" alt="" />
-          <span data-i18n="brandLabel">Archives Infrastructure Report</span>
+          <span data-i18n="brandLabel">SF Pacific War Archives Infrastructure Project</span>
         </a>
         <div class="topbar-tools">
           <div class="lang-switch" role="group" aria-label="Language">
             <button class="lang-tab is-active" data-lang="en" type="button">EN</button>
-            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+            <button class="lang-tab" data-lang="zh" type="button">中文</button>
           </div>
           <nav class="nav" aria-label="Showcase sections">
             <a href="#briefing" data-i18n="navOverview">Updates</a>
@@ -628,6 +628,30 @@
 
           <article class="update-card">
             <p class="update-meta">
+              <time datetime="2026-08-22">8/22/2026</time>
+              <span data-i18n="updateBy">Update by JG</span>
+            </p>
+            <ul class="update-list">
+              <li>
+                <a href="docs/research/digital-archives-research-show.html" data-i18n="update20260822Research">Expanded comparative research with Pacific War peer cases, metadata field review, standards roles, and tool/storage cost references.</a>
+              </li>
+              <li>
+                <a href="docs/architecture/archival-infrastructure-architecture-proposal.html" data-i18n="update20260822Architecture">Added metadata management design considerations for common discovery, Pacific War domain retrieval, schema roles, and search indexing.</a>
+              </li>
+              <li>
+                <a href="docs/planning/project-update-program-management.html" data-i18n="update20260822Program">Refined program principles around canonical records, governance, federated discovery, derived layers, storage/access separation, and AI integrity.</a>
+              </li>
+              <li>
+                <a href="docs/architecture/digital-collections-asset-management-design-proposal.html" data-i18n="update20260822AssetManagement">Added the preservation-led digital collections asset-management proposal as a current design reference for metadata, provenance, federation, ingest, retrieval, and pilot planning.</a>
+              </li>
+              <li>
+                <a href="file:///Users/jingxugao/Documents/memory-next/pacific-war-dam-product-technical-design.html" data-i18n="update20260822Poc">Started the memory-next proof-of-concept design: a local Python/SQLite archive collection demo with catalog search, record editing, authority/taxonomy relationships, AI intake review, media upload, viewer/admin permissions, backups, and a design principle that separates DAM source-of-record, structured metadata knowledge, and web search/reading-room access.</a>
+              </li>
+            </ul>
+          </article>
+
+          <article class="update-card">
+            <p class="update-meta">
               <time datetime="2026-08-09">8/9/2026</time>
               <span data-i18n="updateBy">Update by JG</span>
             </p>
@@ -649,86 +673,19 @@
         </div>
       </section>
 
-      <section class="band alt" id="roadmap">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <span class="kicker" data-i18n="structureKicker">Project Structure</span>
-              <h2 data-i18n="structureTitle">Archival infrastructure first, public access layered on top.</h2>
-              <p class="lead" data-i18n="structureLead">
-                The project moves from program boundary to source truth, then to
-                trusted public release and evidence-based AI access.
-              </p>
-            </div>
-            <p class="note" data-i18n="structureNote">
-              Each stage depends on the stability and clarity of the layer below
-              it.
-            </p>
-          </div>
-
-          <div class="timeline">
-            <article class="step">
-              <h3 data-i18n="stepBoundaryTitle">Program boundary</h3>
-              <p data-i18n="stepBoundaryBody">The four tracks define the scope of the archives infrastructure project.</p>
-            </article>
-            <article class="step">
-              <h3 data-i18n="stepTruthTitle">Source of truth</h3>
-              <p data-i18n="stepTruthBody">Canonical records carry identity, source, rights, provenance, and review status.</p>
-            </article>
-            <article class="step">
-              <h3 data-i18n="stepReleaseTitle">Trusted public release</h3>
-              <p data-i18n="stepReleaseBody">Approved record data supports search, filters, and clear record detail views.</p>
-            </article>
-            <article class="step">
-              <h3 data-i18n="stepAiTitle">Evidence-based AI</h3>
-              <p data-i18n="stepAiBody">AI layers sit on top of evidence links, derived-content labels, and human review.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="band" id="principles">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <span class="kicker" data-i18n="principlesKicker">Core Principles</span>
-              <h2 data-i18n="principlesTitle">Keep the architecture durable while the tools evolve.</h2>
-            </div>
-          </div>
-
-          <div class="grid four">
-            <article class="principle">
-              <h3 data-i18n="principleCanonicalTitle">Canonical record first</h3>
-              <p data-i18n="principleCanonicalBody">Original records, source IDs, rights, review state, and publication status remain more stable than search or AI layers.</p>
-            </article>
-            <article class="principle">
-              <h3 data-i18n="principleDerivedTitle">Derived layers stay labeled</h3>
-              <p data-i18n="principleDerivedBody">Translations, summaries, entity extraction, and answers remain replaceable and clearly tied to sources and review status.</p>
-            </article>
-            <article class="principle">
-              <h3 data-i18n="principleFederatedTitle">Federated by design</h3>
-              <p data-i18n="principleFederatedBody">NARA, university archives, and local holdings can be discovered together through mappings and source identifiers.</p>
-            </article>
-            <article class="principle">
-              <h3 data-i18n="principleStorageTitle">Separate storage from access</h3>
-              <p data-i18n="principleStorageBody">Preservation masters, access derivatives, and public pages require different controls.</p>
-            </article>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
       <div class="footer-inner">
-        <span data-i18n="footerLabel">Archives Infrastructure Report</span>
+        <span data-i18n="footerLabel">SF Pacific War Archives Infrastructure Project</span>
       </div>
     </footer>
     <script>
       const translations = {
         en: {
-          title: "Archives Infrastructure Report",
-          brandLabel: "Archives Infrastructure Report",
-          footerLabel: "Archives Infrastructure Report",
+          title: "SF Pacific War Archives Infrastructure Project",
+          brandLabel: "SF Pacific War Archives Infrastructure Project",
+          footerLabel: "SF Pacific War Archives Infrastructure Project",
           navOverview: "Updates",
           navProgram: "Program",
           navResearch: "Research",
@@ -742,37 +699,20 @@
           briefingTitle: "Current project update log.",
           briefingLead: "A dated summary of the current reporting pages and the work completed so far.",
           updateBy: "Update by JG",
+          update20260822Research: "Expanded comparative research with Pacific War peer cases, metadata field review, standards roles, and tool/storage cost references.",
+          update20260822Architecture: "Added metadata management design considerations for common discovery, Pacific War domain retrieval, schema roles, and search indexing.",
+          update20260822Program: "Refined program principles around canonical records, governance, federated discovery, derived layers, storage/access separation, and AI integrity.",
+          update20260822AssetManagement: "Added the preservation-led digital collections asset-management proposal as a current design reference for metadata, provenance, federation, ingest, retrieval, and pilot planning.",
+          update20260822Poc: "Started the memory-next proof-of-concept design: a local Python/SQLite archive collection demo with catalog search, record editing, authority/taxonomy relationships, AI intake review, media upload, viewer/admin permissions, backups, and a design principle that separates DAM source-of-record, structured metadata knowledge, and web search/reading-room access.",
           updateProgram: "Drafted refined program scope and requirements, created four tracks based on scope breakdown.",
           updateResearch: "Researched academic and industry standards, implementation patterns, tooling, and resources.",
           updateArchitecture: "Created proposed design principles and architecture.",
           updateBrand: "Started a preliminary branding and visual system for reports, web pages, and future public-facing interfaces.",
-          structureKicker: "Project Structure",
-          structureTitle: "Archival infrastructure first, public access layered on top.",
-          structureLead: "The project moves from program boundary to source truth, then to trusted public release and evidence-based AI access.",
-          structureNote: "Each stage depends on the stability and clarity of the layer below it.",
-          stepBoundaryTitle: "Program boundary",
-          stepBoundaryBody: "The four tracks define the scope of the archives infrastructure project.",
-          stepTruthTitle: "Source of truth",
-          stepTruthBody: "Canonical records carry identity, source, rights, provenance, and review status.",
-          stepReleaseTitle: "Trusted public release",
-          stepReleaseBody: "Approved record data supports search, filters, and clear record detail views.",
-          stepAiTitle: "Evidence-based AI",
-          stepAiBody: "AI layers sit on top of evidence links, derived-content labels, and human review.",
-          principlesKicker: "Core Principles",
-          principlesTitle: "Keep the architecture durable while the tools evolve.",
-          principleCanonicalTitle: "Canonical record first",
-          principleCanonicalBody: "Original records, source IDs, rights, review state, and publication status remain more stable than search or AI layers.",
-          principleDerivedTitle: "Derived layers stay labeled",
-          principleDerivedBody: "Translations, summaries, entity extraction, and answers remain replaceable and clearly tied to sources and review status.",
-          principleFederatedTitle: "Federated by design",
-          principleFederatedBody: "NARA, university archives, and local holdings can be discovered together through mappings and source identifiers.",
-          principleStorageTitle: "Separate storage from access",
-          principleStorageBody: "Preservation masters, access derivatives, and public pages require different controls.",
         },
         zh: {
-          title: "Archives Infrastructure Report",
-          brandLabel: "Archives Infrastructure Report",
-          footerLabel: "Archives Infrastructure Report",
+          title: "SF Pacific War Archives Infrastructure Project",
+          brandLabel: "SF Pacific War Archives Infrastructure Project",
+          footerLabel: "SF Pacific War Archives Infrastructure Project",
           navOverview: "更新",
           navProgram: "项目",
           navResearch: "研究",
@@ -786,32 +726,15 @@
           briefingTitle: "当前项目更新时间线。",
           briefingLead: "按时间记录这组汇报页面和目前已经完成的工作。",
           updateBy: "JG 更新",
+          update20260822Research: "扩展 comparative research，补充 Pacific War 相关同行案例、metadata field review、standards roles，以及工具与存储成本参考。",
+          update20260822Architecture: "为 architecture proposal 增加 metadata management 设计考量，覆盖 common discovery、Pacific War domain retrieval、schema roles 与 search indexing。",
+          update20260822Program: "调整 program principles，强化 canonical records、governance、federated discovery、derived layers、storage/access separation 与 AI integrity。",
+          update20260822AssetManagement: "加入 preservation-led digital collections asset-management proposal，作为 metadata、provenance、federation、ingest、retrieval 与 pilot planning 的当前设计参考。",
+          update20260822Poc: "开始 memory-next proof-of-concept design：已实现本地 Python/SQLite archive collection demo，包含 catalog search、record editing、authority/taxonomy relationships、AI intake review、media upload、viewer/admin permissions、backups；设计原则是分离 DAM source-of-record、structured metadata knowledge layer 与 web search/reading-room access。",
           updateProgram: "完成 refined program scope 与 requirements 初稿，并基于 scope breakdown 创建四条 tracks。",
           updateResearch: "研究 academic 与 industry standards、implementation patterns、tooling 和 resources。",
           updateArchitecture: "创建 proposed design principles 与 architecture。",
           updateBrand: "启动用于 reports、web pages 和未来 public-facing interfaces 的 preliminary branding 与 visual system。",
-          structureKicker: "项目结构",
-          structureTitle: "先建立档案基础设施，再在其上扩展公共访问。",
-          structureLead: "项目从 program boundary 到 source truth，再进入可信公开发布和基于证据的 AI access。",
-          structureNote: "每一阶段都依赖下一层的稳定性和清晰边界。",
-          stepBoundaryTitle: "项目边界",
-          stepBoundaryBody: "四条 track 定义档案项目的范围。",
-          stepTruthTitle: "事实来源",
-          stepTruthBody: "Canonical records 承载身份、来源、权利、provenance 和 review status。",
-          stepReleaseTitle: "可信公开发布",
-          stepReleaseBody: "已批准的记录数据支持 search、filters 和清晰的 record detail views。",
-          stepAiTitle: "基于证据的 AI",
-          stepAiBody: "AI 层建立在 evidence links、derived-content labels 和 human review 之上。",
-          principlesKicker: "核心原则",
-          principlesTitle: "让架构在工具变化时仍然保持稳定。",
-          principleCanonicalTitle: "Canonical record 优先",
-          principleCanonicalBody: "原始记录、source IDs、权利、review state 和 publication status 必须比 search 或 AI 层更稳定。",
-          principleDerivedTitle: "衍生层必须标注",
-          principleDerivedBody: "翻译、摘要、entity extraction 和 answers 都应可替换，并清楚连接来源与审核状态。",
-          principleFederatedTitle: "按 federated discovery 设计",
-          principleFederatedBody: "NARA、大学档案和本地馆藏可以通过 mappings 与 source identifiers 被统一发现。",
-          principleStorageTitle: "保存与访问分离",
-          principleStorageBody: "Preservation masters、access derivatives 和 public pages 需要不同控制。",
         }
       };
 

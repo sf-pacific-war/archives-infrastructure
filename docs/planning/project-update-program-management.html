@@ -225,9 +225,12 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .lens-grid,
-      .principles-grid {
+      .lens-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .principles-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .section {
@@ -410,14 +413,14 @@
   <body data-lang="en">
     <main class="page">
       <div class="topbar">
-        <a class="brand" href="../../index.html" aria-label="SF Pacific War Archives Infrastructure Project home">
+        <a class="brand" href="../../index.html" aria-label="Back to home page">
           <img src="../standards/branding/assets/memorial-hall-logo.png" alt="" />
-          <span>SF Pacific War Archives Infrastructure Project</span>
+          <span>Back to home page</span>
         </a>
         <div class="topbar-tools">
           <div class="lang-switch" role="group" aria-label="Language">
             <button class="lang-tab is-active" data-lang="en" type="button">EN</button>
-            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+            <button class="lang-tab" data-lang="zh" type="button">中文</button>
           </div>
         </div>
       </div>
@@ -430,10 +433,6 @@
           institutional principles.
         </p>
 
-        <div class="hero-meta">
-          <span data-i18n="metaPoc">POC: JG</span>
-          <span data-i18n="metaUpdated">Updated: 8/9/2026</span>
-        </div>
       </header>
 
       <section class="section">
@@ -583,23 +582,41 @@
         <h2 class="section-title" data-i18n="principlesTitle">Institutional principles</h2>
         <p class="section-lead" data-i18n="principlesLead">
           These principles define the relationship between records, access,
-          and AI.
+          interoperability, and AI.
         </p>
 
         <div class="principles-grid">
           <article class="card">
             <h3 data-i18n="principleCanonicalTitle">Canonical record</h3>
-            <p data-i18n="principleCanonicalBody">The canonical record remains the source of truth.</p>
+            <p data-i18n="principleCanonicalBody">
+              Original records, source IDs, rights, review state, and publication
+              status remain the stable source of truth.
+            </p>
           </article>
           <article class="card">
             <h3 data-i18n="principleGovernanceTitle">Governance</h3>
             <p data-i18n="principleGovernanceBody">Provenance, rights, and review state must remain explicit.</p>
           </article>
           <article class="card">
+            <h3 data-i18n="principleFederationTitle">Federated discovery</h3>
+            <p data-i18n="principleFederationBody">
+              NARA, university archives, and local holdings should be discovered
+              together through mappings, APIs, and source identifiers.
+            </p>
+          </article>
+          <article class="card">
             <h3 data-i18n="principleDerivedTitle">Derived layers</h3>
             <p data-i18n="principleDerivedBody">
-              Discovery and AI outputs must remain derived, replaceable, and
-              distinguishable from source truth.
+              Translations, summaries, entity extraction, discovery, and AI
+              outputs must stay labeled, replaceable, and tied to source
+              evidence and review status.
+            </p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="principleStorageTitle">Storage and access</h3>
+            <p data-i18n="principleStorageBody">
+              Preservation masters, access derivatives, and public pages require
+              separate controls.
             </p>
           </article>
           <article class="card">
@@ -611,12 +628,6 @@
           </article>
         </div>
 
-        <hr class="rule" />
-
-        <p class="section-footer" data-i18n="principlesFooter">
-          Public access rests on structured records, and cross-archive
-          retrieval remains a managed interoperability layer.
-        </p>
       </section>
     </main>
     <script>
@@ -625,8 +636,6 @@
           title: "SF Pacific War Archives Infrastructure Project",
           heroEyebrow: "Program Overview",
           heroSummary: "Overview of the program scope, core tracks, architectural lens, and institutional principles.",
-          metaPoc: "POC: JG",
-          metaUpdated: "Updated: 8/9/2026",
           scopeKicker: "Scope",
           scopeTitle: "Program scope",
           scopeLead: "The program spans preservation, collections, interoperability, and public discovery.",
@@ -680,23 +689,24 @@
           lensFooter: "Preservation and collections carry source truth; interoperability connects archives; discovery and AI extend access without replacing source truth.",
           principlesKicker: "Principles",
           principlesTitle: "Institutional principles",
-          principlesLead: "These principles define the relationship between records, access, and AI.",
+          principlesLead: "These principles define the relationship between records, access, interoperability, and AI.",
           principleCanonicalTitle: "Canonical record",
-          principleCanonicalBody: "The canonical record remains the source of truth.",
+          principleCanonicalBody: "Original records, source IDs, rights, review state, and publication status remain the stable source of truth.",
           principleGovernanceTitle: "Governance",
           principleGovernanceBody: "Provenance, rights, and review state must remain explicit.",
+          principleFederationTitle: "Federated discovery",
+          principleFederationBody: "NARA, university archives, and local holdings should be discovered together through mappings, APIs, and source identifiers.",
           principleDerivedTitle: "Derived layers",
-          principleDerivedBody: "Discovery and AI outputs must remain derived, replaceable, and distinguishable from source truth.",
+          principleDerivedBody: "Translations, summaries, entity extraction, discovery, and AI outputs must stay labeled, replaceable, and tied to source evidence and review status.",
+          principleStorageTitle: "Storage and access",
+          principleStorageBody: "Preservation masters, access derivatives, and public pages require separate controls.",
           principleAiTitle: "AI integrity",
-          principleAiBody: "LLMs may interpret or enrich records, but must not rewrite original records.",
-          principlesFooter: "Public access rests on structured records, and cross-archive retrieval remains a managed interoperability layer."
+          principleAiBody: "LLMs may interpret or enrich records, but must not rewrite original records."
         },
         zh: {
           title: "SF Pacific War Archives Infrastructure Project",
           heroEyebrow: "项目总览",
           heroSummary: "项目范围、核心 tracks、架构视角与机构原则总览。",
-          metaPoc: "POC：JG",
-          metaUpdated: "更新：2026/8/9",
           scopeKicker: "范围",
           scopeTitle: "项目范围",
           scopeLead: "本项目覆盖 preservation、collections、interoperability 和 public discovery。",
@@ -750,16 +760,19 @@
           lensFooter: "Preservation 与 collections 承载 source truth；interoperability 连接档案；discovery 与 AI 扩展访问但不替代 source truth。",
           principlesKicker: "原则",
           principlesTitle: "机构原则",
-          principlesLead: "这些原则定义 records、access 与 AI 的关系。",
+          principlesLead: "这些原则定义 records、access、interoperability 与 AI 的关系。",
           principleCanonicalTitle: "Canonical record",
-          principleCanonicalBody: "Canonical record 始终是 source of truth。",
+          principleCanonicalBody: "Original records、source IDs、rights、review state 与 publication status 始终是稳定的 source of truth。",
           principleGovernanceTitle: "Governance",
           principleGovernanceBody: "Provenance、rights 与 review state 必须保持明确。",
+          principleFederationTitle: "Federated discovery",
+          principleFederationBody: "NARA、大学档案和本地馆藏应通过 mappings、APIs 与 source identifiers 被统一发现。",
           principleDerivedTitle: "Derived layers",
-          principleDerivedBody: "Discovery 与 AI outputs 必须保持 derived、replaceable，并可与 source truth 区分。",
+          principleDerivedBody: "Translations、summaries、entity extraction、discovery 与 AI outputs 必须保持 labeled、replaceable，并连接 source evidence 与 review status。",
+          principleStorageTitle: "Storage and access",
+          principleStorageBody: "Preservation masters、access derivatives 与 public pages 需要 separate controls。",
           principleAiTitle: "AI integrity",
-          principleAiBody: "LLMs 可以解释或 enrich records，但不能改写 original records。",
-          principlesFooter: "Public access 建立在 structured records 之上，cross-archive retrieval 仍是受管理的 interoperability layer。"
+          principleAiBody: "LLMs 可以解释或 enrich records，但不能改写 original records。"
         }
       };
 

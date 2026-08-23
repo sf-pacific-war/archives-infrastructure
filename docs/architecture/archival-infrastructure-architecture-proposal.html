@@ -91,7 +91,6 @@
       }
 
       .topbar-tools,
-      .nav,
       .lang-switch {
         align-items: center;
         display: flex;
@@ -101,23 +100,6 @@
         flex-wrap: wrap;
         gap: 10px;
         justify-content: flex-end;
-      }
-
-      .nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: flex-end;
-      }
-
-      .nav a {
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        color: var(--muted);
-        font-size: 0.83rem;
-        font-weight: 800;
-        padding: 7px 11px;
-        text-decoration: none;
       }
 
       .lang-switch {
@@ -242,9 +224,7 @@
       .lead,
       .note,
       .layer p,
-      .card p,
-      .phase p,
-      td {
+      .card p {
         color: var(--muted);
       }
 
@@ -274,10 +254,6 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      .grid.five {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
-
       .search-grid {
         display: grid;
         gap: 14px;
@@ -286,8 +262,7 @@
       }
 
       .card,
-      .layer,
-      .phase {
+      .layer {
         background: #fffdf8;
         border: 1px solid var(--line);
         border-radius: var(--radius);
@@ -298,8 +273,7 @@
       }
 
       .card h3,
-      .layer h3,
-      .phase h3 {
+      .layer h3 {
         color: var(--navy);
         font-size: 1.05rem;
         line-height: 1.28;
@@ -307,8 +281,7 @@
       }
 
       .card p,
-      .layer p,
-      .phase p {
+      .layer p {
         margin: 0;
       }
 
@@ -361,56 +334,6 @@
         color: var(--muted);
         display: block;
         font-size: 0.84rem;
-      }
-
-      .compare {
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        overflow-x: auto;
-      }
-
-      table {
-        border-collapse: collapse;
-        min-width: 880px;
-        width: 100%;
-      }
-
-      th,
-      td {
-        border-bottom: 1px solid var(--line);
-        padding: 12px;
-        text-align: left;
-        vertical-align: top;
-      }
-
-      th {
-        background: var(--navy);
-        color: #fff8e9;
-        font-size: 0.82rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      tr:nth-child(even) td {
-        background: #f7f1e6;
-      }
-
-      td strong {
-        color: var(--navy);
-      }
-
-      .phase {
-        padding: 16px;
-      }
-
-      .phase .status {
-        color: var(--brass);
-        display: block;
-        font-size: 0.74rem;
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        margin-bottom: 8px;
-        text-transform: uppercase;
       }
 
       .tag-row {
@@ -488,6 +411,31 @@
       .metadata-footnote {
         color: var(--muted);
         margin-top: 12px;
+      }
+
+      .metadata-considerations {
+        margin-top: 14px;
+      }
+
+      .consideration-list {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 14px;
+      }
+
+      .consideration-list > div {
+        border-left: 3px solid rgba(168, 121, 46, 0.56);
+        padding-left: 12px;
+      }
+
+      .consideration-list h4 {
+        color: var(--navy);
+        font-size: 0.86rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        margin: 0 0 6px;
+        text-transform: uppercase;
       }
 
       .relation-map {
@@ -597,23 +545,6 @@
         margin-top: 16px;
       }
 
-      .source-links {
-        display: grid;
-        gap: 10px;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .source-links a {
-        background: #fffdf8;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        color: var(--navy);
-        font-weight: 900;
-        min-height: 76px;
-        padding: 14px;
-        text-decoration: none;
-      }
-
       .footer {
         background: var(--navy);
         color: rgba(255, 248, 233, 0.78);
@@ -647,11 +578,10 @@
         .section-head,
         .grid.two,
         .grid.three,
-        .grid.five,
         .search-grid,
         .metadata-row,
         .relation-columns,
-        .source-links {
+        .consideration-list {
           grid-template-columns: 1fr;
         }
 
@@ -669,10 +599,6 @@
           display: none;
         }
 
-        .nav {
-          justify-content: flex-start;
-        }
-
         .hero-inner {
           min-height: auto;
           padding-bottom: 40px;
@@ -688,22 +614,14 @@
   <body data-lang="en">
     <header class="site-header">
       <div class="topbar">
-        <a class="brand" href="../../index.html" aria-label="SF Pacific War Archives Infrastructure Project home">
-          <span>SF Pacific War Archives Infrastructure Project</span>
+        <a class="brand" href="../../index.html" aria-label="Back to home page">
+          <span>Back to home page</span>
         </a>
         <div class="topbar-tools">
           <div class="lang-switch" role="group" aria-label="Language">
             <button class="lang-tab is-active" data-lang="en" type="button">EN</button>
-            <button class="lang-tab" data-lang="zh" type="button">ZH</button>
+            <button class="lang-tab" data-lang="zh" type="button">中文</button>
           </div>
-          <nav class="nav" aria-label="Architecture sections">
-            <a href="#thesis" data-i18n="navOverview">Overview</a>
-            <a href="#stack" data-i18n="navStack">Stack</a>
-            <a href="#retrieval" data-i18n="navRetrieval">Retrieval</a>
-            <a href="#mapping" data-i18n="navMapping">Mapping</a>
-            <a href="#mvp" data-i18n="navMvp">MVP</a>
-            <a href="#pages" data-i18n="navPages">Related Pages</a>
-          </nav>
         </div>
       </div>
     </header>
@@ -991,6 +909,39 @@
             </article>
           </div>
 
+          <article class="card metadata-considerations">
+            <h3 data-i18n="metadataConsiderationsTitle">Metadata management design considerations</h3>
+            <p data-i18n="metadataConsiderationsLead">
+              Dublin Core and DCMI terms should support search directly, not only export. They work best as the common discovery layer, while Pacific War domain metadata and authorities carry the project-specific research experience.
+            </p>
+            <div class="consideration-list">
+              <div>
+                <h4 data-i18n="metadataConsiderationCommonTitle">Common discovery</h4>
+                <p data-i18n="metadataConsiderationCommonBody">
+                  Use Dublin Core for baseline title, creator, subject, description, date, place, type, rights, source, and relation search; keep it aligned with OAI-PMH, JSON-LD, and public discovery records.
+                </p>
+              </div>
+              <div>
+                <h4 data-i18n="metadataConsiderationDomainTitle">Domain retrieval</h4>
+                <p data-i18n="metadataConsiderationDomainBody">
+                  Use Pacific War fields for advanced facets and browsing: theater, campaign, battle, military unit, vessel or aircraft, wartime jurisdiction, modern country, authorities, taxonomy, collection hierarchy, genre, and sensitivity.
+                </p>
+              </div>
+              <div>
+                <h4 data-i18n="metadataConsiderationSchemasTitle">Schema roles</h4>
+                <p data-i18n="metadataConsiderationSchemasBody">
+                  MODS can support richer bibliographic search; METS describes object and file structure; PREMIS supports preservation audit; IIIF supports viewer, page, OCR, and annotation discovery; OAI-PMH harvests metadata rather than defining it.
+                </p>
+              </div>
+              <div>
+                <h4 data-i18n="metadataConsiderationIndexTitle">Search index</h4>
+                <p data-i18n="metadataConsiderationIndexBody">
+                  Index common metadata, domain fields, authorities, taxonomies, and technical or preservation signals together, while preserving each field's source, review state, and relationship context.
+                </p>
+              </div>
+            </div>
+          </article>
+
           <div class="search-grid">
             <article class="card">
               <span class="search-card-number" data-i18n="searchStep1Number">1. Exact and fielded search</span>
@@ -1024,167 +975,17 @@
         </div>
       </section>
 
-      <section class="band" id="mapping">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <span class="kicker" data-i18n="mappingKicker">Reference Roles</span>
-              <h2 data-i18n="mappingTitle">Documents, data systems, and public access carry different roles.</h2>
-              <p class="lead" data-i18n="mappingLead">
-                Planning documents, schema drafts, research notes, and HTML pages
-                express institutional intent. Governed records, preservation files,
-                and public access should be carried by their own systems.
-              </p>
-            </div>
-            <p class="note">
-              The comparison below distinguishes reference materials from long-term archival responsibilities.
-            </p>
-          </div>
-
-          <div class="compare">
-            <table>
-              <thead>
-                <tr>
-                  <th>Area</th>
-                  <th>Reference material</th>
-                  <th>Long-term responsibility</th>
-                  <th>Interpretation</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Program framing</strong></td>
-                  <td>Planning docs, scope boundaries, track definitions</td>
-                  <td>Institutional direction, review roles, decision context</td>
-                  <td>Defines the boundary and vocabulary of the program.</td>
-                </tr>
-                <tr>
-                  <td><strong>Canonical records</strong></td>
-                  <td>Archival record schema draft and sample JSON</td>
-                  <td>Collections management data store or governed export pipeline</td>
-                  <td>Defines how local and external records align in one canonical model.</td>
-                </tr>
-                <tr>
-                  <td><strong>Digital assets</strong></td>
-                  <td>Only small samples and references</td>
-                  <td>Preservation storage, access derivatives, fixity, rights-controlled delivery</td>
-                  <td>Defines what belongs in preservation storage and what belongs in public delivery.</td>
-                </tr>
-                <tr>
-                  <td><strong>Interoperability</strong></td>
-                  <td>Research notes and future crosswalk folders</td>
-                  <td>DPLA/EDM, Dublin Core, EAD, IIIF, OAI-PMH, API or export profiles</td>
-                  <td>Defines how partner-held records remain linkable and provenance-rich.</td>
-                </tr>
-                <tr>
-                  <td><strong>Public access</strong></td>
-                  <td>Reading-room requirements and presentation notes</td>
-                  <td>Website or app with search, facets, detail pages, public-only rules</td>
-                  <td>Defines how approved records become discoverable to researchers and visitors.</td>
-                </tr>
-                <tr>
-                  <td><strong>AI layer</strong></td>
-                  <td>Principles and derived-content fields</td>
-                  <td>Translation, summary, retrieval, review, and model provenance</td>
-                  <td>Defines how AI extends access while remaining subordinate to source truth.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section class="band alt" id="mvp">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <span class="kicker" data-i18n="sequenceKicker">Layered Sequence</span>
-              <h2 data-i18n="sequenceTitle">The plan grows by layer: stabilize records first, then expand access and AI.</h2>
-              <p class="lead" data-i18n="sequenceLead">
-                The reading room can begin with lightweight, approved data while
-                preserving clear positions for preservation packages, IIIF, external
-                APIs, search indexes, and reviewed AI layers.
-              </p>
-            </div>
-            <p class="note">
-              Capabilities accumulate from source truth to public access.
-            </p>
-          </div>
-
-          <div class="grid five">
-            <article class="phase">
-              <span class="status">Phase 0</span>
-              <h3>Program boundary</h3>
-              <p>Define the four tracks, their boundaries, and excluded parallel products.</p>
-            </article>
-            <article class="phase">
-              <span class="status">Phase 1</span>
-              <h3>Canonical model</h3>
-              <p>Align memorial hall, NARA, and university records within one governed schema.</p>
-            </article>
-            <article class="phase">
-              <span class="status">Phase 2</span>
-              <h3>Reading room</h3>
-              <p>Provide browse, search, filters, bilingual fields, detail views, and public-only display.</p>
-            </article>
-            <article class="phase">
-              <span class="status">Phase 3</span>
-              <h3>Rights and preservation links</h3>
-              <p>Add review status, preservation references, and crosswalk validation.</p>
-            </article>
-            <article class="phase">
-              <span class="status">Phase 4</span>
-              <h3>Federation and AI</h3>
-              <p>Add external APIs, IIIF/OAI-PMH where useful, embeddings, and reviewed AI enrichments.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="band" id="pages">
-        <div class="section-inner">
-          <div class="section-head">
-            <div>
-              <span class="kicker" data-i18n="pagesKicker">Related Pages</span>
-              <h2 data-i18n="pagesTitle">Related overview, research, architecture, and branding pages</h2>
-              <p class="lead" data-i18n="pagesLead">
-                Related pages present scope, research, architecture, and visual
-                system within the same program.
-              </p>
-            </div>
-            <p class="note">
-              Each page describes a different layer of the same archival
-              project.
-            </p>
-          </div>
-
-          <div class="source-links">
-            <a href="../planning/project-update-program-management.html" data-i18n="linkProgram">Program overview</a>
-            <a href="../research/digital-archives-research-show.html" data-i18n="linkResearch">Research show</a>
-            <a href="./archival-infrastructure-architecture-proposal.html" data-i18n="linkArchitecture">Design doc</a>
-            <a href="../standards/branding/brand-preview.html" data-i18n="linkBrand">Brand preview</a>
-            <a href="../../index.html" data-i18n="linkHome">Project overview</a>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
       <div class="footer-inner">
         <span data-i18n="footerTitle">Design Doc</span>
-        <a href="../../index.html" data-i18n="footerHome">Back to project overview</a>
       </div>
     </footer>
     <script>
       const translations = {
         en: {
           title: "Design Doc",
-          navOverview: "Overview",
-          navStack: "Stack",
-          navRetrieval: "Retrieval",
-          navMapping: "Mapping",
-          navMvp: "MVP",
-          navPages: "Related Pages",
           heroEyebrow: "Design Doc",
           heroTitle: "Design Principles and Architecture",
           heroLead: "Design document for the digital collections and reading-room program: preservation, collections truth, interoperability, public discovery, and AI-derived layers work separately and together.",
@@ -1237,6 +1038,16 @@
           metadataFieldsRelations: "related_objects, part_of, is_version_of, references",
           metadataPurposeRelations: "How is it connected?",
           metadataFootnote: "All important fields carry source, date_created, last_updated, and confidence or review status.",
+          metadataConsiderationsTitle: "Metadata management design considerations",
+          metadataConsiderationsLead: "Dublin Core and DCMI terms should support search directly, not only export. They work best as the common discovery layer, while Pacific War domain metadata and authorities carry the project-specific research experience.",
+          metadataConsiderationCommonTitle: "Common discovery",
+          metadataConsiderationCommonBody: "Use Dublin Core for baseline title, creator, subject, description, date, place, type, rights, source, and relation search; keep it aligned with OAI-PMH, JSON-LD, and public discovery records.",
+          metadataConsiderationDomainTitle: "Domain retrieval",
+          metadataConsiderationDomainBody: "Use Pacific War fields for advanced facets and browsing: theater, campaign, battle, military unit, vessel or aircraft, wartime jurisdiction, modern country, authorities, taxonomy, collection hierarchy, genre, and sensitivity.",
+          metadataConsiderationSchemasTitle: "Schema roles",
+          metadataConsiderationSchemasBody: "MODS can support richer bibliographic search; METS describes object and file structure; PREMIS supports preservation audit; IIIF supports viewer, page, OCR, and annotation discovery; OAI-PMH harvests metadata rather than defining it.",
+          metadataConsiderationIndexTitle: "Search index",
+          metadataConsiderationIndexBody: "Index common metadata, domain fields, authorities, taxonomies, and technical or preservation signals together, while preserving each field's source, review state, and relationship context.",
           relationCardTitle: "Relationships between different types of materials",
           relationHub: "Object",
           relationNodePhoto: "Photo",
@@ -1264,31 +1075,10 @@
           searchStep4Number: "4. Reranking and evidence packages",
           searchStep4Body: "Final ranking should combine relevance, authority signals, and explicit evidence such as source record, page, region, or timestamp.",
           retrievalResult: "Result: trustworthy, explainable discovery constrained by structured facts and explicit evidence.",
-          mappingKicker: "Reference Roles",
-          mappingTitle: "Documents, data systems, and public access carry different roles.",
-          mappingLead: "Planning documents, schema drafts, research notes, and HTML pages express institutional intent. Governed records, preservation files, and public access should be carried by their own systems.",
-          sequenceKicker: "Layered Sequence",
-          sequenceTitle: "The plan grows by layer: stabilize records first, then expand access and AI.",
-          sequenceLead: "The reading room can begin with lightweight, approved data while preserving clear positions for preservation packages, IIIF, external APIs, search indexes, and reviewed AI layers.",
-          pagesKicker: "Related Pages",
-          pagesTitle: "Related overview, research, architecture, and branding pages",
-          pagesLead: "Related pages present scope, research, architecture, and visual system within the same program.",
-          linkProgram: "Program overview",
-          linkResearch: "Research show",
-          linkArchitecture: "Design doc",
-          linkBrand: "Brand preview",
-          linkHome: "Project overview",
-          footerTitle: "Design Doc",
-          footerHome: "Back to project overview"
+          footerTitle: "Design Doc"
         },
         zh: {
           title: "设计文档",
-          navOverview: "总览",
-          navStack: "分层",
-          navRetrieval: "检索",
-          navMapping: "角色",
-          navMvp: "MVP",
-          navPages: "相关页面",
           heroEyebrow: "设计文档",
           heroTitle: "设计原则与架构",
           heroLead: "面向数字馆藏与数字阅览室项目的设计文档：preservation、collections truth、interoperability、public discovery 与 AI-derived layers 彼此分工、相互连接。",
@@ -1341,6 +1131,16 @@
           metadataFieldsRelations: "related_objects、part_of、is_version_of、references",
           metadataPurposeRelations: "它与什么相连？",
           metadataFootnote: "所有关键字段都应带有 source、date_created、last_updated，以及 confidence 或 review status。",
+          metadataConsiderationsTitle: "元数据管理设计考量",
+          metadataConsiderationsLead: "Dublin Core 和 DCMI Terms 不应只作为导出字段，也应直接服务检索。它们适合承担通用发现层；Pacific War 领域 metadata 与 authority model 则承担专题研究体验。",
+          metadataConsiderationCommonTitle: "通用发现",
+          metadataConsiderationCommonBody: "用 Dublin Core 支撑标题、创作者、主题、描述、日期、地点、类型、权限、来源与关联的基础检索，并与 OAI-PMH、JSON-LD 和 public discovery records 保持可映射。",
+          metadataConsiderationDomainTitle: "领域检索",
+          metadataConsiderationDomainBody: "用 Pacific War 字段支撑高级 facet 与浏览：theater、campaign、battle、military unit、vessel 或 aircraft、wartime jurisdiction、modern country、authority、taxonomy、collection hierarchy、genre 与 sensitivity。",
+          metadataConsiderationSchemasTitle: "Schema 职责",
+          metadataConsiderationSchemasBody: "MODS 可支撑更细的 bibliographic search；METS 描述对象与文件结构；PREMIS 支撑保存审计；IIIF 支撑 viewer、页面、OCR 与 annotation 级发现；OAI-PMH 负责 harvest metadata，而不是定义 schema。",
+          metadataConsiderationIndexTitle: "检索索引",
+          metadataConsiderationIndexBody: "Search index 应统一索引通用 metadata、领域字段、authorities、taxonomies，以及 technical 或 preservation signals，同时保留每个字段的来源、审核状态与关系上下文。",
           relationCardTitle: "不同材料类型之间的关系",
           relationHub: "对象",
           relationNodePhoto: "照片",
@@ -1368,22 +1168,7 @@
           searchStep4Number: "4. 重排与证据包",
           searchStep4Body: "最终排序应结合相关性、权威信号与明确证据，例如来源记录、页面、区域或时间码。",
           retrievalResult: "结果：在结构化事实和明确证据约束下，实现可信、可解释的发现与检索。",
-          mappingKicker: "角色边界",
-          mappingTitle: "文档、数据系统与公共访问各自承担不同角色。",
-          mappingLead: "Planning documents、schema drafts、research notes 和 HTML 页面表达的是机构意图；治理性记录、保存文件与公共访问应由各自的系统独立承载。",
-          sequenceKicker: "分层推进",
-          sequenceTitle: "这套计划按层展开：先稳定记录，再扩展访问与 AI。",
-          sequenceLead: "Reading room 可以先基于轻量且经过批准的数据启动，同时为 preservation packages、IIIF、external APIs、search indexes 和经过审阅的 AI layers 保留接口和位置。",
-          pagesKicker: "相关页面",
-          pagesTitle: "相关 overview、research、architecture 与 branding 页面",
-          pagesLead: "相关页面从 scope、research、architecture 和 visual system 四个角度呈现同一项目。",
-          linkProgram: "项目总览",
-          linkResearch: "研究展示",
-          linkArchitecture: "设计文档",
-          linkBrand: "品牌预览",
-          linkHome: "项目总览首页",
-          footerTitle: "设计文档",
-          footerHome: "返回项目总览"
+          footerTitle: "设计文档"
         }
       };
 

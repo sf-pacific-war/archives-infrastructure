@@ -10,3 +10,7 @@ This is the primary home for:
 - requirement drafts
 - scope-boundary notes
 - repository and program setup notes
+
+## Flying Tigers and CBI anniversary beta
+
+- [Beta project plan](flying-tigers-cbi-anniversary-beta-project.md): product requirements, design, project responsibilities, and proposed Tier 1 archival sources.
